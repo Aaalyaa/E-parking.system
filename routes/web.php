@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\ProfileController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\RoleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,11 +21,25 @@ Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'index'])
+        ->name('profile.index');
+    Route::get('/profile/password', [ProfileController::class, 'editPassword'])
+        ->name('profile.editPassword');
+    Route::post('/profile/password', [ProfileController::class, 'updatePassword'])
+        ->name('profile.updatePassword');
+});
 
-Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/admin/dashboard', function () {
+Route::middleware(['auth', 'role:admin'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+    Route::get('/dashboard', function () {
         return view('admin.dashboard');
     });
+    
+    Route::resource('users', UserController::class);
+    Route::resource('roles', RoleController::class);
 });
 
 Route::middleware(['auth', 'role:petugas'])->group(function () {
