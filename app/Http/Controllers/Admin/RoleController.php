@@ -10,11 +10,11 @@ class RoleController extends Controller
 {
     public function index(){
         $roles = Role::all();
-        return view('admin.roles.index', compact('roles'));
+        return view('admin.pengaturan_pengguna.roles.index', compact('roles'));
     }
 
     public function create(){
-        return view('admin.roles.create');
+        return view('admin.pengaturan_pengguna.roles.create');
     }
 
     public function store(Request $request){
@@ -26,12 +26,12 @@ class RoleController extends Controller
             'peran' => $request->peran
         ]);
 
-        return redirect()->route('admin.roles.index');
+        return redirect()->route('admin.pengaturan_pengguna.roles.index');
     }
 
     public function edit(Role $role)
     {
-        return view('admin.roles.edit', compact('role'));
+        return view('admin.pengaturan_pengguna.roles.edit', compact('role'));
     }
 
     public function update(Request $request, Role $role){
@@ -43,11 +43,11 @@ class RoleController extends Controller
             'peran' => $request->peran
         ]);
 
-        return redirect()->route('admin.roles.index');
+        return redirect()->route('admin.pengaturan_pengguna.roles.index');
     }
 
     public function destroy(Role $role){
         $role->delete();
-        return redirect()->route('admin.roles.index');
+        return redirect()->route('admin.pengaturan_pengguna.roles.index');
     }
 }

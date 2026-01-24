@@ -11,12 +11,12 @@ class UserController extends Controller
 {
     public function index(){
         $users = User::with('role')->get();
-        return view('admin.users.index', compact('users'));
+        return view('admin.pengaturan_pengguna.users.index', compact('users'));
     }
 
     public function create(){
         $roles = Role::all();
-        return view('admin.users.create', compact('roles'));
+        return view('admin.pengaturan_pengguna.users.create', compact('roles'));
     }
 
     public function store(Request $request){
@@ -32,13 +32,13 @@ class UserController extends Controller
             'id_role' => $request->id_role
         ]);
 
-        return redirect()->route('admin.users.index');
+        return redirect()->route('admin.pengaturan_pengguna.users.index');
     }
 
     public function edit(User $user)
     {
         $roles = Role::all();
-        return view('admin.users.edit', compact('user', 'roles'));
+        return view('admin.pengaturan_pengguna.users.edit', compact('user', 'roles'));
     }
 
     public function update(Request $request, User $user){
@@ -52,11 +52,11 @@ class UserController extends Controller
             'id_role' => $request->id_role
         ]);
 
-        return redirect()->route('admin.users.index');
+        return redirect()->route('admin.pengaturan_pengguna.users.index');
     }
 
     public function destroy(User $user){
         $user->delete();
-        return redirect()->route('admin.users.index');
+        return redirect()->route('admin.pengaturan_pengguna.users.index');
     }
 }

@@ -2,17 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>@yield('title', 'E - Parking | Admin')</title>
+    <title>@yield('title', 'E - Parking | Petugas')</title>
 </head>
 <body>
-    @include('admin.partials.navbar')
+    @include('petugas.partials.navbar')
     <div style="display: flex;">
-        @include('admin.partials.sidebar')
+        @include('petugas.partials.sidebar')
 
         <main style="padding: 20px; width: 100%;">
             @yield('content')
         </main>
     </div>
-    @stack('scripts')
 </body>
 </html>

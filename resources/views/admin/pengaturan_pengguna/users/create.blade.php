@@ -3,9 +3,9 @@
 @section('content')
 <h2>Tambah Akun Pengguna</h2>
 
-<a href="{{ route('admin.users.index') }}">Kembali</a>
+<a href="{{ route('admin.pengaturan_pengguna.users.index') }}">Kembali</a>
 
-<form action="{{ route('admin.users.store') }}" method="POST">
+<form action="{{ route('admin.pengaturan_pengguna.users.store') }}" method="POST">
     @csrf
     <div>
         <label for="username">Username:</label>

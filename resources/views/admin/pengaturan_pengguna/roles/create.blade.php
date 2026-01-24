@@ -3,8 +3,8 @@
 @section('content')
 <h2>Tambah Peran</h2>
 
-<a href="{{ route('admin.roles.index') }}">Kembali</a>
-<form action="{{ route('admin.roles.store') }}" method="POST">
+<a href="{{ route('admin.pengaturan_pengguna.roles.index') }}">Kembali</a>
+<form action="{{ route('admin.pengaturan_pengguna.roles.store') }}" method="POST">
     @csrf
     <div>
         <label for="peran">Nama Peran:</label>

@@ -3,9 +3,9 @@
 @section('content')
 <h2>Sunting Peran</h2>
 
-<a href="{{ route('admin.roles.index') }}">Kembali</a>
+<a href="{{ route('admin.pengaturan_pengguna.roles.index') }}">Kembali</a>
 
-<form action="{{ route('admin.roles.update', $role) }}" method="POST">
+<form action="{{ route('admin.pengaturan_pengguna.roles.update', $role) }}" method="POST">
     @method("PUT")
     @csrf
     <div>

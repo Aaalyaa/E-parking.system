@@ -1,9 +1,9 @@
 @extends('admin.layout')
 
 @section('content')
-    <h1 class="mb-4">Daftar Peran</h1>
+    <h1>Daftar Peran</h1>
 
-    <a href="{{ route('admin.roles.create') }}">Tambah Peran</a>
+    <a href="{{ route('admin.pengaturan_pengguna.roles.create') }}">Tambah Peran</a>
 
     <table border="1">
         <thead>
@@ -19,8 +19,8 @@
                     <td>{{ $role->id }}</td>
                     <td>{{ $role->peran }}</td>
                     <td>
-                        <a href="{{ route('admin.roles.edit', $role->id) }}">Edit</a>
-                        <form action="{{ route('admin.roles.destroy', $role->id) }}" method="POST" style="display:inline">
+                        <a href="{{ route('admin.pengaturan_pengguna.roles.edit', $role->id) }}">Edit</a>
+                        <form action="{{ route('admin.pengaturan_pengguna.roles.destroy', $role->id) }}" method="POST" style="display:inline">
                             @csrf
                             @method('DELETE')
                             <button type="submit">Hapus</button>

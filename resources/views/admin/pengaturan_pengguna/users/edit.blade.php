@@ -3,9 +3,9 @@
 @section('content')
 <h2>Sunting Akun Pengguna</h2>
 
-<a href="{{ route('admin.users.index') }}">Kembali</a>
+<a href="{{ route('admin.pengaturan_pengguna.users.index') }}">Kembali</a>
 
-<form action="{{ route('admin.users.update', $user) }}" method="POST">
+<form action="{{ route('admin.pengaturan_pengguna.users.update', $user) }}" method="POST">
     @method("PUT")
     @csrf
     <div>

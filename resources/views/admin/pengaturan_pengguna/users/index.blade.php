@@ -3,7 +3,7 @@
 @section('content')
 <h2>Data Akun Pengguna</h2>
 
-<a href="{{ route('admin.users.create') }}">Tambah User</a>
+<a href="{{ route('admin.pengaturan_pengguna.users.create') }}">Tambah User</a>
 
 <table border="1">
     <tr>
@@ -18,8 +18,8 @@
         <td>{{ $user->username }}</td>
         <td>{{ $user->role->peran }}</td>
         <td>
-            <a href="{{ route('admin.users.edit', $user->id) }}">Edit</a>
-            <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" style="display:inline">
+            <a href="{{ route('admin.pengaturan_pengguna.users.edit', $user->id) }}">Edit</a>
+            <form action="{{ route('admin.pengaturan_pengguna.users.destroy', $user->id) }}" method="POST" style="display:inline">
                 @csrf
                 @method('DELETE')
                 <button type="submit">Hapus</button>
