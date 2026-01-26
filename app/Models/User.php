@@ -45,4 +45,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Role::class, 'id_role');
     }
+
+    public function hasRole($peran)
+    {
+        return $this->role && $this->role->peran === $peran;
+    }
 }

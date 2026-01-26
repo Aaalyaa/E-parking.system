@@ -15,9 +15,15 @@ class RoleMiddleware
      */
     public function handle(Request $request, Closure $next, string $peran): Response
     {
-        if (!auth()->check() || auth()->user()->role->peran !== $peran) {
-            abort(403, 'Aksi tidak diperbolehkan.');
-        }
+        if (!auth()->check()) {
+        abort(403, 'Belum login.');
+    }
+
+    $roles = explode('|', $peran);
+
+    if (!in_array(auth()->user()->role->peran, $roles)) {
+        abort(403, 'Aksi tidak diperbolehkan.');
+    }
 
         return $next($request);
     }
