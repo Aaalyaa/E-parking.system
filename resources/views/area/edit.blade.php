@@ -1,4 +1,4 @@
-@extends('admin.layout')
+@extends(auth()->user()->layout())
 
 @section('content')
         <h1>Sunting Area Parkir</h1>

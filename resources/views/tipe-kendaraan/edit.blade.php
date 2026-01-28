@@ -20,10 +20,6 @@
                 <label for="deskripsi">Deskripsi</label>
                 <textarea name="deskripsi" id="deskripsi" class="form-control">{{ $tipeKendaraan->deskripsi }}</textarea>
             </div>
-            <div class="form-group">
-                <label for="ukuran_slot">Ukuran Slot</label>
-                <input type="text" name="ukuran_slot" id="ukuran_slot" class="form-control" value="{{ $tipeKendaraan->ukuran_slot }}" required>
-            </div>
             <button type="submit" class="btn btn-primary">Update</button>
         </form>
 @endsection

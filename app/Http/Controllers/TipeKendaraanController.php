@@ -24,14 +24,12 @@ class TipeKendaraanController extends Controller
             'kode_tipe' => 'required|unique:tipe_kendaraan',
             'nama_tipe' => 'required',
             'deskripsi' => 'nullable',
-            'ukuran_slot' => 'required'
         ]);
 
         TipeKendaraan::create([
             'kode_tipe' => $request->kode_tipe,
             'nama_tipe' => $request->nama_tipe,
             'deskripsi' => $request->deskripsi,
-            'ukuran_slot' => $request->ukuran_slot
         ]);
 
         return redirect()->route('tipe-kendaraan.index');
@@ -48,14 +46,12 @@ class TipeKendaraanController extends Controller
             'kode_tipe' => 'required',
             'nama_tipe' => 'required',
             'deskripsi' => 'nullable',
-            'ukuran_slot' => 'required'
         ]);
 
         $tipeKendaraan->update([
             'kode_tipe' => $request->kode_tipe,
             'nama_tipe' => $request->nama_tipe,
             'deskripsi' => $request->deskripsi,
-            'ukuran_slot' => $request->ukuran_slot
         ]);
 
         return redirect()->route('tipe-kendaraan.index');
