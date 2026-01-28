@@ -12,7 +12,6 @@ class DataKendaraan extends Model
     protected $fillable = [
         'plat_nomor',
         'pemilik',
-        'status_member',
         'id_tipe_kendaraan',
     ];
 
@@ -27,9 +26,14 @@ class DataKendaraan extends Model
     }
 
     public function memberAktif()
-{
-    return $this->hasOne(Member::class, 'id_data_kendaraan')
-        ->where('tanggal_bergabung', '<=', now())
-        ->where('tanggal_kadaluarsa', '>=', now());
-}
+    {
+        return $this->hasOne(Member::class, 'id_data_kendaraan')
+            ->where('tanggal_bergabung', '<=', now())
+            ->where('tanggal_kadaluarsa', '>=', now());
+    }
+
+    public function getStatusMemberTextAttribute()
+    {
+        return $this->memberAktif ? 'Aktif' : 'Tidak Aktif';
+    }
 }
