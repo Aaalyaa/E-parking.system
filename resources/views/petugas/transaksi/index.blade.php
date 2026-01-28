@@ -1,82 +1,65 @@
 @extends('petugas.layout')
 
 @section('content')
-<h3>Transaksi Kendaraan Masuk</h3>
+    <h3>Histori Transaksi Parkir</h3>
+    <div class="d-flex justify-content-between align-items-center">
+        <form method="GET" action="{{ route('petugas.transaksi.index') }}">
+            <label>Tanggal</label>
+            <input type="date" name="tanggal" value="{{ request('tanggal') }}">
 
-@if (session('error'))
-    <div style="color:red">{{ session('error') }}</div>
-@endif
-@if (session('success'))
-    <div style="color:green">{{ session('success') }}</div>
-@endif
+            <label>Plat Nomor</label>
+            <input type="text" name="plat" value="{{ request('plat') }}">
 
-<form action="{{ route('petugas.transaksi.masuk') }}" method="POST">
-    @csrf
+            <button type="submit">Cari</button>
+            <a href="{{ route('petugas.transaksi.index') }}">Reset</a>
+        </form>
 
-    <label>Kendaraan</label>
-    <select name="id_data_kendaraan" required>
-        <option value="">-- Pilih Kendaraan --</option>
-        @foreach ($dataKendaraan as $kendaraan)
-            <option value="{{ $kendaraan->id }}">
-                {{ $kendaraan->plat_nomor }} - {{ $kendaraan->tipe_kendaraan->nama_tipe }}
-            </option>
-        @endforeach
-    </select>
+        <a href="{{ route('petugas.transaksi.create') }}" class="btn btn-primary">Buat Transaksi Baru</a>
+    </div>
 
-    <br><br>
+    <br>
 
-    <label>Area Parkir</label>
-    <select name="id_area" required>
-        <option value="">-- Pilih Area --</option>
-        @foreach ($areas as $area)
-            <option value="{{ $area->id }}">{{ $area->nama_area }} - {{ $area->lokasiArea->lokasi_area }}</option>
-        @endforeach
-    </select>
-
-    <br><br>
-
-    <button type="submit">SIMPAN MASUK</button>
-</form>
-
-<hr>
-
-<h3>Kendaraan Sedang Parkir</h3>
-
-<table border="1" cellpadding="5">
-    <thead>
-        <tr>
-            <th>No</th>
-            <th>Plat</th>
-            <th>Tipe</th>
-            <th>Area</th>
-            <th>Waktu Masuk</th>
-            <th>Aksi</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach ($parkirAktif as $i => $transaksi)
+    <table border="1" cellpadding="5" width="100%">
+        <thead>
             <tr>
-                <td>{{ $i + 1 }}</td>
-                <td>{{ $transaksi->dataKendaraan->plat_nomor }}</td>
-                <td>{{ $transaksi->dataKendaraan->tipe_kendaraan->nama_tipe }}</td>
-                <td>{{ $transaksi->area->nama_area }}</td>
-                <td>{{ $transaksi->waktu_masuk->format('d-m-Y H:i') }}</td>
-                <td>
-                    <form action="{{ route('petugas.transaksi.keluar', $transaksi->id) }}" method="POST">
-                        @csrf
-
-                        <select name="metode_bayar" required>
-                            <option value="">-- Pilih Metode --</option>
-                            <option value="TUNAI">TUNAI</option>
-                            <option value="DEBIT">DEBIT</option>
-                            <option value="E-WALLET">E-WALLET</option>
-                        </select>
-
-                        <button type="submit">KELUAR</button>
-                    </form>
-                </td>
+                <th>No</th>
+                <th>Kode</th>
+                <th>Plat</th>
+                <th>Area</th>
+                <th>Masuk</th>
+                <th>Keluar</th>
+                <th>Durasi</th>
+                <th>Total</th>
+                <th>Metode</th>
+                <th>Aksi</th>
             </tr>
-        @endforeach
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @forelse ($transaksis as $i => $t)
+                <tr>
+                    <td>{{ $transaksis->firstItem() + $i }}</td>
+                    <td>{{ $t->kode }}</td>
+                    <td>{{ $t->dataKendaraan->plat_nomor }}</td>
+                    <td>{{ $t->area->nama_area }}</td>
+                    <td>{{ $t->waktu_masuk->format('H:i') }}</td>
+                    <td>{{ $t->waktu_keluar->format('H:i') }}</td>
+                    <td>{{ $t->durasi_format }}</td>
+                    <td>Rp {{ number_format($t->total_biaya, 0, ',', '.') }}</td>
+                    <td>{{ $t->metode_bayar }}</td>
+                    <td>
+                        <a href="{{ route('petugas.transaksi.struk_keluar', $t->id) }}">
+                            Lihat Struk
+                        </a>
+                    </td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="10" align="center">Tidak ada data</td>
+                </tr>
+            @endforelse
+        </tbody>
+    </table>
+
+    <br>
+    {{ $transaksis->links() }}
 @endsection

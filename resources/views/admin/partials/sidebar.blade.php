@@ -1,31 +1,34 @@
-<aside style="width: 220px; background: #f4f4f4; padding: 15px;">
-    <ul style="list-style: none; padding: 0;">
-        <li><a href="/admin/dashboard">Dashboard</a></li>
-        <li>
-            <strong>Master</strong>
-            <ul>
-                <li><a href="/admin/master/lokasi_area">Lokasi Area</a></li>
-                <li><a href="/admin/master/area">Area</a></li>
-                <li><a href="/admin/master/kapasitas_area">Kapasitas</a></li>
-                <li><a href="/admin/master/tipe_kendaraan">Tipe Kendaraan</a></li>
-                <li><a href="/admin/master/tipe_member">Tipe Member</a></li>
-                <li><a href="/admin/master/tarif">Tarif</a></li>
-                <li><a href="/admin/master/data_kendaraan">Data Kendaraan</a></li>
-            </ul>
-        </li>
-        <li>
-            <strong>Kendaraan & Member</strong>
-            <ul>
-                <li><a href="/admin/kendaraan_dan_member/membership">Membership</a></li>
-                <li><a href="/admin/kendaraan_dan_member/tracking">Tracking Kendaraan</a></li>
-            </ul>
-        </li>
-        <li>
-            <strong>Pengaturan Pengguna</strong>
-            <ul>
-                <li><a href="/admin/pengaturan_pengguna/users">Akun Pengguna</a></li>
-                <li><a href="/admin/pengaturan_pengguna/roles">Peran</a></li>
-            </ul>
-        </li>
-    </ul>
+<aside class="sidebar bg-white border-end" style="width: 240px; min-height: 100%; overflow-y: auto;">
+    <div class="p-3">
+        <ul class="nav nav-pills flex-column gap-1">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('admin.dashboard') }}">Dashboard</a>
+            </li>
+
+                <li class="mt-3 fw-bold text-muted small">MASTER</li>
+                    <li><a class="nav-link" href="{{ route('lokasi-area.index') }}">Lokasi Area</a></li>
+                    <li><a class="nav-link" href="{{ route('area.index') }}">Area</a></li>
+                    <li><a class="nav-link" href="{{ route('area-kapasitas.index') }}">Kapasitas</a></li>
+                    <li><a class="nav-link" href="{{ route('tipe-kendaraan.index') }}">Tipe Kendaraan</a></li>
+                    <li><a class="nav-link" href="{{ route('tipe-member.index') }}">Tipe Member</a></li>
+                    <li><a class="nav-link" href="{{ route('tarif.index') }}">Tarif</a></li>
+                    <li><a class="nav-link" href="{{ route(name: 'data-kendaraan.index') }}">Data Kendaraan</a></li>
+
+                <li class="mt-3 fw-bold text-muted small">TRANSAKSI</li>
+                    <li><a class="nav-link" href="{{ route('transaksi.index') }}">Transaksi Parkir</a></li>
+
+                <li class="mt-3 fw-bold text-muted small">KENDARAAN & MEMBER</li>
+                    <li><a class="nav-link" href="{{ route('membership.index') }}">Membership</a></li>
+                    <li><a class="nav-link" href="{{ route('tracking.index') }}">Tracking Kendaraan</a></li>
+
+                <li class="mt-3 fw-bold text-muted small">LAPORAN</li>
+                    <li><a class="nav-link" href="{{ route('laporan.harian') }}">Laporan Harian</a></li>
+                    <li><a class="nav-link" href="{{ route('laporan.rentang') }}">Laporan Rentang</a></li>
+                    <li><a class="nav-link" href="{{ route('laporan.okupansi') }}">Laporan Okupansi</a></li>
+
+                <li class="mt-3 fw-bold text-muted small">PENGATURAN PENGGUNA</li>
+                    <li><a class="nav-link" href="{{ route('users.index') }}">Akun Pengguna</a></li>
+                    <li><a class="nav-link" href="{{ route('roles.index') }}">Peran</a></li>
+        </ul>
+    </div>
 </aside>

@@ -11,32 +11,58 @@ use Illuminate\Http\Request;
 
 class TransaksiParkirController extends Controller
 {
-    public function index()
+    public function index(Request $request)
+    {
+        $query = TransaksiParkir::with([
+            'dataKendaraan',
+            'area',
+            'tarif'
+        ])->where('status_parkir', TransaksiParkir::STATUS_OUT);
+
+        if ($request->filled('tanggal')) {
+            $query->whereDate('waktu_keluar', $request->tanggal);
+        }
+
+        if ($request->filled('plat')) {
+            $query->whereHas('dataKendaraan', function ($q) use ($request) {
+                $q->where('plat_nomor', 'like', '%' . $request->plat . '%');
+            });
+        }
+
+        $transaksis = $query
+            ->orderBy('waktu_keluar', 'desc')
+            ->paginate(10)
+            ->withQueryString();
+
+        return view('petugas.transaksi.index', compact('transaksis'));
+    }
+
+    public function create()
     {
         $dataKendaraan = DataKendaraan::with('tipe_kendaraan')->get();
         $areas = Area::with('lokasiArea')->get();
         $parkirAktif = TransaksiParkir::where('status_parkir', TransaksiParkir::STATUS_IN)->get();
 
-        return view('petugas.transaksi.index', compact('dataKendaraan', 'areas', 'parkirAktif'));
+        return view('petugas.transaksi.create', compact('dataKendaraan', 'areas', 'parkirAktif'));
     }
 
     public function storeMasuk(Request $request)
     {
         $request->validate([
-        'id_data_kendaraan' => 'required',
-        'id_area' => 'required',
+            'id_data_kendaraan' => 'required',
+            'id_area' => 'required',
         ]);
 
         $cek = TransaksiParkir::where('id_data_kendaraan', $request->id_data_kendaraan)
-                ->where('status_parkir', TransaksiParkir::STATUS_IN)
-                ->exists();
+            ->where('status_parkir', TransaksiParkir::STATUS_IN)
+            ->exists();
 
         if ($cek) {
             return back()->with('error', 'Kendaraan masih parkir!');
         }
 
         $dataKendaraan = DataKendaraan::with('tipe_kendaraan')
-        ->findOrFail($request->id_data_kendaraan);
+            ->findOrFail($request->id_data_kendaraan);
 
         $idTipeKendaraan = $dataKendaraan->id_tipe_kendaraan;
 
@@ -74,9 +100,9 @@ class TransaksiParkirController extends Controller
         $durasiJam = ceil($durasiMenit / 60);
 
         $tarif = Tarif::where('id_tipe_kendaraan', $transaksi->dataKendaraan->id_tipe_kendaraan)
-        ->where('durasi_minimal', '<=', $durasiJam)
-        ->where('durasi_maksimal', '>=', $durasiJam)
-        ->first();
+            ->where('durasi_minimal', '<=', $durasiJam)
+            ->where('durasi_maksimal', '>=', $durasiJam)
+            ->first();
 
         if (!$tarif) {
             return back()->with('error', 'Tarif tidak ditemukan!');

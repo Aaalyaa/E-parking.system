@@ -1,16 +1,18 @@
-<nav style="padding: 10px; background: #222; color: white;">
-    <strong>E-Parking | Petugas</strong>
+<nav class="navbar navbar-dark bg-dark px-4">
+    <span class="navbar-brand fw-bold">
+        E-Parking | Petugas
+    </span>
 
-    <span style="float: right;">
+    <div class="d-flex align-items-center gap-3 text-white">
         @auth
-        <a href="{{ route('profile.index') }}">
+        <a href="{{ route('profile.index') }}" class="text-white text-decoration-none">
             {{ auth()->user()->username }}
         </a>
         @endauth
         |
         <form action="{{ route('logout') }}" method="POST" style="display:inline;">
             @csrf
-            <button type="submit">Logout</button>
+            <button type="submit" class="btn btn-sm btn-outline-light">Logout</button>
         </form>
-    </span>
+    </div>
 </nav>

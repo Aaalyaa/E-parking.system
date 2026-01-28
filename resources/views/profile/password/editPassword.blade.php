@@ -1,4 +1,4 @@
-@extends('admin.layout')
+@extends(auth()->user()->layout())
 
 @section('content')
 <div class="container">
@@ -40,6 +40,7 @@
                 </div>
 
                 <button type="submit" class="btn btn-primary">Update Password</button>
+                <a href="{{ route('profile.index') }}" class="btn btn-dark">Kembali</a>
             </form>
         </div>  
     </div>

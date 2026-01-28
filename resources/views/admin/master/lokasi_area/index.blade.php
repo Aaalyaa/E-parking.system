@@ -1,31 +1,44 @@
 @extends('admin.layout')
 
 @section('content')
-        <h1>Lokasi</h1>
+    <div class="container-fluid">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="fw-bold mb-0">Lokasi Area</h4>
+            <a href="{{ route('admin.master.lokasi_area.create') }}" class="btn btn-primary">Tambah Lokasi Area</a>
+        </div>
 
-        <a href="{{ route('admin.master.lokasi_area.create') }}" class="btn btn-primary">Tambah Lokasi Area</a>
-        
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>Nama Lokasi Area</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($lokasiAreas as $lokasiArea)
-                    <tr>
-                        <td>{{ $lokasiArea->lokasi_area }}</td>
-                        <td>
-                            <a href="{{ route('admin.master.lokasi_area.edit', $lokasiArea) }}" class="btn btn-warning">Edit</a>
-                            <form action="{{ route('admin.master.lokasi_area.destroy', $lokasiArea) }}" method="POST" style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger">Hapus</button>
-                            </form>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+        <div class="card shadow-sm">
+            <div class="card-body p-0">
+
+                <table class="table table-striped table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Nama Lokasi Area</th>
+                            <th width="150">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($lokasiAreas as $lokasiArea)
+                            <tr>
+                                <td>{{ $lokasiArea->lokasi_area }}</td>
+                                <td>
+                                    <a href="{{ route('admin.master.lokasi_area.edit', $lokasiArea) }}"
+                                        class="btn btn-warning">Edit</a>
+                                    <form action="{{ route('admin.master.lokasi_area.destroy', $lokasiArea) }}"
+                                        method="POST" style="display:inline;" 
+                                        onsubmit="return confirm('Yakin ingin menghapus data lokasi area ini?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger">Hapus</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+    </div>
 @endsection

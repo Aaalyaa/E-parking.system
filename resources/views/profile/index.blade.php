@@ -1,4 +1,4 @@
-@extends('admin.layout')
+@extends(auth()->user()->layout())
 
 @section('content')
 <div class="container">

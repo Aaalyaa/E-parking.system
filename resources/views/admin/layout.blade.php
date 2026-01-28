@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>@yield('title', 'E - Parking | Admin')</title>
+    @vite(['resources/js/app.js'])
 </head>
-<body>
+<body class="bg-light">
     @include('admin.partials.navbar')
-    <div style="display: flex;">
+    <div class="d-flex" style="height: calc(100vh - 56px);">
         @include('admin.partials.sidebar')
 
-        <main style="padding: 20px; width: 100%;">
+        <main class="p-4 flex-fill overflow-auto">
             @yield('content')
         </main>
     </div>

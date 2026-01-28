@@ -46,8 +46,13 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class, 'id_role');
     }
 
-    public function hasRole($peran)
-    {
-        return $this->role && $this->role->peran === $peran;
-    }
+    public function layout()
+{
+    return match ($this->role->peran) {
+        'admin' => 'admin.layout',
+        'owner' => 'owner.layout',
+        'petugas' => 'petugas.layout',
+        default => 'layouts.app',
+    };
+}
 }
