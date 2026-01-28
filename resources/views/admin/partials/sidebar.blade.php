@@ -28,7 +28,6 @@
 
                 <li class="mt-3 fw-bold text-muted small">PENGATURAN PENGGUNA</li>
                     <li><a class="nav-link" href="{{ route('users.index') }}">Akun Pengguna</a></li>
-                    <li><a class="nav-link" href="{{ route('roles.index') }}">Peran</a></li>
         </ul>
     </div>
 </aside>
