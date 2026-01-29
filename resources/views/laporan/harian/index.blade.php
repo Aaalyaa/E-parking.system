@@ -1,48 +1,81 @@
 @extends(auth()->user()->layout())
 
 @section('content')
-<h3>Laporan Transaksi Harian</h3>
-<p>Tanggal: {{ $tanggal->format('d-m-Y') }}</p>
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h3 class="mb-0">Laporan Transaksi Harian</h3>
+            <small class="text-muted">Tanggal: {{ $tanggal->format('d-m-Y') }}</small>
+        </div>
 
-<hr>
+        <a href="{{ route('laporan.harian.pdf') }}"
+           class="btn btn-success">
+            <i class="bi bi-file-earmark-pdf"></i> Cetak PDF
+        </a>
+    </div>
 
-<h4>Ringkasan</h4>
-<ul>
-    <li>Total Transaksi: <b>{{ $totalTransaksi }}</b></li>
-    <li>Total Pendapatan: <b>Rp {{ number_format($totalPendapatan) }}</b></li>
-</ul>
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5>Ringkasan</h5>
+            <ul class="mb-0">
+                <li>Total Transaksi: <b>{{ $totalTransaksi }}</b></li>
+                <li>Total Pendapatan: <b>Rp {{ number_format($totalPendapatan) }}</b></li>
+            </ul>
+        </div>
+    </div>
 
-<hr>
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5>Breakdown Tipe Kendaraan</h5>
+            <table class="table table-bordered table-sm">
+                <thead class="table-light">
+                    <tr>
+                        <th>Tipe Kendaraan</th>
+                        <th>Jumlah</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($kendaraan as $item)
+                        <tr>
+                            <td>{{ ucfirst($item->nama_tipe) }}</td>
+                            <td>{{ $item->total }}</td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="2" class="text-center">Tidak ada data</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-<h4>Breakdown Kendaraan</h4>
-<table border="1" cellpadding="5">
-    <tr>
-        <th>Jenis Kendaraan</th>
-        <th>Jumlah</th>
-    </tr>
-    @foreach ($kendaraan as $item)
-    <tr>
-        <td>{{ ucfirst($item->jenis_kendaraan) }}</td>
-        <td>{{ $item->total }}</td>
-    </tr>
-    @endforeach
-</table>
-
-<hr>
-
-<h4>Breakdown Metode Pembayaran</h4>
-<table border="1" cellpadding="5">
-    <tr>
-        <th>Metode</th>
-        <th>Jumlah Transaksi</th>
-        <th>Total</th>
-    </tr>
-    @foreach ($metodeBayar as $item)
-    <tr>
-        <td>{{ $item->metode_bayar ?? '-' }}</td>
-        <td>{{ $item->total }}</td>
-        <td>Rp {{ number_format($item->nominal) }}</td>
-    </tr>
-    @endforeach
-</table>
+    <div class="card">
+        <div class="card-body">
+            <h5>Breakdown Metode Pembayaran</h5>
+            <table class="table table-bordered table-sm">
+                <thead class="table-light">
+                    <tr>
+                        <th>Metode</th>
+                        <th>Jumlah Transaksi</th>
+                        <th>Total Nominal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($metodeBayar as $item)
+                        <tr>
+                            <td>{{ ucfirst($item->metode_bayar ?? '-') }}</td>
+                            <td>{{ $item->total }}</td>
+                            <td>Rp {{ number_format($item->nominal) }}</td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="3" class="text-center">Tidak ada data</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 @endsection

@@ -7,6 +7,7 @@ use App\Models\TransaksiParkir;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class LaporanRentangController extends Controller
 {
@@ -61,13 +62,44 @@ class LaporanRentangController extends Controller
             ->groupBy('metode_bayar')
             ->get();
 
+        $transaksi = TransaksiParkir::with(['dataKendaraan.tipe_kendaraan', 'area'])
+            ->whereBetween('waktu_keluar', [$mulai, $akhir])
+            ->where('status_parkir', TransaksiParkir::STATUS_OUT)
+            ->orderBy('waktu_keluar', 'asc')
+            ->get();
+
         return view('laporan.rentang.index', compact(
             'mulai',
             'akhir',
             'totalTransaksi',
             'totalPendapatan',
             'kendaraan',
-            'metodeBayar'
+            'metodeBayar',
+            'transaksi'
         ));
+    }
+
+    public function rentangPdf(Request $request)
+    {
+        $mulai = Carbon::parse($request->tanggal_mulai)->startOfDay();
+        $akhir = Carbon::parse($request->tanggal_akhir)->endOfDay();
+
+        $transaksi = TransaksiParkir::with(['dataKendaraan.tipe_kendaraan', 'area'])
+            ->whereBetween('waktu_keluar', [$mulai, $akhir])
+            ->where('status_parkir', TransaksiParkir::STATUS_OUT)
+            ->get();
+
+        $totalTransaksi = $transaksi->count();
+        $totalPendapatan = $transaksi->sum('total_biaya');
+
+        $pdf = Pdf::loadView('laporan.rentang.rentang_pdf', compact(
+            'mulai',
+            'akhir',
+            'transaksi',
+            'totalTransaksi',
+            'totalPendapatan'
+        ))->setPaper('A4', 'landscape');
+
+        return $pdf->download('laporan-rentang.pdf');
     }
 }

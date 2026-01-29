@@ -10,22 +10,43 @@
     <label>Tanggal Akhir</label>
     <input type="date" name="tanggal_akhir" required>
 
-    <button type="submit">Tampilkan</button>
+    <button class="btn btn-primary" type="submit">Tampilkan</button>
+    <a href="{{ route('laporan.rentang') }}" class="btn btn-danger">Reset</a>
 </form>
 
-@if(isset($totalTransaksi))
+@if(isset($transaksi))
 <hr>
 
-<p>
-    Periode:
-    <b>{{ $mulai->format('d-m-Y') }}</b>
-    s/d
-    <b>{{ $akhir->format('d-m-Y') }}</b>
-</p>
+<a href="{{ route('laporan.rentang.pdf', request()->query()) }}"
+   class="btn btn-sm btn-success mb-3">
+   Cetak PDF
+</a>
 
-<ul>
-    <li>Total Transaksi: <b>{{ $totalTransaksi }}</b></li>
-    <li>Total Pendapatan: <b>Rp {{ number_format($totalPendapatan) }}</b></li>
-</ul>
+<h4>Detail Transaksi</h4>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>No</th>
+            <th>Tanggal</th>
+            <th>Plat</th>
+            <th>Tipe Kendaraan</th>
+            <th>Metode Bayar</th>
+            <th>Total Biaya</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach ($transaksi as $i => $item)
+        <tr>
+            <td>{{ $i + 1 }}</td>
+            <td>{{ $item->waktu_keluar->format('d-m-Y H:i') }}</td>
+            <td>{{ $item->dataKendaraan->plat_nomor }}</td>
+            <td>{{ $item->dataKendaraan->tipe_kendaraan->nama_tipe }}</td>
+            <td>{{ $item->metode_bayar }}</td>
+            <td>Rp {{ number_format($item->total_biaya) }}</td>
+        </tr>
+        @endforeach
+    </tbody>
+</table>
 @endif
 @endsection

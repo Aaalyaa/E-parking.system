@@ -12,6 +12,12 @@
 }
 
 .sidebar .nav-link.active {
-    background-color: transparent !important;
-    color: #333 !important;
+    background-color: transparent;
+    color: #333;
+}
+
+@media print {
+    .no-print {
+        display: none;
+    }
 }

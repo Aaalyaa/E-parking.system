@@ -7,6 +7,7 @@ use App\Models\TransaksiParkir;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class LaporanHarianController extends Controller
 {
@@ -21,11 +22,11 @@ class LaporanHarianController extends Controller
         $totalPendapatan = (clone $baseQuery)->sum('total_biaya');
 
         $kendaraan = TransaksiParkir::join(
-                'data_kendaraan',
-                'transaksi_parkir.id_data_kendaraan',
-                '=',
-                'data_kendaraan.id'
-            )
+            'data_kendaraan',
+            'transaksi_parkir.id_data_kendaraan',
+            '=',
+            'data_kendaraan.id'
+        )
             ->join(
                 'tipe_kendaraan',
                 'data_kendaraan.id_tipe_kendaraan',
@@ -57,5 +58,40 @@ class LaporanHarianController extends Controller
             'kendaraan',
             'metodeBayar'
         ));
+    }
+
+    public function harianPdf()
+    {
+        $tanggal = now();
+
+        $query = TransaksiParkir::whereDate('waktu_keluar', today())
+            ->where('status_parkir', TransaksiParkir::STATUS_OUT);
+
+        $totalTransaksi = $query->count();
+        $totalPendapatan = $query->sum('total_biaya');
+
+        $kendaraan = TransaksiParkir::join('data_kendaraan', 'transaksi_parkir.id_data_kendaraan', '=', 'data_kendaraan.id')
+            ->join('tipe_kendaraan', 'data_kendaraan.id_tipe_kendaraan', '=', 'tipe_kendaraan.id')
+            ->whereDate('transaksi_parkir.waktu_keluar', today())
+            ->where('transaksi_parkir.status_parkir', TransaksiParkir::STATUS_OUT)
+            ->select('tipe_kendaraan.nama_tipe', DB::raw('COUNT(*) as total'))
+            ->groupBy('tipe_kendaraan.nama_tipe')
+            ->get();
+
+        $metodeBayar = TransaksiParkir::whereDate('waktu_keluar', today())
+            ->where('status_parkir', TransaksiParkir::STATUS_OUT)
+            ->select('metode_bayar', DB::raw('COUNT(*) as total'), DB::raw('SUM(total_biaya) as nominal'))
+            ->groupBy('metode_bayar')
+            ->get();
+
+        $pdf = Pdf::loadView('laporan.harian.harian_pdf', compact(
+            'tanggal',
+            'totalTransaksi',
+            'totalPendapatan',
+            'kendaraan',
+            'metodeBayar'
+        ))->setPaper('A4', 'landscape');
+
+        return $pdf->download('laporan-harian-' . now()->format('d-m-Y') . '.pdf');
     }
 }

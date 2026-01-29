@@ -198,10 +198,16 @@ Route::middleware('auth')->group(function () {
         ->group(function () {
         Route::get('/harian', [LaporanHarianController::class, 'index'])
             ->name('harian');
+        Route::get('/harian/pdf', [LaporanHarianController::class, 'harianPdf'])
+            ->name('harian.pdf');
         Route::get('/rentang', action: [LaporanRentangController::class, 'index'])
             ->name('rentang');
+        Route::get('/rentang/pdf', [LaporanRentangController::class, 'rentangPdf'])
+            ->name('rentang.pdf');
         Route::get('/okupansi', action: [LaporanOkupansiController::class, 'index'])
             ->name('okupansi');
+        Route::get('/okupansi/pdf', [LaporanOkupansiController::class, 'okupansiPdf'])
+            ->name('okupansi.pdf');
     });
 
     Route::get('/transaksi/{id}', [TransaksiParkirController::class, 'strukKeluar'])
