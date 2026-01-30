@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Helpers\LogAktivitas;
 
 class LoginController extends Controller
 {
@@ -30,6 +31,11 @@ class LoginController extends Controller
 
         $peran = Auth::user()->role->peran;
 
+        LogAktivitas::add(
+            'LOGIN',
+            'Login sebagai ' . $peran
+        );
+
         return match ($peran) {
             'admin' => redirect()->intended('/admin/dashboard'),
             'petugas' => redirect()->intended('/petugas/dashboard'),
@@ -40,6 +46,11 @@ class LoginController extends Controller
 
     public function logout(Request $request)
     {
+        LogAktivitas::add(
+            'LOGOUT',
+            'Logout dari sistem'
+        );
+
         Auth::logout();
 
         $request->session()->invalidate();

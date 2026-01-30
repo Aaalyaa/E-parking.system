@@ -7,6 +7,7 @@ use App\Models\Tarif;
 use App\Models\DataKendaraan;
 use App\Models\Area;
 use Illuminate\Http\Request;
+use App\Helpers\LogAktivitas;
 
 class TransaksiParkirController extends Controller
 {
@@ -43,7 +44,7 @@ class TransaksiParkirController extends Controller
         $parkirAktif = TransaksiParkir::where('status_parkir', TransaksiParkir::STATUS_IN)->get();
 
         return view('transaksi.create', compact('dataKendaraan', 'areas', 'parkirAktif'));
-    } 
+    }
 
     public function storeMasuk(Request $request)
     {
@@ -78,6 +79,13 @@ class TransaksiParkirController extends Controller
             'waktu_masuk' => now(),
             'status_parkir' => TransaksiParkir::STATUS_IN,
         ]);
+
+        LogAktivitas::add(
+            'TRANSAKSI_MASUK',
+            'Kendaraan ' . $dataKendaraan->plat_nomor . ' masuk area ' . $area->nama_area,
+            'transaksi_parkir',
+            null
+        );
 
         return back()->with('success', 'Kendaraan masuk dicatat');
     }
@@ -130,6 +138,14 @@ class TransaksiParkirController extends Controller
             'metode_bayar' => $request->metode_bayar,
         ]);
 
+        LogAktivitas::add(
+            'TRANSAKSI_KELUAR',
+            'Kendaraan ' . $transaksi->dataKendaraan->plat_nomor .
+                ' keluar, total Rp ' . number_format($bayarAkhir, 0, ',', '.'),
+            'transaksi_parkir',
+            $transaksi->id
+        );
+
         return redirect()->route('transaksi.struk_keluar', $transaksi->id)
             ->with('success', 'Transaksi selesai');
     }
@@ -141,6 +157,7 @@ class TransaksiParkirController extends Controller
         if ($transaksi->status_parkir !== TransaksiParkir::STATUS_OUT) {
             return back()->with('error', 'Transaksi belum selesai!');
         }
+
         return view('transaksi.struk_keluar', compact('transaksi'));
     }
 }

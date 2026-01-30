@@ -41,6 +41,11 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    public function log_aktivitas()
+    {
+        return $this->hasMany(LogAktivitas::class, 'id_user');
+    }
+
     public function role()
     {
         return $this->belongsTo(Role::class, 'id_role');
