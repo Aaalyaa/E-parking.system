@@ -1,12 +1,10 @@
 @extends(auth()->user()->layout())
 
 @section('content')
-    <h1>Data Kendaraan</h1>
+    <x-page-header title="Data Kendaraan" :action-route="route('data-kendaraan.create')" action-label="Tambah Kendaraan" />
 
-    <a href="{{ route('data-kendaraan.create') }}" class="btn btn-primary">Tambah Data Kendaraan</a>
-
-    <table border="1">
-        <thead>
+    <x-table.wrapper>
+        <x-table.thead>
             <tr>
                 <th>Plat Nomor</th>
                 <th>Pemilik</th>
@@ -14,7 +12,7 @@
                 <th>Status Membership</th>
                 <th>Aksi</th>
             </tr>
-        </thead>
+        </x-table.thead>
         <tbody>
             @foreach ($dataKendaraan as $kendaraan)
                 <tr>
@@ -27,16 +25,19 @@
                         </span>
                     </td>
                     <td>
-                        <a href="{{ route('data-kendaraan.edit', $kendaraan->id) }}" class="btn btn-warning">Edit</a>
-                        <form action="{{ route('data-kendaraan.destroy', $kendaraan->id) }}" method="POST"
-                            style="display:inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger">Hapus</button>
-                        </form>
+                        <x-table.action>
+                            <a href="{{ route('data-kendaraan.edit', $kendaraan->id) }}"
+                                class="btn btn-warning btn-sm">Edit</a>
+                            <form action="{{ route('data-kendaraan.destroy', $kendaraan->id) }}" method="POST"
+                                style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
+                            </form>
+                        </x-table.action>
                     </td>
                 </tr>
             @endforeach
         </tbody>
-    </table>
+    </x-table.wrapper>
 @endsection

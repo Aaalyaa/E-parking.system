@@ -34,7 +34,9 @@ class TransaksiParkirController extends Controller
             ->paginate(10)
             ->withQueryString();
 
-        return view('transaksi.index', compact('transaksis'));
+        return view('transaksi.index', compact('transaksis'), [
+            'canCreate' => auth()->user()->role->peran === 'petugas',
+        ]);
     }
 
     public function create()

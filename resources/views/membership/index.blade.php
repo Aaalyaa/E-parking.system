@@ -1,12 +1,10 @@
 @extends(auth()->user()->layout())
 
 @section('content')
-        <h1>Data Member</h1>
+    <x-page-header title="Data Membership" :action-route="route('membership.create')" action-label="Tambah Membership" />
 
-        <a href="{{ route('membership.create') }}" class="btn btn-primary">Tambah Member</a>
-        
-        <table border="1">
-            <thead>
+    <x-table.wrapper>
+        <x-table.thead>
                 <tr>
                     <th>Plat Nomor</th>
                     <th>Tipe Member</th>
@@ -14,7 +12,7 @@
                     <th>Tanggal Kadaluarsa</th>
                     <th>Aksi</th>
                 </tr>
-            </thead>
+            </x-table.thead>
             <tbody>
                 @foreach ($members as $member)
                     <tr>
@@ -23,14 +21,16 @@
                         <td>{{ $member->tanggal_bergabung }}</td>
                         <td>{{ $member->tanggal_kadaluarsa }}</td>
                         <td>
+                            <x-table.action>
                             <form action="{{ route('membership.destroy', $member) }}" method="POST" style="display:inline;">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger">Hapus</button>
+                                <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
                             </form>
+                            </x-table.action>
                         </td>
                     </tr>
                 @endforeach
             </tbody>
-        </table>
+        </x-table.wrapper>
 @endsection

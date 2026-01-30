@@ -11,7 +11,7 @@
                     <li><a class="nav-link" href="{{ route('area-kapasitas.index') }}">Kapasitas</a></li>
                     <li><a class="nav-link" href="{{ route('tipe-kendaraan.index') }}">Tipe Kendaraan</a></li>
                     <li><a class="nav-link" href="{{ route('tipe-member.index') }}">Tipe Member</a></li>
-                    <li><a class="nav-link" href="{{ route('tarif.index') }}">Tarif</a></li>
+                    <li><a class="nav-link" href="{{ route('tarif.index') }}">Tipe Tarif</a></li>
                     <li><a class="nav-link" href="{{ route(name: 'data-kendaraan.index') }}">Data Kendaraan</a></li>
 
                 <li class="mt-3 fw-bold text-muted small">TRANSAKSI</li>
