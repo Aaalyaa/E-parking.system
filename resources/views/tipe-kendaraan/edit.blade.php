@@ -1,25 +1,20 @@
 @extends(auth()->user()->layout())
 
 @section('content')
-        <h1>Sunting Tipe Kendaraan</h1>
-
-        <a href="{{ route('tipe-kendaraan.index') }}">Kembali</a>
-
+    <x-page.form title="Edit Tipe Kendaraan">
+        
         <form action="{{ route('tipe-kendaraan.update', $tipeKendaraan) }}" method="POST">
             @csrf
             @method('PUT')
-            <div class="form-group">
-                <label for="kode_tipe">Kode Tipe</label>
-                <input type="text" name="kode_tipe" id="kode_tipe" class="form-control" value="{{ $tipeKendaraan->kode_tipe }}" required>
-            </div>
-            <div class="form-group">
-                <label for="nama_tipe">Nama Tipe</label>
-                <input type="text" name="nama_tipe" id="nama_tipe" class="form-control" value="{{ $tipeKendaraan->nama_tipe }}" required>
-            </div>
-            <div class="form-group">
-                <label for="deskripsi">Deskripsi</label>
-                <textarea name="deskripsi" id="deskripsi" class="form-control">{{ $tipeKendaraan->deskripsi }}</textarea>
-            </div>
-            <button type="submit" class="btn btn-primary">Update</button>
+            <x-form.input name="kode_tipe" label="Kode Tipe" :value="$tipeKendaraan->kode_tipe" required />
+
+            <x-form.input name="nama_tipe" label="Nama Tipe" :value="$tipeKendaraan->nama_tipe" required />
+
+            <x-form.textarea name="deskripsi" label="Deskripsi" :value="$tipeKendaraan->deskripsi" rows="4"
+                hint="Opsional. Jelaskan tipe kendaraan secara singkat." />
+
+            <x-form-action :cancel-route="route('tipe-kendaraan.index')" />
         </form>
+
+    </x-page.form>
 @endsection

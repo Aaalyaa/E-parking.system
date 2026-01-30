@@ -2,6 +2,7 @@
 
 @section('content')
     <div class="container-fluid">
+
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h4 class="fw-bold mb-0">Area</h4>
             <a href="{{ route('area.create') }}" class="btn btn-primary">Tambah Area Parkir</a>
@@ -11,7 +12,7 @@
             <div class="card-body p-0">
 
                 <table class="table table-striped table-hover mb-0">
-                    <thead class="table-light">
+                    <thead class="table-dark">
                         <tr>
                             <th>Nama Area</th>
                             <th>Lokasi</th>
@@ -45,7 +46,9 @@
                         @endforeach
                     </tbody>
                 </table>
+
             </div>
         </div>
+
     </div>
 @endsection

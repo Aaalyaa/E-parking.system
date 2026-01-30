@@ -1,33 +1,20 @@
 @extends(auth()->user()->layout())
 
 @section('content')
-        <h1>Sunting Data Kendaraan</h1>
-
-        <a href="{{ route('data-kendaraan.index') }}">Kembali</a>
+    <x-page.form title="Edit Data Kendaraan">
 
         <form action="{{ route('data-kendaraan.update', $dataKendaraan) }}" method="POST">
             @csrf
             @method('PUT')
-            <div class="form-group">
-                <label for="plat_nomor">Plat Nomor</label>
-                <input type="text" name="plat_nomor" id="plat_nomor" class="form-control" value="{{ $dataKendaraan->plat_nomor }}" required>
-            </div>
+            <x-form.input name="plat_nomor" label="Plat Kendaraan" :value="$dataKendaraan->plat_nomor" required />
 
-            <div class="form-group">
-                <label for="pemilik">Pemilik</label>
-                <input type="text" name="pemilik" id="pemilik" class="form-control" value="{{ $dataKendaraan->pemilik }}">
-            </div>
+            <x-form.input name="pemilik" label="Pemilik Kendaraan" :value="$dataKendaraan->pemilik" required />
 
-            <div class="form-group">
-                <label for="id_tipe_kendaraan">Tipe Kendaraan</label>
-                <select name="id_tipe_kendaraan" id="id_tipe_kendaraan" class="form-control" required>
-                    <option value="">Pilih Tipe Kendaraan</option>
-                    @foreach ($tipeKendaraans as $tipe)
-                        <option value="{{ $tipe->id }}" {{ $dataKendaraan->id_tipe_kendaraan == $tipe->id ? 'selected' : '' }}>{{ $tipe->nama_tipe }}</option>
-                    @endforeach
-                </select>
-            </div>
+            <x-form.select name="id_tipe_kendaraan" label="Tipe Kendaraan" :options="$tipeKendaraans->pluck('nama_tipe', 'id')" :value="$dataKendaraan->id_tipe_kendaraan"
+                placeholder="Pilih Tipe Kendaraan" />
 
-            <button type="submit" class="btn btn-primary">Update</button>
+            <x-form-action :cancel-route="route('data-kendaraan.index')" />
         </form>
+
+    </x-page.form>
 @endsection

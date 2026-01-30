@@ -4,7 +4,7 @@
     <div class="container-fluid">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <div>
-                <h3 class="mb-0">Laporan Occupancy Parkir</h3>
+                <h3 class="mb-0">Laporan Okupansi Parkir</h3>
                 <p class="text-muted">Tanggal: {{ $tanggal->format('d-m-Y') }}</p>
             </div>
 

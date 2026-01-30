@@ -1,30 +1,19 @@
 @extends(auth()->user()->layout())
 
 @section('content')
-<h2>Tambah Akun Pengguna</h2>
+    <x-page.form title="Tambah Akun Pengguna">
 
-<a href="{{ route('users.index') }}">Kembali</a>
+        <form action="{{ route('users.store') }}" method="POST">
+            @csrf
+            <x-form.input name="username" label="Username" required />
 
-<form action="{{ route('users.store') }}" method="POST">
-    @csrf
-    <div>
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required>
-    </div>
-    <div>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
-    </div>
-    <div>
-        <label for="id_role">Peran:</label>
-        <select id="id_role" name="id_role" required>
-            <option value="">-- Pilih Peran --</option>
-            @foreach($roles as $role)
-                <option value="{{ $role->id }}">{{ $role->peran }}</option>
-            @endforeach
-        </select>
-    </div>
-    <button type="submit">Simpan</button>
-</form>
+            <x-form.input name="password" label="Password" required />
 
+            <x-form.select name="id_role" label="Peran" :options="$roles->pluck('peran', 'id')"
+                placeholder="Pilih Peran" required />
+
+            <x-form-action :cancel-route="route('users.index')" />
+        </form>
+
+    </x-page.form>
 @endsection

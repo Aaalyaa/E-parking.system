@@ -1,46 +1,18 @@
 @extends(auth()->user()->layout())
 
 @section('content')
-    <div class="container-fluid">
-        <div class="mb-3">
-            <h4 class="fw-bold">Tambah Area Parkir</h4>
-        </div>
+    <x-page.form title="Tambah Area Parkir">
 
-        <div class="card shadow-sm col-md-6">
-            <div class="card-body">
-                <form action="{{ route('area.store') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    <div class="mb-3">
-                        <label class="form-label">Nama Area</label>
-                        <input type="text" name="nama_area" id="nama_area" class="form-control" required>
-                    </div>
+        <form action="{{ route('area.store') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <x-form.input name="nama_area" label="Nama Area" required />
 
-                    <div class="mb-3">
-                        <label class="form-label">Lokasi</label>
-                        <select name="id_lokasi_area" id="id_lokasi_area" class="form-control" required>
-                            <option value="">Pilih Lokasi</option>
-                            @foreach ($lokasi_areas as $lokasi_area)
-                                <option value="{{ $lokasi_area->id }}">{{ $lokasi_area->lokasi_area }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+            <x-form.select name="id_lokasi_area" label="Lokasi Area" :options="$lokasi_areas->pluck('lokasi_area', 'id')" placeholder="Pilih Lokasi" required />
 
-                    <div class="mb-3">
-                        <label class="form-label">Foto</label>
-                        <input type="file" name="foto" id="foto" class="form-control">
-                    </div>
+            <x-form.file name="foto" label="Foto Area" />
 
-                    <div class="d-flex gap-2">
-                        <button type="submit" class="btn btn-primary">
-                            Simpan
-                        </button>
-
-                        <a href="{{ route('area.index') }}" class="btn btn-secondary">
-                            Batal
-                        </a>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+            <x-form-action :cancel-route="route('area.index')" />
+        </form>
+        
+    </x-page.form>
 @endsection

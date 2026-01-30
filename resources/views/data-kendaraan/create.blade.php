@@ -1,32 +1,19 @@
 @extends(auth()->user()->layout())
 
 @section('content')
-        <h1>Tambah Data Kendaraan</h1>
-
-        <a href="{{ route('data-kendaraan.index') }}">Kembali</a>
+    <x-page.form title="Tambah Data Kendaraan">
 
         <form action="{{ route('data-kendaraan.store') }}" method="POST">
             @csrf
-            <div class="form-group">
-                <label for="plat_nomor">Plat Nomor</label>
-                <input type="text" name="plat_nomor" id="plat_nomor" class="form-control" required>
-            </div>
+            <x-form.input name="plat_nomor" label="Plat Kendaraan" required />
 
-            <div class="form-group">
-                <label for="pemilik">Pemilik</label>
-                <input type="text" name="pemilik" id="pemilik" class="form-control">
-            </div>
+            <x-form.input name="pemilik" label="Pemilik Kendaraan" />
 
-            <div class="form-group">
-                <label for="id_tipe_kendaraan">Tipe Kendaraan</label>
-                <select name="id_tipe_kendaraan" id="id_tipe_kendaraan" class="form-control" required>
-                    <option value="">Pilih Tipe Kendaraan</option>
-                    @foreach ($tipeKendaraans as $tipe)
-                        <option value="{{ $tipe->id }}">{{ $tipe->nama_tipe }}</option>
-                    @endforeach
-                </select>
-            </div>
-            
-            <button type="submit" class="btn btn-primary">Simpan</button>
+            <x-form.select name="id_tipe_kendaraan" label="Tipe Kendaraan" :options="$tipeKendaraans->pluck('nama_tipe', 'id')"
+                placeholder="Pilih Tipe Kendaraan" required />
+
+            <x-form-action :cancel-route="route('data-kendaraan.index')" />
         </form>
+
+    </x-page.form>
 @endsection

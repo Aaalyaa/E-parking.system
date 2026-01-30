@@ -1,7 +1,7 @@
 @extends(auth()->user()->layout())
 
 @section('content')
-        <h1>Data Kendaraan</h1>
+        <h1>Tarif Dasar</h1>
 
         <a href="{{ route('tarif.create') }}" class="btn btn-primary">Tambah Tarif</a>
 

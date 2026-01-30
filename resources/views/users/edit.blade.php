@@ -1,26 +1,18 @@
 @extends(auth()->user()->layout())
 
 @section('content')
-<h2>Sunting Akun Pengguna</h2>
+    <x-page.form title="Edit Akun Pengguna">
 
-<a href="{{ route('users.index') }}">Kembali</a>
+        <form action="{{ route('users.update', $user) }}" method="POST">
+            @method('PUT')
+            @csrf
+            <x-form.input name="username" label="Username" :value="$user->username" required />
 
-<form action="{{ route('users.update', $user) }}" method="POST">
-    @method("PUT")
-    @csrf
-    <div>
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" value="{{ $user->username }}" required>
-    </div>
-    <div>
-        <label for="id_role">Peran:</label>
-        <select id="id_role" name="id_role" required>
-            @foreach($roles as $role)
-                <option value="{{ $role->id }}">{{ $role->peran }}</option>
-            @endforeach
-        </select>
-    </div>
-    <button type="submit">Simpan</button>
-</form>
+            <x-form.select name="id_role" label="Peran" :options="$roles->pluck('peran', 'id')" placeholder="Pilih Peran" :value="$user->id_role"
+                required />
 
+            <x-form-action :cancel-route="route('users.index')" />
+        </form>
+
+    </x-page.form>
 @endsection
