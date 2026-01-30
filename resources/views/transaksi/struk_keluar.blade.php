@@ -58,15 +58,26 @@ Operator    : {{ auth()->user()->username }}
 @endsection
 @push('scripts')
     <script>
+        let sudahLog = false;
+
         function printStruk() {
             const printContent = document.getElementById('print-area').innerHTML;
             const originalContent = document.body.innerHTML;
 
+            if (!sudahLog) {
+                fetch("{{ route('transaksi.log_cetak', $transaksi->id) }}", {
+                    method: "POST",
+                    headers: {
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                        "Content-Type": "application/json"
+                    }
+                });
+                sudahLog = true;
+            }
+
             document.body.innerHTML = printContent;
             window.print();
             document.body.innerHTML = originalContent;
-
-            location.reload();
         }
     </script>
 @endpush

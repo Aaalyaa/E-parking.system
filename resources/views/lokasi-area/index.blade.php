@@ -11,7 +11,7 @@
             <div class="card-body p-0">
 
                 <table class="table table-striped table-hover mb-0">
-                    <thead class="table-light">
+                    <thead class="table-dark">
                         <tr>
                             <th>Nama Lokasi Area</th>
                             <th width="150">Aksi</th>

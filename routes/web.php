@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Helpers\LogAktivitas;
+use App\Models\TransaksiParkir;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ProfileController;
 use App\Http\Controllers\Laporan\LaporanHarianController;
@@ -17,7 +19,7 @@ use App\Http\Controllers\MemberController;
 use App\Http\Controllers\TransaksiParkirController;
 use App\Http\Controllers\TrackingKendaraanController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\RoleController;
+use App\Http\Controllers\LogAktivitasController;
 
 
 /*
@@ -166,6 +168,9 @@ Route::middleware('auth')->group(function () {
             ->name('users.update');
         Route::delete('/users/{user}', [UserController::class, 'destroy'])
             ->name('users.destroy');
+
+        Route::get('/log-aktivitas', [LogAktivitasController::class, 'index'])
+            ->name('log-aktivitas.index');
     });
 
     Route::middleware('role:petugas')->group(function () {
@@ -196,20 +201,32 @@ Route::middleware('auth')->group(function () {
         ->prefix('laporan')
         ->name('laporan.')
         ->group(function () {
-        Route::get('/harian', [LaporanHarianController::class, 'index'])
-            ->name('harian');
-        Route::get('/harian/pdf', [LaporanHarianController::class, 'harianPdf'])
-            ->name('harian.pdf');
-        Route::get('/rentang', action: [LaporanRentangController::class, 'index'])
-            ->name('rentang');
-        Route::get('/rentang/pdf', [LaporanRentangController::class, 'rentangPdf'])
-            ->name('rentang.pdf');
-        Route::get('/okupansi', action: [LaporanOkupansiController::class, 'index'])
-            ->name('okupansi');
-        Route::get('/okupansi/pdf', [LaporanOkupansiController::class, 'okupansiPdf'])
-            ->name('okupansi.pdf');
-    });
+            Route::get('/harian', [LaporanHarianController::class, 'index'])
+                ->name('harian');
+            Route::get('/harian/pdf', [LaporanHarianController::class, 'harianPdf'])
+                ->name('harian.pdf');
+            Route::get('/rentang', action: [LaporanRentangController::class, 'index'])
+                ->name('rentang');
+            Route::get('/rentang/pdf', [LaporanRentangController::class, 'rentangPdf'])
+                ->name('rentang.pdf');
+            Route::get('/okupansi', action: [LaporanOkupansiController::class, 'index'])
+                ->name('okupansi');
+            Route::get('/okupansi/pdf', [LaporanOkupansiController::class, 'okupansiPdf'])
+                ->name('okupansi.pdf');
+        });
 
     Route::get('/transaksi/{id}', [TransaksiParkirController::class, 'strukKeluar'])
         ->name('transaksi.struk_keluar');
+    Route::post('/transaksi/{id}/log-cetak', function ($id) {
+        $transaksi = TransaksiParkir::findOrFail($id);
+
+        LogAktivitas::add(
+            'CETAK_STRUK',
+            'Cetak struk transaksi ' . $transaksi->kode,
+            'transaksi_parkir',
+            $transaksi->id
+        );
+
+        return response()->json(['status' => 'ok']);
+    })->name('transaksi.log_cetak');
 });
