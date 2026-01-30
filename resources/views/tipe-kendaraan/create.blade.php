@@ -10,7 +10,7 @@
             <x-form.input name="nama_tipe" label="Nama Tipe" required />
 
             <x-form.textarea name="deskripsi" label="Deskripsi Area" rows="4"
-                hint="Opsional. Jelaskan area parkir secara singkat." />
+                hint="Opsional. Jelaskan tipe kendaraan secara singkat." />
 
             <x-form-action :cancel-route="route('tipe-kendaraan.index')" />
         </form>

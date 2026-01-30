@@ -1,38 +1,22 @@
 @extends(auth()->user()->layout())
 
 @section('content')
-        <h1>Sunting Data Kendaraan</h1>
-
-        <a href="{{ route('tarif.index') }}">Kembali</a>
+    <x-page.form title="Edit Tipe Tarif Dasar">
 
         <form action="{{ route('tarif.update', $tarif) }}" method="POST">
             @csrf
             @method('PUT')
-            <div class="form-group">
-                <label for="id_tipe_kendaraan">Tipe Kendaraan</label>
-                <select name="id_tipe_kendaraan" id="id_tipe_kendaraan" class="form-control" required>
-                    <option value="">Pilih Tipe Kendaraan</option>
-                    @foreach ($tipeKendaraans as $tipe)
-                        <option value="{{ $tipe->id }}" {{ $tarif->id_tipe_kendaraan == $tipe->id ? 'selected' : '' }}>{{ $tipe->nama_tipe }}</option>
-                    @endforeach
-                </select>
-            </div>
+            <x-form.select name="id_tipe_kendaraan" label="Tipe Kendaraan" :options="$tipeKendaraans->pluck('nama_tipe', 'id')" :value="$tarif->id_tipe_kendaraan"
+                placeholder="Pilih Tipe Kendaraan" required />
 
-            <div class="form-group">
-                <label for="durasi_minimal">Durasi Minimal (jam)</label>
-                <input type="number" name="durasi_minimal" id="durasi_minimal" class="form-control" value="{{ $tarif->durasi_minimal }}" required>
-            </div>
+            <x-form.input type="number" name="durasi_minimal" label="Durasi Minimal (jam)" :value="$tarif->durasi_minimal" required />
 
-            <div class="form-group">
-                <label for="durasi_maksimal">Durasi Maksimal (jam)</label>
-                <input type="number" name="durasi_maksimal" id="durasi_maksimal" class="form-control" value="{{ $tarif->durasi_maksimal }}" required>
-            </div>
+            <x-form.input type="number" name="durasi_maksimal" label="Durasi Maksimal (jam)" :value="$tarif->durasi_maksimal" required />
 
-            <div class="form-group">
-                <label for="harga">Harga</label>
-                <input type="number" name="harga" id="harga" class="form-control" value="{{ $tarif->harga }}" required>
-            </div>
+            <x-form.input type="number" name="harga" label="Harga" :value="$tarif->harga" required />
 
-            <button type="submit" class="btn btn-primary">Simpan</button>
+            <x-form-action :cancel-route="route('tarif.index')" />
         </form>
+
+    </x-page.form>
 @endsection

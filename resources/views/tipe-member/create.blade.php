@@ -1,10 +1,10 @@
 @extends(auth()->user()->layout())
 
 @section('content')
-    <x-page.form title="Tambah Tipe Member">
+    <x-page.form title="Tambah Tipe Membership">
                 <form action="{{ route('tipe-member.store') }}" method="POST">
                     @csrf
-                    <x-form.input name="tipe_member" label="Tipe Member" required />
+                    <x-form.input name="tipe_member" label="Tipe" required />
 
                     <x-form.input type="number" name="masa_berlaku_bulanan" label="Masa Berlaku (Bulan)" required />
 

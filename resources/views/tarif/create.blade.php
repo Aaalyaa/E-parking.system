@@ -1,7 +1,7 @@
 @extends(auth()->user()->layout())
 
 @section('content')
-    <x-page.form title="Tambah Tarif Dasar">
+    <x-page.form title="Tambah Tipe Tarif Dasar">
 
         <form action="{{ route('tarif.store') }}" method="POST">
             @csrf
