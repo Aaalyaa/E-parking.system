@@ -80,8 +80,6 @@ Route::middleware('auth')->group(function () {
         Route::delete('/lokasi-area/{lokasiArea}', [LokasiAreaController::class, 'destroy'])
             ->name('lokasi-area.destroy');
 
-        Route::get('/area/by-lokasi/{id}', [AreaController::class, 'getByLokasi'])
-            ->name('area.byLokasi');
         Route::get('/area', [AreaController::class, 'index'])
             ->name('area.index');
         Route::get('/area/create', [AreaController::class, 'create'])
@@ -178,10 +176,12 @@ Route::middleware('auth')->group(function () {
             return view('petugas.dashboard');
         })->name('petugas.dashboard');
 
-        Route::get('/transaksi/create', [TransaksiParkirController::class, 'create'])
-            ->name('transaksi.create');
+        Route::get('/transaksi/masuk', [TransaksiParkirController::class, 'createMasuk'])
+            ->name('transaksi.masuk.create');
         Route::post('/transaksi/masuk', [TransaksiParkirController::class, 'storeMasuk'])
             ->name('transaksi.masuk');
+        Route::get('/transaksi/keluar', [TransaksiParkirController::class, 'createKeluar'])
+            ->name('transaksi.keluar.create');
         Route::post('/transaksi/keluar/{id}', [TransaksiParkirController::class, 'storeKeluar'])
             ->name('transaksi.keluar');
     });
@@ -195,6 +195,8 @@ Route::middleware('auth')->group(function () {
     Route::middleware('role:admin|petugas')->group(function () {
         Route::get('/tracking', [TrackingKendaraanController::class, 'index'])
             ->name('tracking.index');
+        
+        Route::get('/api/area/by-lokasi/{id}', [AreaController::class, 'getByLokasi']);
     });
 
     Route::middleware(['auth', 'role:admin|owner'])

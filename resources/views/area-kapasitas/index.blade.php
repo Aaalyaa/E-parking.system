@@ -1,7 +1,7 @@
 @extends(auth()->user()->layout())
 
 @section('content')
-    <x-page-header title="Area Parkir" :action-route="route('area.create')" action-label="Tambah Kapasitas Area" />
+    <x-page-header title="Kapasitas Area Parkir" :action-route="$canCreate ? route('area-kapasitas.create') : null" action-label="Tambah Kapasitas Area" />
 
     <x-table.wrapper>
         <x-table.thead>

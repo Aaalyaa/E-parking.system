@@ -31,7 +31,7 @@
             areaSelect.disabled = true;
 
             if (lokasiId) {
-                fetch(`/area/by-lokasi/${lokasiId}`)
+                fetch(`/api/area/by-lokasi/${lokasiId}`)
                     .then(response => response.json())
                     .then(data => {
                         data.forEach(area => {

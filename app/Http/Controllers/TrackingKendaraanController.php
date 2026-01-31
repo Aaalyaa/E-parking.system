@@ -9,12 +9,23 @@ use Illuminate\Http\Request;
 
 class TrackingKendaraanController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $dataKendaraan = DataKendaraan::with('tipe_kendaraan')->get();
-        $areas = Area::with('lokasiArea')->get();
-        $parkirAktif = TransaksiParkir::where('status_parkir', TransaksiParkir::STATUS_IN)->get();
+        $query = TransaksiParkir::with([
+            'dataKendaraan.tipe_kendaraan',
+            'area.lokasiArea'
+        ])->where('status_parkir', TransaksiParkir::STATUS_IN);
 
-        return view('tracking.index', compact('dataKendaraan', 'areas', 'parkirAktif'));
-    } 
+        if ($request->filled('plat')) {
+            $query->whereHas('dataKendaraan', function ($q) use ($request) {
+                $q->where('plat_nomor', 'like', '%' . $request->plat . '%');
+            });
+        }
+
+        $parkirAktif = $query->get();
+
+        return view('tracking.index', compact('parkirAktif'), [
+            'canCreate' => auth()->user()->role->peran === 'petugas',
+        ]);
+    }
 }

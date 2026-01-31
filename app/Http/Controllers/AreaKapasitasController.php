@@ -14,15 +14,17 @@ class AreaKapasitasController extends Controller
     public function index()
     {
         $kapasitasAreas = KapasitasArea::with(['lokasiArea', 'area', 'tipeKendaraan'])->get();
-        return view('area-kapasitas.index', compact('kapasitasAreas'));
+        return view('area-kapasitas.index', compact('kapasitasAreas'), [
+            'canCreate' => auth()->user()->role->peran === 'admin',
+        ]);
     }
 
     public function create()
-    {        
+    {
         $lokasiAreas = LokasiArea::all();
         $areas = Area::all();
         $tipeKendaraans = TipeKendaraan::all();
-        return view('area-kapasitas.create', compact('lokasiAreas','areas', 'tipeKendaraans'));
+        return view('area-kapasitas.create', compact('lokasiAreas', 'areas', 'tipeKendaraans'));
     }
 
     public function store(Request $request)
@@ -44,7 +46,7 @@ class AreaKapasitasController extends Controller
         $lokasiAreas = LokasiArea::all();
         $areas = Area::all();
         $tipeKendaraans = TipeKendaraan::all();
-        return view('area-kapasitas.edit', compact('lokasiAreas','kapasitasArea', 'areas', 'tipeKendaraans'));
+        return view('area-kapasitas.edit', compact('lokasiAreas', 'kapasitasArea', 'areas', 'tipeKendaraans'));
     }
 
     public function update(Request $request, KapasitasArea $kapasitasArea)

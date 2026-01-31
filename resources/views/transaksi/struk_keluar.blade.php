@@ -48,8 +48,8 @@ Operator    : {{ auth()->user()->username }}
                     Cetak Struk
                 </button>
 
-                <a href="{{ route('transaksi.index') }}" class="btn btn-secondary">
-                    Kembali
+                <a href="{{ route('transaksi.index') }}" class="btn btn-success">
+                    Lihat Histori
                 </a>
             </div>
 

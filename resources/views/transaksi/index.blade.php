@@ -1,7 +1,7 @@
 @extends(auth()->user()->layout())
 
 @section('content')
-    <x-page-header title="Histori Transaksi Parkir" :action-route="$canCreate ? route('transaksi.create') : null" action-label="Buat Transaksi Baru" />
+    <x-page-header title="Histori Transaksi Parkir" :action-route="$canCreate ? route('transaksi.masuk.create') : null" action-label="Buat Transaksi Masuk" />
 
     <x-page.filter>
         <form method="GET" action="{{ route('transaksi.index') }}" class="row g-2 align-items-end">
@@ -13,7 +13,8 @@
 
             <div class="col-md-3">
                 <label class="form-label">Plat Nomor</label>
-                <input type="text" name="plat" class="form-control" value="{{ request('plat') }}">
+                <input type="text" name="plat" class="form-control" 
+                    value="{{ request('plat') }}" placeholder="Contoh: L 1234 AB">
             </div>
 
             <div class="col-md-6 d-flex gap-2">

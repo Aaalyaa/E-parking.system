@@ -8,6 +8,7 @@ use App\Models\DataKendaraan;
 use App\Models\Area;
 use Illuminate\Http\Request;
 use App\Helpers\LogAktivitas;
+use App\Models\LokasiArea;
 
 class TransaksiParkirController extends Controller
 {
@@ -39,13 +40,22 @@ class TransaksiParkirController extends Controller
         ]);
     }
 
-    public function create()
+    public function createMasuk()
     {
         $dataKendaraan = DataKendaraan::with('tipe_kendaraan')->get();
-        $areas = Area::with('lokasiArea')->get();
-        $parkirAktif = TransaksiParkir::where('status_parkir', TransaksiParkir::STATUS_IN)->get();
+        $areas = Area::all();
+        $lokasiAreas= LokasiArea::all();
 
-        return view('transaksi.create', compact('dataKendaraan', 'areas', 'parkirAktif'));
+        return view('transaksi.masuk.create', compact('dataKendaraan', 'areas', 'lokasiAreas'));
+    }
+
+    public function createKeluar()
+    {
+        $parkirAktif = TransaksiParkir::with(['dataKendaraan', 'area'])
+            ->where('status_parkir', TransaksiParkir::STATUS_IN)
+            ->get();
+
+        return view('transaksi.keluar.create', compact('parkirAktif'));
     }
 
     public function storeMasuk(Request $request)
@@ -89,7 +99,8 @@ class TransaksiParkirController extends Controller
             null
         );
 
-        return back()->with('success', 'Kendaraan masuk dicatat');
+        return redirect()->route('tracking.index')
+                ->with('success', 'Kendaraan masuk dicatat');
     }
 
     public function storeKeluar(Request $request, $id)
