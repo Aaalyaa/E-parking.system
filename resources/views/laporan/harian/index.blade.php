@@ -1,22 +1,13 @@
 @extends(auth()->user()->layout())
 
 @section('content')
-<div class="container-fluid">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <div>
-            <h3 class="mb-0">Laporan Transaksi Harian</h3>
-            <small class="text-muted">Tanggal: {{ $tanggal->format('d-m-Y') }}</small>
-        </div>
-
-        <a href="{{ route('laporan.harian.pdf') }}"
-           class="btn btn-success">
-            <i class="bi bi-file-earmark-pdf"></i> Cetak PDF
-        </a>
-    </div>
+    <x-page-header title="Laporan Transaksi" :subtitle="'Tanggal: ' . $tanggal->format('d-m-Y')" 
+        :action-route="route('laporan.harian.pdf')" action-label="Cetak PDF" 
+        action-class="btn-success" />
 
     <div class="card mb-3">
         <div class="card-body">
-            <h5>Ringkasan</h5>
+            <h5 class="fw-bold">Ringkasan</h5>
             <ul class="mb-0">
                 <li>Total Transaksi: <b>{{ $totalTransaksi }}</b></li>
                 <li>Total Pendapatan: <b>Rp {{ number_format($totalPendapatan) }}</b></li>
@@ -26,9 +17,9 @@
 
     <div class="card mb-3">
         <div class="card-body">
-            <h5>Breakdown Tipe Kendaraan</h5>
+            <h5 class="fw-bold">Breakdown Tipe Kendaraan</h5>
             <table class="table table-bordered table-sm">
-                <thead class="table-light">
+                <thead class="table-dark">
                     <tr>
                         <th>Tipe Kendaraan</th>
                         <th>Jumlah</th>
@@ -52,9 +43,9 @@
 
     <div class="card">
         <div class="card-body">
-            <h5>Breakdown Metode Pembayaran</h5>
+            <h5 class="fw-bold">Breakdown Metode Pembayaran</h5>
             <table class="table table-bordered table-sm">
-                <thead class="table-light">
+                <thead class="table-dark">
                     <tr>
                         <th>Metode</th>
                         <th>Jumlah Transaksi</th>
@@ -77,5 +68,4 @@
             </table>
         </div>
     </div>
-</div>
 @endsection

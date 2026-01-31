@@ -1,8 +1,9 @@
 @extends(auth()->user()->layout())
 
 @section('content')
-    <x-page-header title="Laporan Okupansi Parkir" :action-route="route('laporan.okupansi.pdf')" action-label="Cetak PDF" action-class="btn-success" />
-    <p class="text-muted">Tanggal: {{ $tanggal->format('d-m-Y') }}</p>
+    <x-page-header title="Laporan Okupansi Parkir" :subtitle="'Tanggal: ' . $tanggal->format('d-m-Y')" 
+        :action-route="route('laporan.okupansi.pdf')" action-label="Cetak PDF" 
+        action-class="btn-success" />
     
     <x-table.wrapper>
         <x-table.thead>
