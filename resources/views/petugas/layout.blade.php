@@ -16,5 +16,21 @@
         </main>
     </div>
     @stack('scripts')
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const sidebar = document.querySelector(".sidebar");
+
+            if (!sidebar) return;
+
+            const savedScroll = localStorage.getItem("sidebar-scroll");
+            if (savedScroll) {
+                sidebar.scrollTop = savedScroll;
+            }
+
+            sidebar.addEventListener("scroll", function() {
+                localStorage.setItem("sidebar-scroll", sidebar.scrollTop);
+            });
+        });
+    </script>
 </body>
 </html>

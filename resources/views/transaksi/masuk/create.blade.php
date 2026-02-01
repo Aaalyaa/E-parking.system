@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
 
-    <h3 class="mb-4">Transaksi Kendaraan Masuk</h3>
+    <h4 class="fw-bold mb-4">Transaksi Kendaraan Masuk</h4>
 
     @if (session('error'))
         <div class="alert alert-danger">{{ session('error') }}</div>

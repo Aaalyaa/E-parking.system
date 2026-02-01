@@ -1,7 +1,7 @@
 @extends('petugas.layout')
 
 @section('content')
-    <h3>Transaksi Keluar Parkir</h3>
+    <h4 class="fw-bold mb-4">Transaksi Keluar Parkir</h4>
 
     <form method="POST" id="formKeluar" data-action="{{ route('transaksi.keluar', ':id') }}">
         @csrf

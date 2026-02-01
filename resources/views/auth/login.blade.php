@@ -40,10 +40,6 @@
                         </div>
 
                         <button type="submit" class="btn btn-dark w-100 mt-3">Login</button>
-
-                        @error('username')
-                            <p>{{ $message }}</p>
-                        @enderror
                     </form>
 
                 </div>

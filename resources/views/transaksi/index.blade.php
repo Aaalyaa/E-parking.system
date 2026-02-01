@@ -72,5 +72,5 @@
         </table>
     </x-table.wrapper>
 
-    {{ $transaksis->withQueryString()->links() }}
+    {{ $transaksis->withQueryString()->links('pagination::bootstrap-5') }}
 @endsection

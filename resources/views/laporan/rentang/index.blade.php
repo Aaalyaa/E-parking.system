@@ -21,7 +21,7 @@
                     Tampilkan
                 </button>
 
-                <a href="{{ route('laporan.rentang') }}" class="btn btn-outline-secondary">
+                <a href="{{ route('laporan.rentang') }}" class="btn btn-secondary">
                     Reset
                 </a>
             </div>

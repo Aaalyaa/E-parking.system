@@ -1,19 +1,19 @@
 @extends(auth()->user()->layout())
 
 @section('content')
-    <div class="d-flex justify-content-center mt-5">
-        <div class="d-flex align-items-center gap-5">
+<div class="mt-5 d-flex justify-content-center" style="overflow: hidden;">
 
-            <div id="print-area"
-                style="
-            width: 350px;
-            font-family: monospace;
-            border: 1px dashed #000;
-            padding: 12px;
-            margin: auto;
-            background: #fff;
-        ">
-                <pre style="margin:0; white-space: pre-wrap;">
+    <div class="position-relative d-flex align-items-center">
+
+        <div id="print-area"
+            style="
+                width: 300px;
+                font-family: monospace;
+                border: 1px dashed #000;
+                padding: 12px;
+                background: #fff;
+            ">
+<pre style="margin:0; white-space: pre-wrap;">
 ==============================
       STRUK KELUAR PARKIR
 ==============================
@@ -32,8 +32,7 @@ Diskon      : - Rp {{ number_format($transaksi->diskon_nominal, 0, ',', '.') }}
 @endif
 
 ------------------------------
-TOTAL BAYAR :
-Rp {{ number_format($transaksi->total_biaya, 0, ',', '.') }}
+TOTAL BAYAR : Rp {{ number_format($transaksi->total_biaya, 0, ',', '.') }}
 ------------------------------
 
 Metode      : {{ $transaksi->metode_bayar }}
@@ -41,20 +40,20 @@ Metode      : {{ $transaksi->metode_bayar }}
 Tanggal     : {{ $transaksi->waktu_keluar->format('d-m-Y') }}
 Operator    : {{ auth()->user()->username }}
 </pre>
-            </div>
-
-            <div class="d-flex flex-column justify-content-center gap-4 no-print">
-                <button onclick="printStruk()" class="btn btn-primary">
-                    Cetak Struk
-                </button>
-
-                <a href="{{ route('transaksi.index') }}" class="btn btn-success">
-                    Lihat Histori
-                </a>
-            </div>
-
         </div>
+
+        <div class="d-flex flex-column gap-3 ms-4 no-print">
+            <button onclick="printStruk()" class="btn btn-primary">
+                Cetak Struk
+            </button>
+
+            <a href="{{ route('transaksi.index') }}" class="btn btn-success">
+                Lihat Histori
+            </a>
+        </div>
+
     </div>
+</div>
 @endsection
 @push('scripts')
     <script>
