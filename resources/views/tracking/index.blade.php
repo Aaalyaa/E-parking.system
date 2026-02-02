@@ -48,7 +48,7 @@
             @empty
                 <tr>
                     <td colspan="10" class="text-center">
-                        Tidak ada data
+                        Tidak ada kendaraan yang sedang parkir.
                     </td>
                 </tr>
             @endforelse

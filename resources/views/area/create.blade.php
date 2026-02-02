@@ -11,8 +11,23 @@
 
             <x-form.file name="foto" label="Foto Area" />
 
+            <img id="previewFoto" src="#" class="img-thumbnail mt-2 d-none" style="max-width: 200px;">
+
             <x-form-action :cancel-route="route('area.index')" />
         </form>
-        
+
     </x-page.form>
 @endsection
+@push('scripts')
+<script>
+document.getElementById('fotoInput').addEventListener('change', function(e) {
+    const file = e.target.files[0]
+    const preview = document.getElementById('previewFoto')
+
+    if (!file) return
+
+    preview.src = URL.createObjectURL(file)
+    preview.classList.remove('d-none')
+})
+</script>
+@endpush

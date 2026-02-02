@@ -7,7 +7,7 @@
     </div>
 
     @if ($actionRoute && $actionLabel)
-        <a href="{{ $actionRoute }}" class="btn {{ $actionClass ?? 'btn-primary' }}">
+        <a href="{{ $actionRoute }}" id="btnTambah" class="btn {{ $actionClass ?? 'btn-primary' }}">
             {{ $actionLabel }}
         </a>
     @endif

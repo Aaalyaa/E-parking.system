@@ -1,4 +1,4 @@
-@extends('petugas.layout')
+@extends(auth()->user()->layout())
 
 @section('content')
     <h4 class="fw-bold mb-4">Transaksi Keluar Parkir</h4>
@@ -8,7 +8,7 @@
 
         <div class="mb-3">
             <label class="form-label">Pilih Kendaraan</label>
-            <select class="form-select" id="transaksi_id">
+            <select class="form-select select2" id="transaksi_id" data-placeholder="Pilih Kendaraan Parkir">
                 <option value="">-- Pilih Kendaraan Parkir --</option>
                 @foreach ($parkirAktif as $aktif)
                     <option value="{{ $aktif->id }}" data-plat="{{ $aktif->dataKendaraan->plat_nomor }}"
@@ -20,46 +20,71 @@
             </select>
         </div>
 
-        <div id="detailTransaksi" style="display:none">
+        <div id="detailTransaksi" class="border rounded p-3 mb-3" style="display:none">
             <p><strong>Plat:</strong> <span id="plat"></span></p>
             <p><strong>Area:</strong> <span id="area"></span></p>
             <p><strong>Waktu Masuk:</strong> <span id="masuk"></span></p>
 
             <div class="mb-3">
                 <label class="form-label">Metode Pembayaran</label>
-                <select name="metode_bayar" class="form-select" required>
+                <select name="metode_bayar" class="form-select">
                     <option value="">-- Pilih Metode --</option>
                     <option value="TUNAI">Tunai</option>
                     <option value="DEBIT">Debit</option>
                     <option value="E-WALLET">E-Wallet</option>
                 </select>
             </div>
+        </div>
 
-            <button type="submit" class="btn btn-danger mt-2">
+        <div class="d-flex gap-2">
+            <button type="submit" id="btnKeluar" class="btn btn-danger" disabled>
                 Proses Keluar
             </button>
+
+            <a href="{{ route('tracking.index') }}" class="btn btn-dark">
+                Lihat Tracking Kendaraan
+            </a>
+
+            <a href="{{ route('tracking.index') }}" class="btn btn-outline-dark">
+                Lihat Histori Transaksi
+            </a>
         </div>
     </form>
 @endsection
 
 @push('scripts')
     <script>
-        const select = document.getElementById('transaksi_id');
-        const form = document.getElementById('formKeluar');
+        $(document).ready(function() {
+            $('#transaksi_id').select2({
+                theme: 'bootstrap-5',
+                placeholder: $('#transaksi_id').data('placeholder'),
+                allowClear: true,
+                width: '100%'
+            });
 
-        select.addEventListener('change', function() {
-            const opt = this.options[this.selectedIndex];
+            $('#transaksi_id').on('change', function() {
+                const value = $(this).val();
 
-            if (!this.value) return;
+                if (!value) {
+                    $('#detailTransaksi').hide();
+                    $('#btnKeluar').prop('disabled', true);
+                    return;
+                }
 
-            document.getElementById('detailTransaksi').style.display = 'block';
+                const opt = this.options[this.selectedIndex];
 
-            document.getElementById('plat').innerText = opt.dataset.plat;
-            document.getElementById('area').innerText = opt.dataset.area;
-            document.getElementById('masuk').innerText = opt.dataset.masuk;
+                $('#detailTransaksi').show();
+                $('#btnKeluar').prop('disabled', false);
 
-            const baseAction = form.dataset.action;
-            form.action = baseAction.replace(':id', this.value);
+                $('#plat').text(opt.dataset.plat);
+                $('#area').text(opt.dataset.area);
+                $('#masuk').text(opt.dataset.masuk);
+
+                $('#formKeluar').attr(
+                    'action',
+                    $('#formKeluar').data('action').replace(':id', value)
+                );
+            });
         });
     </script>
 @endpush

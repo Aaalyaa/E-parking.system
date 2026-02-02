@@ -37,9 +37,9 @@ class LoginController extends Controller
         );
 
         return match ($peran) {
-            'admin' => redirect()->intended('/admin/dashboard'),
-            'petugas' => redirect()->intended('/petugas/dashboard'),
-            'owner' => redirect()->intended('/owner/dashboard'),
+            'admin' => redirect()->route('admin.dashboard'),
+            'petugas' => redirect()->route('petugas.dashboard'),
+            'owner' => redirect()->route('owner.dashboard'),
             default => abort(403, 'Aksi tidak diperbolehkan.'),
         };
     }

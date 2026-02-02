@@ -1,3 +1,12 @@
+.sidebar {
+    overflow-y: auto;
+    scroll-behavior: auto;
+}
+
+.sidebar:focus-within {
+    scroll-behavior: auto;
+}
+
 .sidebar .nav-link {
     font-weight: 500;
     color: #111827;
@@ -34,4 +43,29 @@
     background-color: #111827;
     margin-top: 6px;
     border-radius: 2px;
+}
+
+.btn-quick-dark {
+    background-color: #212529;
+    color: #ffffff;
+    border: 1px solid #212529;
+}
+
+.btn-quick-dark:hover {
+    background-color: #ffffff;
+    color: #212529;
+    border: 1px solid #212529;
+}
+
+.select2-container--bootstrap-5 .select2-selection {
+    min-height: 38px;
+    padding: 4px 8px;
+}
+
+.select2-container--bootstrap-5 .select2-selection__rendered {
+    line-height: 28px;
+}
+
+.select2-container--bootstrap-5 .select2-selection__arrow {
+    height: 36px;
 }

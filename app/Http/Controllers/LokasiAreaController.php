@@ -13,11 +13,6 @@ class LokasiAreaController extends Controller
         return view('lokasi-area.index', compact('lokasiAreas'));
     }
 
-    public function create()
-    {
-        return view('lokasi-area.create');
-    }
-
     public function store(Request $request)
     {
         $request->validate([
@@ -28,12 +23,8 @@ class LokasiAreaController extends Controller
             'lokasi_area' => $request->lokasi_area,
         ]);
 
-        return redirect()->route('lokasi-area.index');
-    }
-
-    public function edit(LokasiArea $lokasiArea)
-    {
-        return view('lokasi-area.edit', compact('lokasiArea'));
+        return redirect()->route('lokasi-area.index')
+            ->with('success', 'Lokasi area berhasil ditambahkan!');
     }
 
     public function update(Request $request, LokasiArea $lokasiArea)
@@ -46,7 +37,8 @@ class LokasiAreaController extends Controller
             'lokasi_area' => $request->lokasi_area,
         ]);
 
-        return redirect()->route('lokasi-area.index');
+        return redirect()->route('lokasi-area.index')
+        ->with('success', 'Lokasi area berhasil diedit!');
     }
 
     public function destroy(LokasiArea $lokasiArea)

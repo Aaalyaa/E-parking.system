@@ -57,25 +57,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])
         ->name('admin.dashboard');
 
-        Route::get('/area-kapasitas/create', [AreaKapasitasController::class, 'create'])
-            ->name('area-kapasitas.create');
-        Route::post('/area-kapasitas', [AreaKapasitasController::class, 'store'])
-            ->name('area-kapasitas.store');
-        Route::get('/area-kapasitas/{kapasitasArea}/edit', [AreaKapasitasController::class, 'edit'])
-            ->name('area-kapasitas.edit');
-        Route::put('/area-kapasitas/{kapasitasArea}', [AreaKapasitasController::class, 'update'])
-            ->name('area-kapasitas.update');
-        Route::delete('/area-kapasitas/{kapasitasArea}', [AreaKapasitasController::class, 'destroy'])
-            ->name('area-kapasitas.destroy');
-
         Route::get('/lokasi-area', [LokasiAreaController::class, 'index'])
             ->name('lokasi-area.index');
-        Route::get('/lokasi-area/create', [LokasiAreaController::class, 'create'])
-            ->name('lokasi-area.create');
         Route::post('/lokasi-area', [LokasiAreaController::class, 'store'])
             ->name('lokasi-area.store');
-        Route::get('/lokasi-area/{lokasiArea}/edit', [LokasiAreaController::class, 'edit'])
-            ->name('lokasi-area.edit');
         Route::put('/lokasi-area/{lokasiArea}', [LokasiAreaController::class, 'update'])
             ->name('lokasi-area.update');
         Route::delete('/lokasi-area/{lokasiArea}', [LokasiAreaController::class, 'destroy'])
@@ -93,6 +78,17 @@ Route::middleware('auth')->group(function () {
             ->name('area.update');
         Route::delete('/area/{area}', [AreaController::class, 'destroy'])
             ->name('area.destroy');
+
+        Route::get('/area-kapasitas/create', [AreaKapasitasController::class, 'create'])
+            ->name('area-kapasitas.create');
+        Route::post('/area-kapasitas', [AreaKapasitasController::class, 'store'])
+            ->name('area-kapasitas.store');
+        Route::get('/area-kapasitas/{kapasitasArea}/edit', [AreaKapasitasController::class, 'edit'])
+            ->name('area-kapasitas.edit');
+        Route::put('/area-kapasitas/{kapasitasArea}', [AreaKapasitasController::class, 'update'])
+            ->name('area-kapasitas.update');
+        Route::delete('/area-kapasitas/{kapasitasArea}', [AreaKapasitasController::class, 'destroy'])
+            ->name('area-kapasitas.destroy');
 
         Route::get('/tipe-kendaraan', [TipeKendaraanController::class, 'index'])
             ->name('tipe-kendaraan.index');

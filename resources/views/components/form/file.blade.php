@@ -10,7 +10,7 @@
         type="file"
         name="{{ $name }}"
         class="form-control @error($name) is-invalid @enderror"
-        {{ ($required ?? false) ? 'required' : '' }}
+        {{ ($required ?? false) ? 'required' : '' }} id="fotoInput"
     >
 
     @if(!empty($preview))

@@ -43,7 +43,7 @@
 
                     <div class="d-grid gap-3">
                         <a href="{{ route('transaksi.masuk.create') }}"
-                           class="btn btn-dark btn-lg d-flex justify-content-between align-items-center px-4">
+                           class="btn btn-dark btn-quick-dark btn-lg d-flex justify-content-between align-items-center px-4">
                             <span>Transaksi Masuk</span>
                             <span class="fs-4">→</span>
                         </a>
