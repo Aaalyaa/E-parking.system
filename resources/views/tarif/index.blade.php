@@ -19,7 +19,7 @@
                     <td>{{ $tarif->tipe_kendaraan->nama_tipe }}</td>
                     <td>{{ $tarif->durasi_minimal }}</td>
                     <td>{{ $tarif->durasi_maksimal }}</td>
-                    <td>{{ $tarif->harga }}</td>
+                    <td>{{ number_format($tarif->harga, 0, ',', '.') }}</td>
                     <td>
                         <x-table.action>
                             <a href="{{ route('tarif.edit', $tarif) }}" class="btn btn-warning btn-sm">Edit</a>

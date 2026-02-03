@@ -6,7 +6,7 @@
         <form action="{{ route('tipe-kendaraan.update', $tipeKendaraan) }}" method="POST">
             @csrf
             @method('PUT')
-            <x-form.input name="kode_tipe" label="Kode Tipe" :value="$tipeKendaraan->kode_tipe" required />
+            <x-form.input name="kode_tipe" label="Kode Tipe" :value="$tipeKendaraan->kode_tipe" readonly />
 
             <x-form.input name="nama_tipe" label="Nama Tipe" :value="$tipeKendaraan->nama_tipe" required />
 

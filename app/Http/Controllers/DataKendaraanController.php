@@ -16,7 +16,13 @@ class DataKendaraanController extends Controller
 
     public function create()
     {
-        $tipeKendaraans = TipeKendaraan::all();
+        $tipeKendaraans = TipeKendaraan::all()
+            ->mapWithKeys(function ($tipe) {
+                return [
+                    $tipe->id => $tipe->kode_tipe . ' - ' . $tipe->nama_tipe
+                ];
+            });
+
         return view('data-kendaraan.create', compact('tipeKendaraans'));
     }
 
@@ -24,7 +30,6 @@ class DataKendaraanController extends Controller
     {
         $request->validate([
             'plat_nomor' => 'required|unique:data_kendaraan',
-            'pemilik' => 'nullable',
             'id_tipe_kendaraan' => 'required|exists:tipe_kendaraan,id'
         ]);
 
@@ -35,7 +40,11 @@ class DataKendaraanController extends Controller
 
     public function edit(DataKendaraan $dataKendaraan)
     {
-        $tipeKendaraans = TipeKendaraan::all();
+        $tipeKendaraans = TipeKendaraan::all()
+            ->mapWithKeys(fn($tipe) => [
+                $tipe->id => $tipe->kode_tipe . ' - ' . $tipe->nama_tipe
+            ]);
+
         return view('data-kendaraan.edit', compact('dataKendaraan', 'tipeKendaraans'));
     }
 
@@ -44,7 +53,6 @@ class DataKendaraanController extends Controller
         $request->validate([
             'plat_nomor' => 'required|unique:data_kendaraan,plat_nomor,' . $dataKendaraan->id,
             'id_tipe_kendaraan' => 'required|exists:tipe_kendaraan,id',
-            'pemilik' => 'nullable'
         ]);
 
         $dataKendaraan->update($request->all());

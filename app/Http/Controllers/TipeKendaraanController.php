@@ -7,6 +7,17 @@ use Illuminate\Http\Request;
 
 class TipeKendaraanController extends Controller
 {
+    private function generateKodeTipe($nama)
+    {
+        $nama = strtoupper(preg_replace('/[^A-Z]/i', '', $nama));
+
+        if (strlen($nama) >= 3) {
+            return substr($nama, 0, 3);
+        }
+
+        return str_pad($nama, 3, 'X');
+    }
+
     public function index()
     {
         $tipe_kendaraan = TipeKendaraan::all();
@@ -21,13 +32,14 @@ class TipeKendaraanController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'kode_tipe' => 'required|unique:tipe_kendaraan',
             'nama_tipe' => 'required',
             'deskripsi' => 'nullable',
         ]);
 
+        $kode = $this->generateKodeTipe($request->nama_tipe);
+
         TipeKendaraan::create([
-            'kode_tipe' => $request->kode_tipe,
+            'kode_tipe' => $kode,
             'nama_tipe' => $request->nama_tipe,
             'deskripsi' => $request->deskripsi,
         ]);
@@ -43,13 +55,11 @@ class TipeKendaraanController extends Controller
     public function update(Request $request, TipeKendaraan $tipeKendaraan)
     {
         $request->validate([
-            'kode_tipe' => 'required',
             'nama_tipe' => 'required',
             'deskripsi' => 'nullable',
         ]);
 
         $tipeKendaraan->update([
-            'kode_tipe' => $request->kode_tipe,
             'nama_tipe' => $request->nama_tipe,
             'deskripsi' => $request->deskripsi,
         ]);

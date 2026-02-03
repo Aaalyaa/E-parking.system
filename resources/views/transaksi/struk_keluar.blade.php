@@ -28,7 +28,7 @@ Durasi      : {{ $transaksi->durasi_format }}
 
 Tarif Dasar : Rp {{ number_format($transaksi->tarif->harga, 0, ',', '.') }}
 @if ($transaksi->diskon_nominal > 0)
-Diskon      : - Rp {{ number_format($transaksi->diskon_nominal, 0, ',', '.') }}
+Diskon      : Rp {{ number_format($transaksi->diskon_nominal, 0, ',', '.') }}
 @endif
 
 ------------------------------

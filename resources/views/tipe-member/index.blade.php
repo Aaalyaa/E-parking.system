@@ -18,8 +18,8 @@
                 <tr>
                     <td>{{ $tipeMember->tipe_member }}</td>
                     <td>{{ $tipeMember->masa_berlaku_bulanan }}</td>
-                    <td>{{ $tipeMember->harga }}</td>
-                    <td>{{ $tipeMember->diskon_persen }}</td>
+                    <td>{{ number_format($tipeMember->harga, 0, ',', '.') }}</td>
+                    <td>{{ number_format($tipeMember->diskon_persen, 2, ',', '.') }}</td>
                     <td>
                         <x-table.action>
                             <a href="{{ route('tipe-member.edit', $tipeMember) }}" class="btn btn-warning btn-sm">Edit</a>

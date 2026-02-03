@@ -11,7 +11,6 @@ class DataKendaraan extends Model
 
     protected $fillable = [
         'plat_nomor',
-        'pemilik',
         'id_tipe_kendaraan',
     ];
 

@@ -8,13 +8,23 @@
             @method('PUT')
             <x-form.input name="plat_nomor" label="Plat Kendaraan" :value="$dataKendaraan->plat_nomor" required />
 
-            <x-form.input name="pemilik" label="Pemilik Kendaraan" :value="$dataKendaraan->pemilik" />
+            <x-form.select name="id_tipe_kendaraan" label="Tipe Kendaraan" :options="$tipeKendaraans" :value="$dataKendaraan->id_tipe_kendaraan"
+                :select2="true" required />
 
-            <x-form.select name="id_tipe_kendaraan" label="Tipe Kendaraan" :options="$tipeKendaraans->pluck('nama_tipe', 'id')" :value="$dataKendaraan->id_tipe_kendaraan"
-                placeholder="Pilih Tipe Kendaraan" />
 
             <x-form-action :cancel-route="route('data-kendaraan.index')" />
         </form>
 
     </x-page.form>
 @endsection
+@push('scripts')
+<script>
+    $(document).ready(function () {
+        $('.select2').select2({
+            theme: 'bootstrap-5',
+            width: '100%',
+            allowClear: true
+        });
+    });
+</script>
+@endpush

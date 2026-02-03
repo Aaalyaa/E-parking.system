@@ -6,9 +6,10 @@ use App\Models\TransaksiParkir;
 use App\Models\Tarif;
 use App\Models\DataKendaraan;
 use App\Models\Area;
+use App\Models\LokasiArea;
 use Illuminate\Http\Request;
 use App\Helpers\LogAktivitas;
-use App\Models\LokasiArea;
+use App\Helpers\HitungTarif;
 
 class TransaksiParkirController extends Controller
 {
@@ -44,18 +45,40 @@ class TransaksiParkirController extends Controller
     {
         $dataKendaraan = DataKendaraan::with('tipe_kendaraan')->get();
         $areas = Area::all();
-        $lokasiAreas= LokasiArea::all();
+        $lokasiAreas = LokasiArea::all();
 
         return view('transaksi.masuk.create', compact('dataKendaraan', 'areas', 'lokasiAreas'));
     }
 
-    public function createKeluar()
+    public function createKeluar(Request $request)
     {
-        $parkirAktif = TransaksiParkir::with(['dataKendaraan', 'area'])
+        $parkirAktif = TransaksiParkir::with([
+            'dataKendaraan.tipe_kendaraan',
+            'area.lokasiArea'
+        ])
             ->where('status_parkir', TransaksiParkir::STATUS_IN)
             ->get();
 
-        return view('transaksi.keluar.create', compact('parkirAktif'));
+        $transaksi = null;
+        $detailTarif = null;
+
+        if ($request->filled('id')) {
+            $transaksi = TransaksiParkir::with([
+                'dataKendaraan.tipe_kendaraan',
+                'dataKendaraan.memberAktif.tipe_member',
+                'area.lokasiArea'
+            ])->find($request->id);
+
+            if ($transaksi) {
+                $detailTarif = HitungTarif::from($transaksi);
+            }
+        }
+
+        return view('transaksi.keluar.create', compact(
+            'parkirAktif',
+            'transaksi',
+            'detailTarif'
+        ));
     }
 
     public function storeMasuk(Request $request)
@@ -100,7 +123,7 @@ class TransaksiParkirController extends Controller
         );
 
         return redirect()->route('tracking.index')
-                ->with('success', 'Kendaraan masuk dicatat');
+            ->with('success', 'Kendaraan masuk dicatat');
     }
 
     public function storeKeluar(Request $request, $id)
@@ -115,38 +138,14 @@ class TransaksiParkirController extends Controller
             return back()->with('error', 'Transaksi tidak valid!');
         }
 
-        $waktuKeluar = now();
-        $durasiMenit = $transaksi->waktu_masuk->diffInMinutes($waktuKeluar);
-        $durasiJam = ceil($durasiMenit / 60);
-
-        $tarif = Tarif::where('id_tipe_kendaraan', $transaksi->dataKendaraan->id_tipe_kendaraan)
-            ->where('durasi_minimal', '<=', $durasiJam)
-            ->where('durasi_maksimal', '>=', $durasiJam)
-            ->first();
-
-        if (!$tarif) {
-            return back()->with('error', 'Tarif tidak ditemukan!');
-        }
-
-        $total = $tarif->harga;
-        $diskonNominal = 0;
-        $member = $transaksi->dataKendaraan->memberAktif;
-        if ($member) {
-            $tipeMember = $member->tipe_member;
-
-            if ($tipeMember && $tipeMember->diskon_persen > 0) {
-                $diskonNominal = ($tipeMember->diskon_persen / 100) * $total;
-            }
-        }
-
-        $bayarAkhir = max(0, $total - $diskonNominal);
+        $hasil = HitungTarif::from($transaksi);
 
         $transaksi->update([
-            'id_tarif' => $tarif->id,
-            'waktu_keluar' => $waktuKeluar,
-            'durasi_parkir' => $durasiJam,
-            'diskon_nominal' => $diskonNominal,
-            'total_biaya' => $bayarAkhir,
+            'id_tarif' => $hasil['id_tarif'],
+            'waktu_keluar' => now(),
+            'durasi_parkir' => $hasil['durasi_jam'],
+            'diskon_nominal' => $hasil['diskon'],
+            'total_biaya' => $hasil['total'],
             'status_parkir' => TransaksiParkir::STATUS_OUT,
             'metode_bayar' => $request->metode_bayar,
         ]);
@@ -154,7 +153,7 @@ class TransaksiParkirController extends Controller
         LogAktivitas::add(
             'TRANSAKSI_KELUAR',
             'Kendaraan ' . $transaksi->dataKendaraan->plat_nomor .
-                ' keluar, total Rp ' . number_format($bayarAkhir, 0, ',', '.'),
+                ' keluar, total Rp ' . number_format($hasil['total'], 0, ',', '.'),
             'transaksi_parkir',
             $transaksi->id
         );

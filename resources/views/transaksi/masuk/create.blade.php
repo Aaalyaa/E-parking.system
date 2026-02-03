@@ -55,7 +55,7 @@
 
                     <div class="d-flex gap-2">
                         <button type="submit" class="btn btn-success">
-                            Simpan Transaksi Masuk
+                            Proses Transaksi Masuk
                         </button>
 
                         <a href="{{ route('transaksi.index') }}" class="btn btn-dark">

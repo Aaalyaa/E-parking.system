@@ -5,8 +5,7 @@
 
         <form action="{{ route('tipe-kendaraan.store') }}" method="POST">
             @csrf
-            <x-form.input name="kode_tipe" label="Kode Tipe" required />
-
+            
             <x-form.input name="nama_tipe" label="Nama Tipe" required />
 
             <x-form.textarea name="deskripsi" label="Deskripsi Area" rows="4"

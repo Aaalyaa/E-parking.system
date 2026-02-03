@@ -10,7 +10,7 @@
             <h5 class="fw-bold">Ringkasan</h5>
             <ul class="mb-0">
                 <li>Total Transaksi: <b>{{ $totalTransaksi }}</b></li>
-                <li>Total Pendapatan: <b>Rp {{ number_format($totalPendapatan) }}</b></li>
+                <li>Total Pendapatan: <b>Rp {{ number_format($totalPendapatan, 0, ',', '.') }}</b></li>
             </ul>
         </div>
     </div>
@@ -57,7 +57,7 @@
                         <tr>
                             <td>{{ ucfirst($item->metode_bayar ?? '-') }}</td>
                             <td>{{ $item->total }}</td>
-                            <td>Rp {{ number_format($item->nominal) }}</td>
+                            <td>Rp {{ number_format($item->nominal, 0, ',', '.') }}</td>
                         </tr>
                     @empty
                         <tr>

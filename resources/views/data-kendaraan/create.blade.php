@@ -5,15 +5,25 @@
 
         <form action="{{ route('data-kendaraan.store') }}" method="POST">
             @csrf
+
             <x-form.input name="plat_nomor" label="Plat Kendaraan" required />
 
-            <x-form.input name="pemilik" label="Pemilik Kendaraan" />
-
-            <x-form.select name="id_tipe_kendaraan" label="Tipe Kendaraan" :options="$tipeKendaraans->pluck('nama_tipe', 'id')"
-                placeholder="Pilih Tipe Kendaraan" required />
+            <x-form.select name="id_tipe_kendaraan" label="Tipe Kendaraan" :options="$tipeKendaraans"
+                placeholder="Pilih / ketik kode atau nama tipe kendaraan" :select2="true" required />
 
             <x-form-action :cancel-route="route('data-kendaraan.index')" />
         </form>
 
     </x-page.form>
 @endsection
+@push('scripts')
+<script>
+    $(document).ready(function () {
+        $('.select2').select2({
+            theme: 'bootstrap-5',
+            width: '100%',
+            allowClear: true
+        });
+    });
+</script>
+@endpush

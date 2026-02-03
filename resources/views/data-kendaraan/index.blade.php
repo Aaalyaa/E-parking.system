@@ -7,7 +7,6 @@
         <x-table.thead>
             <tr>
                 <th>Plat Nomor</th>
-                <th>Pemilik</th>
                 <th>Tipe Kendaraan</th>
                 <th>Status Membership</th>
                 <th>Aksi</th>
@@ -17,7 +16,6 @@
             @foreach ($dataKendaraan as $kendaraan)
                 <tr>
                     <td>{{ $kendaraan->plat_nomor }}</td>
-                    <td>{{ $kendaraan->pemilik }}</td>
                     <td>{{ $kendaraan->tipe_kendaraan->nama_tipe }}</td>
                     <td>
                         <span class="badge {{ $kendaraan->memberAktif ? 'bg-success' : 'bg-secondary' }}">

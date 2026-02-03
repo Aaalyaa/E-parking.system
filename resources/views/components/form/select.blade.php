@@ -1,18 +1,26 @@
+@props([
+    'name',
+    'label',
+    'options',
+    'placeholder' => 'Pilih data',
+    'value' => null,
+    'id' => null,
+    'required' => false,
+    'disabled' => false,
+    'select2' => false,
+])
+
 <div class="mb-3">
     <label class="form-label">
         {{ $label }}
-        @if($required ?? false)
+        @if ($required ?? false)
             <span class="text-danger">*</span>
         @endif
     </label>
 
-    <select
-        name="{{ $name }}"
-        id="{{ $id ?? $name }}"
-        class="form-control @error($name) is-invalid @enderror"
-        {{ ($required ?? false) ? 'required' : '' }}
-        {{ ($disabled ?? false) ? 'disabled' : '' }}
-    >
+    <select name="{{ $name }}" id="{{ $id ?? $name }}"
+        class="form-control {{ $select2 ? 'select2' : '' }} @error($name) is-invalid @enderror"
+        data-placeholder="{{ $placeholder }}" {{ $required ? 'required' : '' }} {{ $disabled ? 'disabled' : '' }}>
         <option value="">{{ $placeholder ?? 'Pilih data' }}</option>
 
         @foreach ($options as $key => $text)
