@@ -20,6 +20,7 @@ use App\Http\Controllers\TransaksiParkirController;
 use App\Http\Controllers\TrackingKendaraanController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LogAktivitasController;
+use App\Http\Controllers\BackupRestoreController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Petugas\DashboardController as PetugasDashboardController;
 use App\Http\Controllers\Owner\DashboardController as OwnerDashboardController;
@@ -55,7 +56,7 @@ Route::middleware('auth')->group(function () {
 
     Route::middleware('role:admin')->group(function () {
         Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])
-        ->name('admin.dashboard');
+            ->name('admin.dashboard');
 
         Route::get('/lokasi-area', [LokasiAreaController::class, 'index'])
             ->name('lokasi-area.index');
@@ -166,11 +167,18 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/log-aktivitas', [LogAktivitasController::class, 'index'])
             ->name('log-aktivitas.index');
+
+        Route::get('/backup-restore', [BackupRestoreController::class, 'index'])
+            ->name('backup.index');
+        Route::post('/backup', [BackupRestoreController::class, 'backup'])
+            ->name('backup.run');
+        Route::post('/restore', [BackupRestoreController::class, 'restore'])
+            ->name('backup.restore');
     });
 
     Route::middleware('role:petugas')->group(function () {
         Route::get('/petugas/dashboard', [PetugasDashboardController::class, 'index'])
-        ->name('petugas.dashboard');
+            ->name('petugas.dashboard');
 
         Route::get('/transaksi/masuk', [TransaksiParkirController::class, 'createMasuk'])
             ->name('transaksi.masuk.create');
@@ -184,13 +192,13 @@ Route::middleware('auth')->group(function () {
 
     Route::middleware('role:owner')->group(function () {
         Route::get('/owner/dashboard', [OwnerDashboardController::class, 'index'])
-        ->name('owner.dashboard');
+            ->name('owner.dashboard');
     });
 
     Route::middleware('role:admin|petugas')->group(function () {
         Route::get('/tracking', [TrackingKendaraanController::class, 'index'])
             ->name('tracking.index');
-        
+
         Route::get('/api/area/by-lokasi/{id}', [AreaController::class, 'getByLokasi']);
     });
 

@@ -38,6 +38,9 @@
             <li class="mt-3 fw-bold text-muted small">PENGATURAN PENGGUNA</li>
             <li><a class="nav-link {{ request()->routeIs('users.*') ? 'active' : '' }}" href="{{ route('users.index') }}">Akun Pengguna</a></li>
             <li><a class="nav-link {{ request()->routeIs('log-aktivitas.*') ? 'active' : '' }}" href="{{ route('log-aktivitas.index') }}">Log Aktivitas</a></li>
+
+            <li class="mt-3 fw-bold text-muted small">DATABASE</li>
+            <li><a class="nav-link {{ request()->routeIs('backup.*') ? 'active' : '' }}" href="{{ route('backup.index') }}">Backup & Restore</a></li>
         </ul>
     </div>
 </aside>
