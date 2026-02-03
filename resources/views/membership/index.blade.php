@@ -18,8 +18,8 @@
                     <tr>
                         <td>{{ $member->data_kendaraan->plat_nomor }}</td>
                         <td>{{ $member->tipe_member->tipe_member }}</td>
-                        <td>{{ $member->tanggal_bergabung }}</td>
-                        <td>{{ $member->tanggal_kadaluarsa }}</td>
+                        <td>{{ $member->tanggal_bergabung->format('d-m-Y') }}</td>
+                        <td>{{ $member->tanggal_kadaluarsa->format('d-m-Y') }}</td>
                         <td>
                             <x-table.action>
                             <form action="{{ route('membership.destroy', $member) }}" method="POST" style="display:inline;">

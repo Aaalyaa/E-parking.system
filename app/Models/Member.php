@@ -16,6 +16,11 @@ class Member extends Model
         'tanggal_kadaluarsa',
     ];
 
+    protected $casts = [
+        'tanggal_bergabung'   => 'date',
+        'tanggal_kadaluarsa'  => 'date',
+    ];
+
     public function data_kendaraan()
     {
         return $this->belongsTo(DataKendaraan::class, 'id_data_kendaraan');
