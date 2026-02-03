@@ -1,3 +1,18 @@
+.card {
+    backdrop-filter: blur(2px);
+}
+
+.login-bg {
+    min-height: 100vh;
+    background: linear-gradient(
+        135deg,
+        #0f0f0f 0%,
+        #1a1a1a 30%,
+        #2c2c2c 50%,
+        #e5e5e5 100%
+    );
+}
+
 .sidebar {
     overflow-y: auto;
     scroll-behavior: auto;

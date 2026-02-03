@@ -7,10 +7,10 @@
     @vite(['resources/js/app.js'])
 </head>
 
-<body class="bg-light">
+<body class="login-bg">
     <div class="container vh-100 d-flex justify-content-center align-items-center">
         <div class="col-md-4">
-            <div class="card shadow-lg border-0 rounded-4">
+            <div class="card shadow-lg border-0 rounded-4 bg-white">
                 <div class="card-body p-4">
 
                     <div class="text-center mb-4">
@@ -45,7 +45,7 @@
                 </div>
             </div>
 
-            <p class="text-center text-muted mt-3 small">
+            <p class="text-center text-light mt-3 small">
                 © {{ date('Y') }} E-Parking System
             </p>
 
