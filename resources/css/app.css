@@ -83,15 +83,15 @@
 }
 
 .btn-quick-dark {
-    background-color: #ffffff;
-    color: #212529;
-    border: 1px solid #ffffff;
+    background-color: #212529;
+    color: #ffffff;
+    border: 1px solid #212529;
 }
 
 .btn-quick-dark:hover {
-    background-color: #212529;
-    color: #ffffff;
-    border: 1px solid #ffffff;
+    background-color: #ffffff;
+    color: #212529;
+    border: 1px solid #000000;
 }
 
 .select2-container--bootstrap-5 .select2-selection {

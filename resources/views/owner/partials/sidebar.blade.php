@@ -1,4 +1,4 @@
-<aside class="sidebar bg-white border-end" style="width: 240px; min-height: 100%; overflow-y: auto;">
+<aside class="sidebar sidebar-custom border-end" style="width: 240px; min-height: 100%; overflow-y: auto;">
     <div class="p-3">
         <ul class="nav nav-pills flex-column gap-1">
             <li class="nav-item">
