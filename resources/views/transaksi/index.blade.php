@@ -46,7 +46,7 @@
                 <tr>
                     <td>{{ $transaksis->firstItem() + $i }}</td>
                     <td>{{ $t->kode }}</td>
-                    <td>{{ $t->dataKendaraan->plat_nomor }}</td>
+                    <td>{{ $t->plat_nomor }}</td>
                     <td>{{ $t->area->nama_area }}</td>
                     <td>{{ $t->waktu_masuk->format('H:i') }}</td>
                     <td>{{ $t->waktu_keluar->format('H:i') }}</td>

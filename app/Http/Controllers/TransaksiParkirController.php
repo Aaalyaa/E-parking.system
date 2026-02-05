@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\TransaksiParkir;
-use App\Models\Tarif;
+use App\Models\TipeKendaraan;
 use App\Models\DataKendaraan;
 use App\Models\Area;
 use App\Models\LokasiArea;
@@ -43,31 +43,38 @@ class TransaksiParkirController extends Controller
 
     public function createMasuk()
     {
-        $dataKendaraan = DataKendaraan::with('tipe_kendaraan')->get();
+        $tipeKendaraan = TipeKendaraan::all();
         $areas = Area::all();
         $lokasiAreas = LokasiArea::all();
 
-        return view('transaksi.masuk.create', compact('dataKendaraan', 'areas', 'lokasiAreas'));
+        return view('transaksi.masuk.create', compact(
+            'tipeKendaraan',
+            'areas',
+            'lokasiAreas'
+        ));
     }
 
     public function createKeluar(Request $request)
     {
-        $parkirAktif = TransaksiParkir::with([
-            'dataKendaraan.tipe_kendaraan',
-            'area.lokasiArea'
-        ])
-            ->where('status_parkir', TransaksiParkir::STATUS_IN)
-            ->get();
-
         $transaksi = null;
         $detailTarif = null;
 
-        if ($request->filled('id')) {
+        $kode = $request->query('kode');
+
+        $listStruk = TransaksiParkir::where('status_parkir', TransaksiParkir::STATUS_IN)
+        ->orderBy('waktu_masuk', 'desc')
+        ->get();
+
+        if ($kode) {
             $transaksi = TransaksiParkir::with([
                 'dataKendaraan.tipe_kendaraan',
                 'dataKendaraan.memberAktif.tipe_member',
-                'area.lokasiArea'
-            ])->find($request->id);
+                'area.lokasiArea',
+                'tipe_kendaraan'
+            ])
+                ->where('kode', $kode)
+                ->where('status_parkir', TransaksiParkir::STATUS_IN)
+                ->first();
 
             if ($transaksi) {
                 $detailTarif = HitungTarif::from($transaksi);
@@ -75,41 +82,34 @@ class TransaksiParkirController extends Controller
         }
 
         return view('transaksi.keluar.create', compact(
-            'parkirAktif',
             'transaksi',
-            'detailTarif'
+            'detailTarif',
+            'listStruk'
         ));
     }
 
     public function storeMasuk(Request $request)
     {
         $request->validate([
-            'id_data_kendaraan' => 'required',
-            'id_area' => 'required',
+            'plat_nomor' => 'required|string',
+            'id_tipe_kendaraan' => 'required|exists:tipe_kendaraan,id',
+            'id_area' => 'required|exists:area,id',
         ]);
 
-        $cek = TransaksiParkir::where('id_data_kendaraan', $request->id_data_kendaraan)
-            ->where('status_parkir', TransaksiParkir::STATUS_IN)
-            ->exists();
-
-        if ($cek) {
-            return back()->with('error', 'Kendaraan masih parkir!');
-        }
-
-        $dataKendaraan = DataKendaraan::with('tipe_kendaraan')
-            ->findOrFail($request->id_data_kendaraan);
-
-        $idTipeKendaraan = $dataKendaraan->id_tipe_kendaraan;
+        $dataKendaraan = DataKendaraan::where('plat_nomor', $request->plat_nomor)->first();
+        $idDataKendaraan = $dataKendaraan?->id;
 
         $area = Area::findOrFail($request->id_area);
 
-        if ($area->slotTersedia($idTipeKendaraan) <= 0) {
+        if ($area->slotTersedia($request->id_tipe_kendaraan) <= 0) {
             return back()->with('error', 'Slot parkir penuh untuk tipe kendaraan ini!');
         }
 
-        TransaksiParkir::create([
+        $transaksi = TransaksiParkir::create([
             'kode' => TransaksiParkir::generateNomorStruk(),
-            'id_data_kendaraan' => $request->id_data_kendaraan,
+            'plat_nomor' => $request->plat_nomor,
+            'id_tipe_kendaraan' => $request->id_tipe_kendaraan,
+            'id_data_kendaraan' => $idDataKendaraan,
             'id_area' => $request->id_area,
             'waktu_masuk' => now(),
             'status_parkir' => TransaksiParkir::STATUS_IN,
@@ -117,14 +117,27 @@ class TransaksiParkirController extends Controller
 
         LogAktivitas::add(
             'TRANSAKSI_MASUK',
-            'Kendaraan ' . $dataKendaraan->plat_nomor . ' masuk area ' . $area->nama_area,
+            'Kendaraan ' . $request->plat_nomor . ' masuk area ' . $area->nama_area,
             'transaksi_parkir',
-            null
+            $transaksi->id
         );
 
-        return redirect()->route('tracking.index')
+        return redirect()->route('transaksi.struk_masuk', $transaksi->id)
             ->with('success', 'Kendaraan masuk dicatat');
     }
+
+    public function strukMasuk($id)
+    {
+        $transaksi = TransaksiParkir::with(['area', 'tipe_kendaraan'])
+            ->findOrFail($id);
+
+        if ($transaksi->status_parkir !== TransaksiParkir::STATUS_IN) {
+            return back()->with('error', 'Struk masuk tidak valid!');
+        }
+
+        return view('transaksi.struk_masuk', compact('transaksi'));
+    }
+
 
     public function storeKeluar(Request $request, $id)
     {
@@ -140,6 +153,10 @@ class TransaksiParkirController extends Controller
 
         $hasil = HitungTarif::from($transaksi);
 
+        if (!$hasil) {
+            return back()->with('error', 'Tarif parkir tidak ditemukan untuk durasi ini');
+        }
+
         $transaksi->update([
             'id_tarif' => $hasil['id_tarif'],
             'waktu_keluar' => now(),
@@ -152,7 +169,7 @@ class TransaksiParkirController extends Controller
 
         LogAktivitas::add(
             'TRANSAKSI_KELUAR',
-            'Kendaraan ' . $transaksi->dataKendaraan->plat_nomor .
+            'Kendaraan ' . $transaksi->plat_nomor .
                 ' keluar, total Rp ' . number_format($hasil['total'], 0, ',', '.'),
             'transaksi_parkir',
             $transaksi->id

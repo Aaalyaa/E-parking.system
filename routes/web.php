@@ -184,6 +184,8 @@ Route::middleware('auth')->group(function () {
             ->name('transaksi.masuk.create');
         Route::post('/transaksi/masuk', [TransaksiParkirController::class, 'storeMasuk'])
             ->name('transaksi.masuk');
+        Route::get('/transaksi/struk-masuk/{id}',[TransaksiParkirController::class, 'strukMasuk'])
+            ->name('transaksi.struk_masuk');
         Route::get('/transaksi/keluar', [TransaksiParkirController::class, 'createKeluar'])
             ->name('transaksi.keluar.create');
         Route::post('/transaksi/keluar/{id}', [TransaksiParkirController::class, 'storeKeluar'])

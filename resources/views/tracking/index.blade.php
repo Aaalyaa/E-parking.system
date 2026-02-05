@@ -39,8 +39,8 @@
             @forelse ($parkirAktif as $i => $transaksi)
                 <tr>
                     <td>{{ $i + 1 }}</td>
-                    <td>{{ $transaksi->dataKendaraan->plat_nomor }}</td>
-                    <td>{{ $transaksi->dataKendaraan->tipe_kendaraan->nama_tipe }}</td>
+                    <td>{{ $transaksi->plat_nomor }}</td>
+                    <td>{{ $transaksi->tipe_kendaraan->nama_tipe }}</td>
                     <td>{{ $transaksi->area->lokasiArea->lokasi_area }}</td>
                     <td>{{ $transaksi->area->nama_area }}</td>
                     <td>{{ $transaksi->waktu_masuk->format('d-m-Y H:i') }}</td>

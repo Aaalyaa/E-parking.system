@@ -20,12 +20,18 @@
                     @csrf
 
                     <div class="mb-3">
-                        <label class="form-label">Kendaraan</label>
-                        <select name="id_data_kendaraan" class="form-select" required>
-                            <option value="">-- Pilih Kendaraan --</option>
-                            @foreach ($dataKendaraan as $kendaraan)
-                                <option value="{{ $kendaraan->id }}">
-                                    {{ $kendaraan->plat_nomor }} - {{ $kendaraan->tipe_kendaraan->nama_tipe }}
+                        <label class="form-label">Plat Nomor Kendaraan</label>
+                        <input type="text" name="plat_nomor" class="form-control" placeholder="Contoh: L 1234 AB"
+                            required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Tipe Kendaraan</label>
+                        <select name="id_tipe_kendaraan" class="form-select" required>
+                            <option value="">-- Pilih Tipe Kendaraan --</option>
+                            @foreach ($tipeKendaraan as $tipe)
+                                <option value="{{ $tipe->id }}">
+                                    {{ $tipe->nama_tipe }}
                                 </option>
                             @endforeach
                         </select>

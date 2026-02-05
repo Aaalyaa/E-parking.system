@@ -18,9 +18,9 @@
       STRUK KELUAR PARKIR
 ==============================
 
-Plat        : {{ $transaksi->dataKendaraan->plat_nomor }}
+Plat        : {{ $transaksi->plat_nomor }}
 Area        : {{ $transaksi->area->nama_area }}
-Tipe        : {{ $transaksi->dataKendaraan->tipe_kendaraan->nama_tipe }}
+Tipe        : {{ $transaksi->tipe_kendaraan->nama_tipe }}
 
 Jam Masuk   : {{ $transaksi->waktu_masuk->format('H:i') }}
 Jam Keluar  : {{ $transaksi->waktu_keluar->format('H:i') }}

@@ -11,9 +11,9 @@ class HitungTarif
         $waktuKeluar = $waktuKeluar ?? now();
 
         $durasiMenit = $transaksi->waktu_masuk->diffInMinutes($waktuKeluar);
-        $durasiJam   = ceil($durasiMenit / 60);
+        $durasiJam   = max(1, ceil($durasiMenit / 60));
 
-        $tarif = Tarif::where('id_tipe_kendaraan', $transaksi->dataKendaraan->id_tipe_kendaraan)
+        $tarif = Tarif::where('id_tipe_kendaraan', $transaksi->id_tipe_kendaraan)
             ->where('durasi_minimal', '<=', $durasiJam)
             ->where('durasi_maksimal', '>=', $durasiJam)
             ->first();
@@ -26,13 +26,11 @@ class HitungTarif
         $diskonNominal = 0;
         $diskonPersen = 0;
 
-        $member = $transaksi->dataKendaraan->memberAktif;
+        $member = $transaksi->dataKendaraan?->memberAktif;
         if ($member && $member->tipe_member) {
             $diskonPersen = $member->tipe_member->diskon_persen;
             $diskonNominal = ($diskonPersen / 100) * $total;
         }
-
-        $bayarAkhir = max(0, $total - $diskonNominal);
 
         return [
             'id_tarif'      => $tarif->id,
@@ -40,7 +38,7 @@ class HitungTarif
             'tarif_dasar'   => $total,
             'diskon_persen' => $diskonPersen,
             'diskon'        => $diskonNominal,
-            'total'         => $bayarAkhir,
+            'total'         => max(0, $total - $diskonNominal),
         ];
     }
 }

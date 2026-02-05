@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class DataKendaraan extends Model
 {
@@ -27,8 +28,7 @@ class DataKendaraan extends Model
     public function memberAktif()
     {
         return $this->hasOne(Member::class, 'id_data_kendaraan')
-            ->where('tanggal_bergabung', '<=', now())
-            ->where('tanggal_kadaluarsa', '>=', now());
+            ->whereDate('tanggal_kadaluarsa', '>=', Carbon::today());
     }
 
     public function getStatusMemberTextAttribute()
