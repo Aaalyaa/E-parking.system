@@ -5,13 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\Area;
 use App\Models\LokasiArea;
 use Illuminate\Http\Request;
+use App\Helpers\RoleHelper;
 
 class AreaController extends Controller
 {
     public function index()
     {
         $areas = Area::with('lokasiArea')->get();
-        return view('area.index', compact('areas'));
+        return view('area.index', data: [
+            'areas' => $areas,
+            'canCreate' => RoleHelper::isAdmin(),
+        ]);
     }
 
     public function create()

@@ -1,7 +1,7 @@
 @extends(auth()->user()->layout())
 
 @section('content')
-    <x-page-header title="Area Parkir" :action-route="route('area.create')" action-label="Tambah Area" />
+    <x-page-header title="Area Parkir" :action-route="$canCreate ? route('area.create') : null" action-label="Tambah Area" />
 
     <x-table.wrapper>
         <x-table.thead>
@@ -9,7 +9,9 @@
                 <th>Nama Area</th>
                 <th>Lokasi</th>
                 <th>Foto</th>
-                <th>Aksi</th>
+                @if (auth()->user()->role->peran === 'admin')
+                    <th>Aksi</th>
+                @endif
             </tr>
         </x-table.thead>
         <tbody>
@@ -25,17 +27,19 @@
                             <span class="text-muted">Tidak ada foto</span>
                         @endif
                     </td>
+                    @if (auth()->user()->role->peran === 'admin')
                     <td>
                         <x-table.action>
-                        <a href="{{ route('area.edit', $area) }}" class="btn btn-warning btn-sm">Edit</a>
+                            <a href="{{ route('area.edit', $area) }}" class="btn btn-warning btn-sm">Edit</a>
 
-                        <form action="{{ route('area.destroy', $area) }}" method="POST" style="display:inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
-                        </form>
+                            <form action="{{ route('area.destroy', $area) }}" method="POST" style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
+                            </form>
                         </x-table.action>
                     </td>
+                    @endif
                 </tr>
             @endforeach
         </tbody>

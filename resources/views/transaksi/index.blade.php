@@ -4,22 +4,22 @@
     <x-page-header title="Histori Transaksi Parkir" :action-route="$canCreate ? route('transaksi.masuk.create') : null" action-label="Buat Transaksi Masuk" />
 
     <x-page.filter>
-        <form method="GET" action="{{ route('transaksi.index') }}" class="row g-2 align-items-end">
-
-            <div class="col-md-3">
-                <label class="form-label">Tanggal</label>
-                <input type="date" name="tanggal" class="form-control" value="{{ request('tanggal') }}">
+        <form method="GET" action="{{ route('transaksi.index') }}" class="row g-2">
+            <div class="col-md-4">
+                <input type="date" name="tanggal" class="form-control" value="{{ request('tanggal') }}"
+                    placeholder="Tanggal">
             </div>
 
-            <div class="col-md-3">
-                <label class="form-label">Plat Nomor</label>
-                <input type="text" name="plat" class="form-control" 
-                    value="{{ request('plat') }}" placeholder="Contoh: L 1234 AB">
+            <div class="col-md-4">
+                <input type="text" name="plat" class="form-control" value="{{ request('plat') }}"
+                    placeholder="Plat Nomor">
             </div>
 
-            <div class="col-md-6 d-flex gap-2">
-                <button class="btn btn-primary">Cari</button>
-                <a href="{{ route('transaksi.index') }}" class="btn btn-secondary">
+            <div class="col-md-4 d-flex gap-2">
+                <button class="btn btn-outline-primary w-100">
+                    Filter
+                </button>
+                <a href="{{ route('transaksi.index') }}" class="btn btn-outline-secondary w-100">
                     Reset
                 </a>
             </div>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\TipeKendaraan;
 use Illuminate\Http\Request;
+use App\Helpers\RoleHelper;
 
 class TipeKendaraanController extends Controller
 {
@@ -21,7 +22,10 @@ class TipeKendaraanController extends Controller
     public function index()
     {
         $tipe_kendaraan = TipeKendaraan::all();
-        return view('tipe-kendaraan.index', compact('tipe_kendaraan'));
+        return view('tipe-kendaraan.index', [
+            'tipe_kendaraan' => $tipe_kendaraan,
+            'canCreate' => RoleHelper::isAdmin(),
+        ]);
     }
 
     public function create()

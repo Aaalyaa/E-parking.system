@@ -1,9 +1,24 @@
 @extends(auth()->user()->layout())
 
 @section('content')
-    <x-page-header title="Laporan Transaksi" :subtitle="'Tanggal: ' . $tanggal->format('d-m-Y')" 
-        :action-route="route('laporan.harian.pdf')" action-label="Cetak PDF" 
+    <x-page-header title="Laporan Transaksi" :subtitle="'Tanggal: ' . $tanggal->format('d-m-Y')" :action-route="route('laporan.harian.pdf')" action-label="Cetak PDF"
         action-class="btn-success" />
+
+        <x-page.filter>
+            <form method="GET" class="row g-2">
+                <div class="col-md-6">
+                    <input type="date" name="tanggal" value="{{ $tanggal->format('Y-m-d') }}" class="form-control">
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-outline-primary w-100">Filter</button>
+                </div>
+                <div class="col-md-3">
+                    <a href="{{ route('laporan.harian') }}" class="btn btn-outline-secondary w-100">
+                        Reset
+                    </a>
+                </div>
+            </form>
+        </x-page.filter>
 
     <div class="card mb-3">
         <div class="card-body">

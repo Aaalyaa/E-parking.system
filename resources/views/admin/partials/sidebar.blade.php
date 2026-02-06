@@ -37,6 +37,8 @@
                     href="{{ route('laporan.harian') }}">Laporan Harian</a></li>
             <li><a class="nav-link {{ request()->routeIs('laporan.rentang') ? 'active' : '' }}"
                     href="{{ route('laporan.rentang') }}">Laporan Rentang</a></li>
+            <li><a class="nav-link {{ request()->routeIs('laporan.tipe-kendaraan') ? 'active' : '' }}"
+                    href="{{ route('laporan.tipe-kendaraan') }}">Laporan Tipe Kendaraan</a></li>
             <li><a class="nav-link {{ request()->routeIs('laporan.okupansi') ? 'active' : '' }}"
                     href="{{ route('laporan.okupansi') }}">Laporan Okupansi</a></li>
 

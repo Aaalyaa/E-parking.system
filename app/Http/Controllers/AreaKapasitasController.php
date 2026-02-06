@@ -8,14 +8,16 @@ use App\Models\LokasiArea;
 use App\Models\Area;
 use App\Models\KapasitasArea;
 use Illuminate\Http\Request;
+use App\Helpers\RoleHelper;
 
 class AreaKapasitasController extends Controller
 {
     public function index()
     {
         $kapasitasAreas = KapasitasArea::with(['lokasiArea', 'area', 'tipeKendaraan'])->get();
-        return view('area-kapasitas.index', compact('kapasitasAreas'), [
-            'canCreate' => auth()->user()->role->peran === 'admin',
+        return view('area-kapasitas.index', [
+            'kapasitasAreas' => $kapasitasAreas,
+            'canCreate' => RoleHelper::isAdmin(),
         ]);
     }
 

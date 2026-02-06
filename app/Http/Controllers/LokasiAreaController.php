@@ -4,13 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\LokasiArea;
 use Illuminate\Http\Request;
+use App\Helpers\RoleHelper;
 
 class LokasiAreaController extends Controller
 {
     public function index()
     {
         $lokasiAreas = LokasiArea::all();
-        return view('lokasi-area.index', compact('lokasiAreas'));
+        return view('lokasi-area.index', [
+        'lokasiAreas' => $lokasiAreas,
+        'canCreate' => RoleHelper::isAdmin(),
+    ]);
     }
 
     public function store(Request $request)

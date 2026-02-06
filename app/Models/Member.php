@@ -44,4 +44,9 @@ class Member extends Model
             $this->tanggal_kadaluarsa
         );
     }
+
+    public function getStatusMemberTextAttribute()
+    {
+        return $this->IsAktif ? 'Aktif' : 'Tidak Aktif';
+    }
 }

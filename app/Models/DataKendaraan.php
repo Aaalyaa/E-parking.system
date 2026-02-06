@@ -29,14 +29,4 @@ class DataKendaraan extends Model
     {
         return $this->belongsTo(TipeKendaraan::class, 'id_tipe_kendaraan');
     }
-
-    public function getMemberAktifAttribute()
-    {
-        return $this->member && $this->member->is_aktif;
-    }
-
-    public function getStatusMemberTextAttribute()
-    {
-        return $this->memberAktif ? 'Aktif' : 'Tidak Aktif';
-    }
 }

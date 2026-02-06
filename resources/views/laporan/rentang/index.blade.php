@@ -5,23 +5,24 @@
     <x-page-header title="Laporan Rentang Tanggal" />
 
     <x-page.filter>
-        <form method="GET" action="{{ route('laporan.rentang') }}">
-            <div class="row g-3">
-                <div class="col-md-6">
-                    <x-form.input type="date" name="tanggal_mulai" label="Tanggal Mulai" :value="request('tanggal_mulai')" required />
-                </div>
-
-                <div class="col-md-6">
-                    <x-form.input type="date" name="tanggal_akhir" label="Tanggal Akhir" :value="request('tanggal_akhir')" required />
-                </div>
+        <form method="GET" class="row g-2" action="{{ route('laporan.rentang') }}">
+            <div class="col-md-4">
+                <input type="date" name="tanggal_mulai" value="{{ request('tanggal_mulai') }}" class="form-control" required>
             </div>
 
-            <div class="d-flex gap-2 mt-3">
-                <button type="submit" class="btn btn-primary">
-                    Tampilkan
-                </button>
+            <div class="col-md-4">
+                <input type="date" name="tanggal_akhir" value="{{ request('tanggal_akhir') }}" class="form-control"
+                    required>
+            </div>
 
-                <a href="{{ route('laporan.rentang') }}" class="btn btn-secondary">
+            <div class="col-md-2">
+                <button class="btn btn-outline-primary w-100">
+                    Filter
+                </button>
+            </div>
+
+            <div class="col-md-2">
+                <a href="{{ route('laporan.rentang') }}" class="btn btn-outline-secondary w-100">
                     Reset
                 </a>
             </div>

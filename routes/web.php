@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\ProfileController;
 use App\Http\Controllers\Laporan\LaporanHarianController;
 use App\Http\Controllers\Laporan\LaporanRentangController;
 use App\Http\Controllers\Laporan\LaporanOkupansiController;
+use App\Http\Controllers\Laporan\LaporanTipeKendaraanController;
 use App\Http\Controllers\AreaKapasitasController;
 use App\Http\Controllers\LokasiAreaController;
 use App\Http\Controllers\AreaController;
@@ -48,18 +49,31 @@ Route::middleware('auth')->group(function () {
     Route::post('/profile/password', [ProfileController::class, 'updatePassword'])
         ->name('profile.updatePassword');
 
+    Route::get('/lokasi-area', [LokasiAreaController::class, 'index'])
+        ->name('lokasi-area.index');
+    Route::get('/area', [AreaController::class, 'index'])
+        ->name('area.index');
+    Route::get('/tipe-kendaraan', [TipeKendaraanController::class, 'index'])
+        ->name('tipe-kendaraan.index');
+    Route::get('/tipe-member', [TipeMemberController::class, 'index'])
+        ->name('tipe-member.index');
     Route::get('/area-kapasitas', [AreaKapasitasController::class, 'index'])
         ->name('area-kapasitas.index');
+    Route::get('/tarif', [TarifController::class, 'index'])
+        ->name('tarif.index');
 
     Route::get('/transaksi', [TransaksiParkirController::class, 'index'])
         ->name('transaksi.index');
+
+    Route::get('/data-kendaraan', [DataKendaraanController::class, 'index'])
+        ->name('data-kendaraan.index');
+    Route::get('/membership', [MemberController::class, 'index'])
+        ->name('membership.index');
 
     Route::middleware('role:admin')->group(function () {
         Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])
             ->name('admin.dashboard');
 
-        Route::get('/lokasi-area', [LokasiAreaController::class, 'index'])
-            ->name('lokasi-area.index');
         Route::post('/lokasi-area', [LokasiAreaController::class, 'store'])
             ->name('lokasi-area.store');
         Route::put('/lokasi-area/{lokasiArea}', [LokasiAreaController::class, 'update'])
@@ -67,8 +81,6 @@ Route::middleware('auth')->group(function () {
         Route::delete('/lokasi-area/{lokasiArea}', [LokasiAreaController::class, 'destroy'])
             ->name('lokasi-area.destroy');
 
-        Route::get('/area', [AreaController::class, 'index'])
-            ->name('area.index');
         Route::get('/area/create', [AreaController::class, 'create'])
             ->name('area.create');
         Route::post('/area', [AreaController::class, 'store'])
@@ -91,8 +103,6 @@ Route::middleware('auth')->group(function () {
         Route::delete('/area-kapasitas/{kapasitasArea}', [AreaKapasitasController::class, 'destroy'])
             ->name('area-kapasitas.destroy');
 
-        Route::get('/tipe-kendaraan', [TipeKendaraanController::class, 'index'])
-            ->name('tipe-kendaraan.index');
         Route::get('/tipe-kendaraan/create', [TipeKendaraanController::class, 'create'])
             ->name('tipe-kendaraan.create');
         Route::post('/tipe-kendaraan', [TipeKendaraanController::class, 'store'])
@@ -104,8 +114,6 @@ Route::middleware('auth')->group(function () {
         Route::delete('/tipe-kendaraan/{tipeKendaraan}', [TipeKendaraanController::class, 'destroy'])
             ->name('tipe-kendaraan.destroy');
 
-        Route::get('/tipe-member', [TipeMemberController::class, 'index'])
-            ->name('tipe-member.index');
         Route::get('/tipe-member/create', [TipeMemberController::class, 'create'])
             ->name('tipe-member.create');
         Route::post('/tipe-member', [TipeMemberController::class, 'store'])
@@ -117,8 +125,6 @@ Route::middleware('auth')->group(function () {
         Route::delete('/tipe-member/{tipeMember}', [TipeMemberController::class, 'destroy'])
             ->name('tipe-member.destroy');
 
-        Route::get('/tarif', [TarifController::class, 'index'])
-            ->name('tarif.index');
         Route::get('/tarif/create', [TarifController::class, 'create'])
             ->name('tarif.create');
         Route::post('/tarif', [TarifController::class, 'store'])
@@ -130,8 +136,6 @@ Route::middleware('auth')->group(function () {
         Route::delete('/tarif/{tarif}', [TarifController::class, 'destroy'])
             ->name('tarif.destroy');
 
-        Route::get('/data-kendaraan', [DataKendaraanController::class, 'index'])
-            ->name('data-kendaraan.index');
         Route::get('/data-kendaraan/create', [DataKendaraanController::class, 'create'])
             ->name('data-kendaraan.create');
         Route::post('/data-kendaraan', [DataKendaraanController::class, 'store'])
@@ -143,8 +147,6 @@ Route::middleware('auth')->group(function () {
         Route::delete('/data-kendaraan/{dataKendaraan}', [DataKendaraanController::class, 'destroy'])
             ->name('data-kendaraan.destroy');
 
-        Route::get('/membership', [MemberController::class, 'index'])
-            ->name('membership.index');
         Route::get('/membership/create', [MemberController::class, 'create'])
             ->name('membership.create');
         Route::post('/membership', [MemberController::class, 'store'])
@@ -184,7 +186,7 @@ Route::middleware('auth')->group(function () {
             ->name('transaksi.masuk.create');
         Route::post('/transaksi/masuk', [TransaksiParkirController::class, 'storeMasuk'])
             ->name('transaksi.masuk');
-        Route::get('/transaksi/struk-masuk/{id}',[TransaksiParkirController::class, 'strukMasuk'])
+        Route::get('/transaksi/struk-masuk/{id}', [TransaksiParkirController::class, 'strukMasuk'])
             ->name('transaksi.struk_masuk');
         Route::get('/transaksi/keluar', [TransaksiParkirController::class, 'createKeluar'])
             ->name('transaksi.keluar.create');
@@ -212,10 +214,17 @@ Route::middleware('auth')->group(function () {
                 ->name('harian');
             Route::get('/harian/pdf', [LaporanHarianController::class, 'harianPdf'])
                 ->name('harian.pdf');
+
             Route::get('/rentang', action: [LaporanRentangController::class, 'index'])
                 ->name('rentang');
             Route::get('/rentang/pdf', [LaporanRentangController::class, 'rentangPdf'])
                 ->name('rentang.pdf');
+
+            Route::get('/tipe-kendaraan', [LaporanTipeKendaraanController::class, 'index'])
+                ->name('tipe-kendaraan');
+            Route::get('/tipe-kendaraan/pdf', [LaporanTipeKendaraanController::class, 'pdf'])
+                ->name('tipe-kendaraan.pdf');
+
             Route::get('/okupansi', action: [LaporanOkupansiController::class, 'index'])
                 ->name('okupansi');
             Route::get('/okupansi/pdf', [LaporanOkupansiController::class, 'okupansiPdf'])

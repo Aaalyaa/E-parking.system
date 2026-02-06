@@ -5,13 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\Tarif;
 use App\Models\TipeKendaraan;
 use Illuminate\Http\Request;
+use App\Helpers\RoleHelper;
 
 class TarifController extends Controller
 {
     public function index()
     {
         $tarifs = Tarif::with('tipe_kendaraan')->get();
-        return view('tarif.index', compact('tarifs'));
+        return view('tarif.index', [
+        'tarifs' => $tarifs,
+        'canCreate' => RoleHelper::isAdmin(),
+    ]);
     }
 
     public function create()

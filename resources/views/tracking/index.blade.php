@@ -4,22 +4,22 @@
     <x-page-header title="Kendaraan yang Sedang Parkir" :action-route="$canCreate ? route('transaksi.keluar.create') : null" action-label="Buat Transaksi Keluar" />
 
     <x-page.filter>
-        <form method="GET" action="{{ route('tracking.index') }}">
-            <div class="row g-2 align-items-end">
-                <div class="col-md-4">
-                    <label class="form-label">Plat Nomor</label>
-                    <input type="text" name="plat" value="{{ request('plat') }}" class="form-control"
-                        placeholder="Contoh: L 1234 AB">
-                </div>
+        <form method="GET" class="row g-2" action="{{ route('tracking.index') }}">
+            <div class="col-md-6">
+                <input type="text" name="plat" value="{{ request('plat') }}" class="form-control"
+                    placeholder="Plat Nomor">
+            </div>
 
-                <div class="col-md-6 d-flex gap-2">
-                    <button class="btn btn-primary">
-                        Filter
-                    </button>
-                    <a href="{{ route('tracking.index') }}" class="btn btn-secondary">
-                        Reset
-                    </a>
-                </div>
+            <div class="col-md-3">
+                <button class="btn btn-outline-primary w-100">
+                    Filter
+                </button>
+            </div>
+
+            <div class="col-md-3">
+                <a href="{{ route('tracking.index') }}" class="btn btn-outline-secondary w-100">
+                    Reset
+                </a>
             </div>
         </form>
     </x-page.filter>

@@ -1,11 +1,11 @@
 @extends(auth()->user()->layout())
 
 @section('content')
-    <x-page-header title="Lokasi Area" action-route="#" action-label="Tambah Lokasi Area" />
+        <x-page-header title="Lokasi Area" :action-route="$canCreate ? '#' : null" action-label="Tambah Lokasi Area" />
 
-    @if (session('success'))
-        <div class="alert alert-success"> {{ session('success') }} </div>
-    @endif
+        @if (session('success'))
+            <div class="alert alert-success"> {{ session('success') }} </div>
+        @endif
 
     <div id="formCreate" class="card mb-4" style="display: none;">
         <div class="card-body">
@@ -32,31 +32,35 @@
         <x-table.thead>
             <tr>
                 <th>Nama Lokasi Area</th>
-                <th width="150">Aksi</th>
+                @if (auth()->user()->role->peran === 'admin')
+                    <th width="150">Aksi</th>
+                @endif
             </tr>
         </x-table.thead>
         <tbody>
             @foreach ($lokasiAreas as $lokasiArea)
                 <tr>
                     <td>{{ $lokasiArea->lokasi_area }}</td>
-                    <td>
-                        <x-table.action>
-                            <button type="button" class="btn btn-warning btn-sm btn-edit" data-id="{{ $lokasiArea->id }}"
-                                data-nama="{{ $lokasiArea->lokasi_area }}"
-                                data-url="{{ route('lokasi-area.update', $lokasiArea) }}">
-                                Edit
-                            </button>
-
-                            <form action="{{ route('lokasi-area.destroy', $lokasiArea) }}" method="POST"
-                                onsubmit="return confirm('Yakin ingin menghapus data lokasi area ini?')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm">
-                                    Hapus
+                    @if (auth()->user()->role->peran === 'admin')
+                        <td>
+                            <x-table.action>
+                                <button type="button" class="btn btn-warning btn-sm btn-edit"
+                                    data-id="{{ $lokasiArea->id }}" data-nama="{{ $lokasiArea->lokasi_area }}"
+                                    data-url="{{ route('lokasi-area.update', $lokasiArea) }}">
+                                    Edit
                                 </button>
-                            </form>
-                        </x-table.action>
-                    </td>
+
+                                <form action="{{ route('lokasi-area.destroy', $lokasiArea) }}" method="POST"
+                                    onsubmit="return confirm('Yakin ingin menghapus data lokasi area ini?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm">
+                                        Hapus
+                                    </button>
+                                </form>
+                            </x-table.action>
+                        </td>
+                    @endif
                 </tr>
             @endforeach
         </tbody>
@@ -64,43 +68,43 @@
 @endsection
 
 @push('scripts')
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    const btnTambah = document.getElementById('btnTambah')
-    const formWrapper = document.getElementById('formCreate')
-    const form = document.getElementById('lokasiForm')
-    const input = document.getElementById('lokasiInput')
-    const methodInput = document.getElementById('formMethod')
-    const btnBatal = document.getElementById('btnBatal')
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btnTambah = document.getElementById('btnTambah')
+            const formWrapper = document.getElementById('formCreate')
+            const form = document.getElementById('lokasiForm')
+            const input = document.getElementById('lokasiInput')
+            const methodInput = document.getElementById('formMethod')
+            const btnBatal = document.getElementById('btnBatal')
 
-    // MODE TAMBAH
-    btnTambah.addEventListener('click', e => {
-        e.preventDefault()
-        resetForm()
-        formWrapper.style.display = 'block'
-    })
+            // MODE TAMBAH
+            btnTambah.addEventListener('click', e => {
+                e.preventDefault()
+                resetForm()
+                formWrapper.style.display = 'block'
+            })
 
-    // MODE EDIT
-    document.querySelectorAll('.btn-edit').forEach(btn => {
-        btn.addEventListener('click', () => {
-            formWrapper.style.display = 'block'
-            input.value = btn.dataset.nama
-            form.action = btn.dataset.url
-            methodInput.value = 'PUT'
+            // MODE EDIT
+            document.querySelectorAll('.btn-edit').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    formWrapper.style.display = 'block'
+                    input.value = btn.dataset.nama
+                    form.action = btn.dataset.url
+                    methodInput.value = 'PUT'
+                })
+            })
+
+            // BATAL
+            btnBatal.addEventListener('click', () => {
+                resetForm()
+                formWrapper.style.display = 'none'
+            })
+
+            function resetForm() {
+                input.value = ''
+                form.action = "{{ route('lokasi-area.store') }}"
+                methodInput.value = 'POST'
+            }
         })
-    })
-
-    // BATAL
-    btnBatal.addEventListener('click', () => {
-        resetForm()
-        formWrapper.style.display = 'none'
-    })
-
-    function resetForm() {
-        input.value = ''
-        form.action = "{{ route('lokasi-area.store') }}"
-        methodInput.value = 'POST'
-    }
-})
-</script>
+    </script>
 @endpush

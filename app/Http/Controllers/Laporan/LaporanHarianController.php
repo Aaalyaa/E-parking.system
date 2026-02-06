@@ -13,7 +13,9 @@ class LaporanHarianController extends Controller
 {
     public function index(Request $request)
     {
-        $tanggal = Carbon::today();
+        $tanggal = $request->tanggal
+            ? Carbon::parse($request->tanggal)
+            : Carbon::today();
 
         $baseQuery = TransaksiParkir::whereDate('waktu_keluar', $tanggal)
             ->where('status_parkir', TransaksiParkir::STATUS_OUT);
@@ -60,27 +62,46 @@ class LaporanHarianController extends Controller
         ));
     }
 
-    public function harianPdf()
+    public function harianPdf(Request $request)
     {
-        $tanggal = now();
+        $tanggal = $request->tanggal
+            ? Carbon::parse($request->tanggal)
+            : Carbon::today();
 
-        $query = TransaksiParkir::whereDate('waktu_keluar', today())
+        $query = TransaksiParkir::whereDate('waktu_keluar', $tanggal)
             ->where('status_parkir', TransaksiParkir::STATUS_OUT);
 
         $totalTransaksi = $query->count();
         $totalPendapatan = $query->sum('total_biaya');
 
-        $kendaraan = TransaksiParkir::join('data_kendaraan', 'transaksi_parkir.id_data_kendaraan', '=', 'data_kendaraan.id')
-            ->join('tipe_kendaraan', 'data_kendaraan.id_tipe_kendaraan', '=', 'tipe_kendaraan.id')
-            ->whereDate('transaksi_parkir.waktu_keluar', today())
+        $kendaraan = TransaksiParkir::join(
+            'data_kendaraan',
+            'transaksi_parkir.id_data_kendaraan',
+            '=',
+            'data_kendaraan.id'
+        )
+            ->join(
+                'tipe_kendaraan',
+                'data_kendaraan.id_tipe_kendaraan',
+                '=',
+                'tipe_kendaraan.id'
+            )
+            ->whereDate('transaksi_parkir.waktu_keluar', $tanggal)
             ->where('transaksi_parkir.status_parkir', TransaksiParkir::STATUS_OUT)
-            ->select('tipe_kendaraan.nama_tipe', DB::raw('COUNT(*) as total'))
+            ->select(
+                'tipe_kendaraan.nama_tipe',
+                DB::raw('COUNT(*) as total')
+            )
             ->groupBy('tipe_kendaraan.nama_tipe')
             ->get();
 
-        $metodeBayar = TransaksiParkir::whereDate('waktu_keluar', today())
+        $metodeBayar = TransaksiParkir::whereDate('waktu_keluar', $tanggal)
             ->where('status_parkir', TransaksiParkir::STATUS_OUT)
-            ->select('metode_bayar', DB::raw('COUNT(*) as total'), DB::raw('SUM(total_biaya) as nominal'))
+            ->select(
+                'metode_bayar',
+                DB::raw('COUNT(*) as total'),
+                DB::raw('SUM(total_biaya) as nominal')
+            )
             ->groupBy('metode_bayar')
             ->get();
 
@@ -92,6 +113,8 @@ class LaporanHarianController extends Controller
             'metodeBayar'
         ))->setPaper('A4', 'landscape');
 
-        return $pdf->download('laporan-harian-' . now()->format('d-m-Y') . '.pdf');
+        return $pdf->download(
+            'laporan-harian-' . $tanggal->format('d-m-Y') . '.pdf'
+        );
     }
 }

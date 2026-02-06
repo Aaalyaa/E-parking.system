@@ -6,13 +6,31 @@ use App\Models\Member;
 use App\Models\DataKendaraan;
 use App\Models\TipeMember;
 use Illuminate\Http\Request;
+use App\Helpers\RoleHelper;
 
 class MemberController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $members = Member::with(['kendaraan', 'tipe_member'])->get();
-        return view('membership.index', compact('members'));
+        $query = Member::with(['tipe_member'])
+            ->withCount('kendaraan');
+
+        if ($request->filled('status')) {
+            if ($request->status === 'aktif') {
+                $query->whereDate('tanggal_kadaluarsa', '>=', now());
+            } elseif ($request->status === 'nonaktif') {
+                $query->whereDate('tanggal_kadaluarsa', '<', now());
+            }
+        }
+
+        if ($request->filled('nama')) {
+            $query->where('nama_pemilik', 'like', '%' . $request->nama . '%');
+        }
+
+        return view('membership.index', [
+            'members' => $query->get(),
+            'canCreate' => RoleHelper::isAdmin(),
+        ]);
     }
 
     public function create()

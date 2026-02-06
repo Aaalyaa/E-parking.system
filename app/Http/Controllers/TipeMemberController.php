@@ -4,13 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\TipeMember;
 use Illuminate\Http\Request;
+use App\Helpers\RoleHelper;
 
 class TipeMemberController extends Controller
 {
     public function index()
     {
         $tipeMembers = TipeMember::all();
-        return view('tipe-member.index', compact('tipeMembers'));
+        return view('tipe-member.index', [
+            'tipeMembers' => $tipeMembers,
+            'canCreate' => RoleHelper::isAdmin(),
+        ]);
     }
 
     public function create()

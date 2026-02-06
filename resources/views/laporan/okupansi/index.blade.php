@@ -1,10 +1,30 @@
 @extends(auth()->user()->layout())
 
 @section('content')
-    <x-page-header title="Laporan Okupansi Parkir" :subtitle="'Tanggal: ' . $tanggal->format('d-m-Y')" 
-        :action-route="route('laporan.okupansi.pdf')" action-label="Cetak PDF" 
+    <x-page-header title="Laporan Okupansi Parkir" :subtitle="'Tanggal: ' . $tanggal->format('d-m-Y')" :action-route="route('laporan.okupansi.pdf')" action-label="Cetak PDF"
         action-class="btn-success" />
-    
+
+    <x-page.filter>
+        <form method="GET" action="{{ route('laporan.okupansi') }}" class="row g-2">
+            <div class="col-md-6">
+                <input type="date" name="tanggal" value="{{ request('tanggal', $tanggal->format('Y-m-d')) }}"
+                    class="form-control">
+            </div>
+
+            <div class="col-md-3">
+                <button class="btn btn-outline-primary w-100">
+                    Filter
+                </button>
+            </div>
+
+            <div class="col-md-3">
+                <a href="{{ route('laporan.okupansi') }}" class="btn btn-outline-secondary w-100">
+                    Reset
+                </a>
+            </div>
+        </form>
+    </x-page.filter>
+
     <x-table.wrapper>
         <x-table.thead>
             <tr>

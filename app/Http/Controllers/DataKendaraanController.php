@@ -6,13 +6,33 @@ use App\Models\DataKendaraan;
 use App\Models\Member;
 use App\Models\TipeKendaraan;
 use Illuminate\Http\Request;
+use App\Helpers\RoleHelper;
 
 class DataKendaraanController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $dataKendaraan = DataKendaraan::with('tipe_kendaraan', 'member')->get();
-        return view('data-kendaraan.index', compact('dataKendaraan'));
+        $query = DataKendaraan::with(['tipe_kendaraan', 'member']);
+
+        if ($request->filled('nama')) {
+            $query->whereHas('member', function ($q) use ($request) {
+                $q->where('nama_pemilik', 'like', '%' . $request->nama . '%');
+            });
+        }
+
+        if ($request->filled('tipe')) {
+            $query->where('id_tipe_kendaraan', $request->tipe);
+        }
+
+        if ($request->filled('plat')) {
+            $query->where('plat_nomor', 'like', '%' . $request->plat . '%');
+        }
+
+        return view('data-kendaraan.index', [
+            'dataKendaraan' => $query->get(),
+            'tipeKendaraan' => TipeKendaraan::all(),
+            'canCreate' => RoleHelper::isAdmin(),
+        ]);
     }
 
     public function create()

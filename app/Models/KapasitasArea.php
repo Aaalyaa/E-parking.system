@@ -28,6 +28,7 @@ class KapasitasArea extends Model
 
     public function tipeKendaraan()
     {
-        return $this->belongsTo(TipeKendaraan::class, 'id_tipe_kendaraan');
+        return $this->belongsTo(TipeKendaraan::class, 'id_tipe_kendaraan')
+            ->withTrashed();
     }
 }
