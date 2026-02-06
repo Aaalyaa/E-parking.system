@@ -6,6 +6,7 @@
     <x-table.wrapper>
         <x-table.thead>
             <tr>
+                <th>Nama Pemilik</th>
                 <th>Plat Nomor</th>
                 <th>Tipe Kendaraan</th>
                 <th>Status Membership</th>
@@ -15,6 +16,7 @@
         <tbody>
             @foreach ($dataKendaraan as $kendaraan)
                 <tr>
+                    <td>{{ $kendaraan->member->nama_pemilik }}</td>
                     <td>{{ $kendaraan->plat_nomor }}</td>
                     <td>{{ $kendaraan->tipe_kendaraan->nama_tipe }}</td>
                     <td>

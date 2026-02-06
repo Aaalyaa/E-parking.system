@@ -6,7 +6,7 @@
     <x-table.wrapper>
         <x-table.thead>
                 <tr>
-                    <th>Plat Nomor</th>
+                    <th>Nama Pemilik</th>
                     <th>Tipe Member</th>
                     <th>Tanggal Bergabung</th>
                     <th>Tanggal Kadaluarsa</th>
@@ -16,7 +16,7 @@
             <tbody>
                 @foreach ($members as $member)
                     <tr>
-                        <td>{{ $member->data_kendaraan->plat_nomor }}</td>
+                        <td>{{ $member->nama_pemilik }}</td>
                         <td>{{ $member->tipe_member->tipe_member }}</td>
                         <td>{{ $member->tanggal_bergabung->format('d-m-Y') }}</td>
                         <td>{{ $member->tanggal_kadaluarsa->format('d-m-Y') }}</td>

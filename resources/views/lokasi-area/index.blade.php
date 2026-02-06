@@ -20,7 +20,7 @@
                 </div>
 
                 <div class="d-flex gap-2 mb-3">
-                    <button type="submit" class="btn btn-success">Simpan</button>
+                    <button type="submit" class="btn btn-outline-primary">Simpan</button>
                     <button type="button" class="btn btn-secondary" id="btnBatal">Batal</button>
                 </div>
             </form>

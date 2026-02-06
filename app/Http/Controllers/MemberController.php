@@ -11,47 +11,39 @@ class MemberController extends Controller
 {
     public function index()
     {
-        $members = Member::with(['data_kendaraan', 'tipe_member'])->get();
+        $members = Member::with(['kendaraan', 'tipe_member'])->get();
         return view('membership.index', compact('members'));
     }
 
     public function create()
     {
-        $dataKendaraan = DataKendaraan::all();
         $tipeMembers = TipeMember::all();
-        return view('membership.create', compact('dataKendaraan', 'tipeMembers'));
+        return view('membership.create', compact('tipeMembers'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'id_data_kendaraan' => 'required|exists:data_kendaraan,id',
+            'nama_pemilik'   => 'required|string|max:255',
             'id_tipe_member' => 'required|exists:tipe_member,id',
         ]);
 
-        $sudahAda = Member::where('id_data_kendaraan', $request->id_data_kendaraan)
-                      ->exists();
-
-        if ($sudahAda) {
-            return back()->withErrors([
-                'id_data_kendaraan' => 'Kendaraan ini sudah terdaftar sebagai member.'
-            ])->withInput();
-        }
-
-        $tipeMember = TipeMember::find($request->id_tipe_member);
+        $tipeMember = TipeMember::findOrFail($request->id_tipe_member);
 
         $tanggalBergabung = now();
-        $tanggalKadaluarsa = $tanggalBergabung->copy()->addMonths($tipeMember->masa_berlaku_bulanan);
+        $tanggalKadaluarsa = $tanggalBergabung
+            ->copy()
+            ->addMonths($tipeMember->masa_berlaku_bulanan);
 
         Member::create([
-            'id_data_kendaraan' => $request->id_data_kendaraan,
-            'id_tipe_member' => $request->id_tipe_member,
-            'tanggal_bergabung' => $tanggalBergabung,
+            'nama_pemilik'       => $request->nama_pemilik,
+            'id_tipe_member'     => $request->id_tipe_member,
+            'tanggal_bergabung'  => $tanggalBergabung,
             'tanggal_kadaluarsa' => $tanggalKadaluarsa,
         ]);
 
         return redirect()->route('membership.index')
-                         ->with('success', 'Member baru berhasil ditambahkan.');
+            ->with('success', 'Member baru berhasil ditambahkan.');
     }
 
     public function destroy($id)
@@ -60,6 +52,6 @@ class MemberController extends Controller
         $member->delete();
 
         return redirect()->route('membership.index')
-                         ->with('success', 'Member berhasil dihapus.');
+            ->with('success', 'Member berhasil dihapus.');
     }
 }

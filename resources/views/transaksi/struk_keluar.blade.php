@@ -1,7 +1,20 @@
 @extends(auth()->user()->layout())
 
 @section('content')
-<div class="mt-5 d-flex justify-content-center" style="overflow: hidden;">
+<style>
+        @media print {
+            body {
+                margin: 0;
+                padding: 0;
+            }
+
+            #print-area {
+                margin: 0;
+                display: block;
+            }
+        }
+    </style>
+<div class="mt-5 d-flex justify-content-center">
 
     <div class="position-relative d-flex align-items-center">
 

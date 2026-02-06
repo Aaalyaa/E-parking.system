@@ -54,9 +54,9 @@
 
                 <p>
                     <strong>Membership:</strong>
-                    @if ($transaksi->dataKendaraan?->memberAktif)
+                    @if ($transaksi->dataKendaraan?->member && $transaksi->dataKendaraan->member->is_aktif)
                         <span class="badge bg-success">
-                            Aktif - {{ $transaksi->dataKendaraan->memberAktif->tipe_member->tipe_member }}
+                            Aktif - {{ $transaksi->dataKendaraan->member->tipe_member->tipe_member }}
                         </span>
                     @else
                         <span class="badge bg-secondary">Non-member</span>
@@ -109,14 +109,14 @@
     @endif
 @endsection
 @push('scripts')
-<script>
-    $(document).ready(function () {
-        $('.select2').select2({
-            theme: 'bootstrap-5',
-            placeholder: 'Pilih kode struk',
-            allowClear: true,
-            width: '100%'
+    <script>
+        $(document).ready(function() {
+            $('.select2').select2({
+                theme: 'bootstrap-5',
+                placeholder: 'Pilih kode struk',
+                allowClear: true,
+                width: '100%'
+            });
         });
-    });
-</script>
+    </script>
 @endpush

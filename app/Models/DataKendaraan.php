@@ -4,20 +4,25 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Carbon\Carbon;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class DataKendaraan extends Model
 {
+    use SoftDeletes;
+
     protected $table = 'data_kendaraan';
 
     protected $fillable = [
         'plat_nomor',
+        'id_member',
         'id_tipe_kendaraan',
     ];
 
-    public function members()
+    protected $dates = ['deleted_at'];
+
+    public function member()
     {
-        return $this->hasMany(Member::class, 'id_data_kendaraan');
+        return $this->belongsTo(Member::class, 'id_member');
     }
 
     public function tipe_kendaraan()
@@ -25,10 +30,9 @@ class DataKendaraan extends Model
         return $this->belongsTo(TipeKendaraan::class, 'id_tipe_kendaraan');
     }
 
-    public function memberAktif()
+    public function getMemberAktifAttribute()
     {
-        return $this->hasOne(Member::class, 'id_data_kendaraan')
-            ->whereDate('tanggal_kadaluarsa', '>=', Carbon::today());
+        return $this->member && $this->member->is_aktif;
     }
 
     public function getStatusMemberTextAttribute()

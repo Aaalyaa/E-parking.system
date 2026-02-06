@@ -26,8 +26,9 @@ class HitungTarif
         $diskonNominal = 0;
         $diskonPersen = 0;
 
-        $member = $transaksi->dataKendaraan?->memberAktif;
-        if ($member && $member->tipe_member) {
+        $member = $transaksi->dataKendaraan?->member;
+
+        if ($member && $member->is_aktif && $member->tipe_member) {
             $diskonPersen = $member->tipe_member->diskon_persen;
             $diskonNominal = ($diskonPersen / 100) * $total;
         }

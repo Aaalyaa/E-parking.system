@@ -4,9 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class TipeKendaraan extends Model
 {
+    use SoftDeletes;
+
     protected $table = 'tipe_kendaraan';
 
     protected $fillable = [
@@ -15,6 +18,8 @@ class TipeKendaraan extends Model
         'deskripsi',
         'ukuran_slot'
     ];
+
+    protected $dates = ['deleted_at'];
 
     public function kapasitasArea()
     {

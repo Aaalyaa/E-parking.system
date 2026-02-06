@@ -62,15 +62,14 @@ class TransaksiParkirController extends Controller
         $kode = $request->query('kode');
 
         $listStruk = TransaksiParkir::where('status_parkir', TransaksiParkir::STATUS_IN)
-        ->orderBy('waktu_masuk', 'desc')
-        ->get();
+            ->orderBy('waktu_masuk', 'desc')
+            ->get();
 
         if ($kode) {
             $transaksi = TransaksiParkir::with([
+                'dataKendaraan.member.tipe_member',
                 'dataKendaraan.tipe_kendaraan',
-                'dataKendaraan.memberAktif.tipe_member',
-                'area.lokasiArea',
-                'tipe_kendaraan'
+                'area.lokasiArea'
             ])
                 ->where('kode', $kode)
                 ->where('status_parkir', TransaksiParkir::STATUS_IN)
