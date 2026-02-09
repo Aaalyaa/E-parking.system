@@ -25,7 +25,7 @@
 <body>
 
 <h3 style="text-align:center">LAPORAN OKUPANSI PARKIR</h3>
-<p>Tanggal: {{ $tanggal->format('d-m-Y H:i') }}</p>
+<p>Tanggal: {{ $waktu->format('d-m-Y H:i') }}</p>
 
 <table>
     <thead>

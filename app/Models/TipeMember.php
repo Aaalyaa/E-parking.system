@@ -4,9 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class TipeMember extends Model
 {
+    use SoftDeletes;
+
     protected $table = 'tipe_member';
 
     protected $fillable = [
@@ -15,6 +18,8 @@ class TipeMember extends Model
         'harga',
         'diskon_persen',
     ];
+    
+    protected $dates = ['deleted_at'];
 
     public function members()
     {

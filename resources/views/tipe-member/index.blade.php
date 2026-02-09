@@ -21,7 +21,7 @@
                     <td>{{ $tipeMember->tipe_member }}</td>
                     <td>{{ $tipeMember->masa_berlaku_bulanan }}</td>
                     <td>{{ number_format($tipeMember->harga, 0, ',', '.') }}</td>
-                    <td>{{ number_format($tipeMember->diskon_persen, 2, ',', '.') }}</td>
+                    <td>{{ rtrim(rtrim(number_format($tipeMember->diskon_persen, 2, ',', '.'), '0'), ',') }}%</td>
                     @if (auth()->user()->role->peran === 'admin')
                         <td>
                             <x-table.action>

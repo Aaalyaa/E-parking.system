@@ -20,13 +20,21 @@ class DataKendaraan extends Model
 
     protected $dates = ['deleted_at'];
 
+    public function transaksi_parkir()
+    {
+        return $this->hasMany(TransaksiParkir::class, 'id_data_kendaraan')
+            ->withTrashed();
+    }
+
     public function member()
     {
-        return $this->belongsTo(Member::class, 'id_member');
+        return $this->belongsTo(Member::class, 'id_member')
+            ->withTrashed();
     }
 
     public function tipe_kendaraan()
     {
-        return $this->belongsTo(TipeKendaraan::class, 'id_tipe_kendaraan');
+        return $this->belongsTo(TipeKendaraan::class, 'id_tipe_kendaraan')
+            ->withTrashed();
     }
 }

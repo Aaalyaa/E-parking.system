@@ -151,8 +151,14 @@ Route::middleware('auth')->group(function () {
             ->name('membership.create');
         Route::post('/membership', [MemberController::class, 'store'])
             ->name('membership.store');
+        Route::get('/membership/{id}/edit', [MemberController::class, 'edit'])
+            ->name('membership.edit');
+        Route::put('/membership/{id}', [MemberController::class, 'update'])
+            ->name('membership.update');
         Route::delete('/membership/{id}', [MemberController::class, 'destroy'])
             ->name('membership.destroy');
+        Route::patch('/membership/{id}/extend', [MemberController::class, 'extend'])
+            ->name('membership.extend');
 
         Route::get('/users', [UserController::class, 'index'])
             ->name('users.index');

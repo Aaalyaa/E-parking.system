@@ -56,6 +56,20 @@
                     @if (auth()->user()->role->peran === 'admin')
                         <td>
                             <x-table.action>
+                                <a href="{{ route('membership.edit', $member) }}" class="btn btn-warning btn-sm">
+                                    Edit
+                                </a>
+
+                                <form action="{{ route('membership.extend', $member) }}" method="POST"
+                                    style="display:inline;">
+                                    @csrf
+                                    @method('PATCH')
+                                    <button type="submit" class="btn btn-success btn-sm"
+                                        onclick="return confirm('Perpanjang membership selama {{ $member->tipe_member->masa_berlaku_bulanan }} bulan?')">
+                                        Perpanjang
+                                    </button>
+                                </form>
+
                                 <form action="{{ route('membership.destroy', $member) }}" method="POST"
                                     style="display:inline;">
                                     @csrf

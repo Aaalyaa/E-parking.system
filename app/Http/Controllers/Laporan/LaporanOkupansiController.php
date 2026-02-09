@@ -10,35 +10,39 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class LaporanOkupansiController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        $tanggal = $request->filled('tanggal')
-            ? Carbon::parse($request->tanggal)
-            : Carbon::today();
-
         $areas = Area::with([
             'lokasiArea',
             'kapasitasArea.tipeKendaraan',
-            'transaksiAktif' => function ($q) use ($tanggal) {
-                $q->whereDate('waktu_masuk', '<=', $tanggal)
-                    ->whereNull('waktu_keluar');
+            'transaksiAktif' => function ($q) {
+                $q->whereNull('waktu_keluar');
             }
         ])->get();
 
-        return view('laporan.okupansi.index', compact('tanggal', 'areas'));
+        return view('laporan.okupansi.index', [
+            'areas' => $areas,
+            'waktu' => now(),
+        ]);
     }
 
     public function okupansiPdf()
     {
-        $areas = Area::with(['lokasiArea', 'kapasitasArea.tipeKendaraan', 'transaksiAktif'])
-            ->get();
+        $areas = Area::with([
+            'lokasiArea',
+            'kapasitasArea.tipeKendaraan',
+            'transaksiAktif' => function ($q) {
+                $q->whereNull('waktu_keluar');
+            }
+        ])->get();
 
         $data = [];
 
         foreach ($areas as $area) {
             foreach ($area->kapasitasArea as $kapasitas) {
+
                 $terpakai = $area->transaksiAktif
-                    ->where('dataKendaraan.id_tipe_kendaraan', $kapasitas->id_tipe_kendaraan)
+                    ->where('id_tipe_kendaraan', $kapasitas->id_tipe_kendaraan)
                     ->count();
 
                 $tersedia = max(0, $kapasitas->kapasitas - $terpakai);
@@ -60,10 +64,12 @@ class LaporanOkupansiController extends Controller
         }
 
         $pdf = Pdf::loadView('laporan.okupansi.okupansi_pdf', [
-            'data' => $data,
-            'tanggal' => now()
+            'data'  => $data,
+            'waktu' => now(),
         ])->setPaper('A4', 'landscape');
 
-        return $pdf->download('laporan-okupansi-' . now()->format('d-m-Y') . '.pdf');
+        return $pdf->download(
+            'laporan-okupansi-' . now()->format('d-m-Y_H-i') . '.pdf'
+        );
     }
 }

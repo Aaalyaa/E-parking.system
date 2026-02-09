@@ -114,7 +114,7 @@ class LaporanHarianController extends Controller
         ))->setPaper('A4', 'landscape');
 
         return $pdf->download(
-            'laporan-harian-' . $tanggal->format('d-m-Y') . '.pdf'
+            'laporan-harian-' . now()->format('d-m-Y H-i') . '.pdf'
         );
     }
 }

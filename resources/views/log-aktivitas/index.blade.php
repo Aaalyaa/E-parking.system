@@ -3,6 +3,34 @@
 @section('content')
     <x-page-header title="Log Aktivitas Sistem" />
 
+    <x-page.filter>
+        <form method="GET" class="row g-2 align-items-end">
+            <div class="col-md-4">
+                <input type="text" name="username" class="form-control" placeholder="Cari username..."
+                    value="{{ request('username') }}">
+            </div>
+
+            <div class="col-md-4">
+                <select name="peran" class="form-select">
+                    <option value="">-- Semua Peran --</option>
+                    <option value="admin" {{ request('peran') == 'admin' ? 'selected' : '' }}>ADMIN</option>
+                    <option value="petugas" {{ request('peran') == 'petugas' ? 'selected' : '' }}>PETUGAS</option>
+                    <option value="owner" {{ request('peran') == 'owner' ? 'selected' : '' }}>OWNER</option>
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <button class="btn btn-outline-primary w-100">Filter</button>
+            </div>
+
+            <div class="col-md-2">
+                <a href="{{ route('log-aktivitas.index') }}" class="btn btn-outline-secondary w-100">
+                    Reset
+                </a>
+            </div>
+        </form>
+    </x-page.filter>
+
     <x-table.wrapper>
         <x-table.thead>
             <tr>
@@ -40,6 +68,5 @@
         </tbody>
     </x-table.wrapper>
 
-{{ $logs->links('pagination::bootstrap-5') }}
-
+    {{ $logs->links('pagination::bootstrap-5') }}
 @endsection

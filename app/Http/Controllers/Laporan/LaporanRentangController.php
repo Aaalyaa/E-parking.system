@@ -24,27 +24,20 @@ class LaporanRentangController extends Controller
         $mulai = Carbon::parse($request->tanggal_mulai)->startOfDay();
         $akhir = Carbon::parse($request->tanggal_akhir)->endOfDay();
 
-        $query = TransaksiParkir::whereBetween('waktu_keluar', [$mulai, $akhir])
+        $query = TransaksiParkir::with([
+            'tipe_kendaraan',
+            'dataKendaraan.member',
+            'area'
+        ])->whereBetween('waktu_keluar', [$mulai, $akhir])
             ->where('status_parkir', TransaksiParkir::STATUS_OUT);
 
-        $totalTransaksi = $query->count();
 
-        $totalPendapatan = $query->sum('total_biaya');
+        $totalTransaksi = (clone $query)->count();
 
-        $kendaraan = TransaksiParkir::join(
-            'data_kendaraan',
-            'transaksi_parkir.id_data_kendaraan',
-            '=',
-            'data_kendaraan.id'
-        )
-            ->join(
-                'tipe_kendaraan',
-                'data_kendaraan.id_tipe_kendaraan',
-                '=',
-                'tipe_kendaraan.id'
-            )
-            ->whereBetween('transaksi_parkir.waktu_keluar', [$mulai, $akhir])
-            ->where('transaksi_parkir.status_parkir', TransaksiParkir::STATUS_OUT)
+        $totalPendapatan = (clone $query)->sum('total_biaya');
+
+        $kendaraan = (clone $query)
+            ->join('tipe_kendaraan', 'transaksi_parkir.id_tipe_kendaraan', '=', 'tipe_kendaraan.id')
             ->select(
                 'tipe_kendaraan.nama_tipe',
                 DB::raw('COUNT(*) as total')
@@ -52,8 +45,7 @@ class LaporanRentangController extends Controller
             ->groupBy('tipe_kendaraan.nama_tipe')
             ->get();
 
-        $metodeBayar = TransaksiParkir::whereBetween('waktu_keluar', [$mulai, $akhir])
-            ->where('status_parkir', TransaksiParkir::STATUS_OUT)
+        $metodeBayar = (clone $query)
             ->select(
                 'metode_bayar',
                 DB::raw('COUNT(*) as total'),
@@ -84,7 +76,7 @@ class LaporanRentangController extends Controller
         $mulai = Carbon::parse($request->tanggal_mulai)->startOfDay();
         $akhir = Carbon::parse($request->tanggal_akhir)->endOfDay();
 
-        $transaksi = TransaksiParkir::with(['dataKendaraan.tipe_kendaraan', 'area'])
+        $transaksi = TransaksiParkir::with(['tipe_kendaraan', 'area'])
             ->whereBetween('waktu_keluar', [$mulai, $akhir])
             ->where('status_parkir', TransaksiParkir::STATUS_OUT)
             ->get();
@@ -100,6 +92,6 @@ class LaporanRentangController extends Controller
             'totalPendapatan'
         ))->setPaper('A4', 'landscape');
 
-        return $pdf->download('laporan-rentang.pdf');
+        return $pdf->download('laporan-rentang-' . now()->format('d-m-Y_H-i') . '.pdf');
     }
 }

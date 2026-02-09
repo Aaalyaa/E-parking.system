@@ -36,23 +36,27 @@ class TransaksiParkir extends Model
 
     public function tipe_kendaraan()
     {
-        return $this->belongsTo(TipeKendaraan::class, 'id_tipe_kendaraan');
+        return $this->belongsTo(TipeKendaraan::class, 'id_tipe_kendaraan')
+            ->withTrashed();
     }
 
 
     public function dataKendaraan()
     {
-        return $this->belongsTo(DataKendaraan::class, 'id_data_kendaraan');
+        return $this->belongsTo(DataKendaraan::class, 'id_data_kendaraan')
+            ->withTrashed();
     }
 
     public function area()
     {
-        return $this->belongsTo(Area::class, 'id_area');
+        return $this->belongsTo(Area::class, 'id_area')
+            ->withTrashed();
     }
 
     public function tarif()
     {
-        return $this->belongsTo(Tarif::class, 'id_tarif');
+        return $this->belongsTo(Tarif::class, 'id_tarif')
+            ->withTrashed();
     }
 
     public static function generateNomorStruk()

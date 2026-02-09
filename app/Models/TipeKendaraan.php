@@ -21,6 +21,12 @@ class TipeKendaraan extends Model
 
     protected $dates = ['deleted_at'];
 
+
+    public function transaksiParkir()
+    {
+        return $this->hasMany(TransaksiParkir::class, 'id_tipe_kendaraan');
+    }
+
     public function kapasitasArea()
     {
         return $this->hasMany(KapasitasArea::class, 'id_tipe_kendaraan');

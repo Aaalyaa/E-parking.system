@@ -9,12 +9,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Member extends Model
 {
     use SoftDeletes;
-    
+
     protected $table = 'member';
 
     protected $fillable = [
         'nama_pemilik',
-        'id_data_kendaraan',
         'id_tipe_member',
         'tanggal_bergabung',
         'tanggal_kadaluarsa',
@@ -34,7 +33,8 @@ class Member extends Model
 
     public function tipe_member()
     {
-        return $this->belongsTo(TipeMember::class, 'id_tipe_member');
+        return $this->belongsTo(TipeMember::class, 'id_tipe_member')
+            ->withTrashed();
     }
 
     public function getIsAktifAttribute()

@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    <h1>User Profile</h1>
+    <h3 class="fw-bold">User Profile</h3>
 
     @if(session('success'))
         <div class="alert alert-success">
@@ -13,8 +13,8 @@
     <div class="card">
         <div class="card-body">
             <p class="card-text">Username: {{ $user->username }}</p>
-            <p class="card-text">Role: {{ $user->role->peran }}</p>
-            <a href="{{ route('profile.editPassword') }}" class="btn btn-primary">Change Password</a>
+            <p class="card-text">Peran: {{ $user->role->peran }}</p>
+            <a href="{{ route('profile.editPassword') }}" class="btn btn-primary">Ubah Password</a>
         </div>
     </div>
 </div>

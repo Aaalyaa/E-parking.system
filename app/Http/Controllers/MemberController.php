@@ -64,6 +64,39 @@ class MemberController extends Controller
             ->with('success', 'Member baru berhasil ditambahkan.');
     }
 
+    public function edit($id)
+    {
+        $member = Member::findOrFail($id);
+        $tipeMembers = TipeMember::pluck('tipe_member', 'id');
+
+        return view('membership.edit', compact('member', 'tipeMembers'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $member = Member::findOrFail($id);
+
+        $request->validate([
+            'nama_pemilik'   => 'required|string|max:255',
+            'id_tipe_member' => 'required|exists:tipe_member,id',
+        ]);
+
+        $tipeBaru = TipeMember::findOrFail($request->id_tipe_member);
+
+        $startDate = now()->greaterThan($member->tanggal_kadaluarsa)
+            ? now()
+            : $member->tanggal_kadaluarsa;
+
+        $member->update([
+            'nama_pemilik'       => $request->nama_pemilik,
+            'id_tipe_member'     => $request->id_tipe_member,
+            'tanggal_kadaluarsa' => $startDate->copy()->addMonths($tipeBaru->masa_berlaku_bulanan),
+        ]);
+
+        return redirect()->route('membership.index')
+            ->with('success', 'Data membership berhasil diperbarui.');
+    }
+
     public function destroy($id)
     {
         $member = Member::findOrFail($id);
@@ -71,5 +104,22 @@ class MemberController extends Controller
 
         return redirect()->route('membership.index')
             ->with('success', 'Member berhasil dihapus.');
+    }
+
+    public function extend($id)
+    {
+        $member = Member::with('tipe_member')->findOrFail($id);
+
+        $masaBerlaku = $member->tipe_member->masa_berlaku_bulanan;
+
+        $startDate = now()->greaterThan($member->tanggal_kadaluarsa)
+            ? now()
+            : $member->tanggal_kadaluarsa;
+
+        $member->tanggal_kadaluarsa = $startDate->copy()->addMonths($masaBerlaku);
+        $member->save();
+
+        return redirect()->route('membership.index')
+            ->with('success', 'Masa membership berhasil diperpanjang.');
     }
 }

@@ -4,9 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Tarif extends Model
 {
+    use SoftDeletes;
+
     protected $table = 'tarif';
 
     protected $fillable = [
@@ -15,6 +18,8 @@ class Tarif extends Model
         'durasi_maksimal',
         'harga',
     ];
+
+    protected $dates = ['deleted_at'];
 
     public function tipe_kendaraan()
     {

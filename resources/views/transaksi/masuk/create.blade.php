@@ -31,7 +31,7 @@
                             <option value="">-- Pilih Tipe Kendaraan --</option>
                             @foreach ($tipeKendaraan as $tipe)
                                 <option value="{{ $tipe->id }}">
-                                    {{ $tipe->nama_tipe }}
+                                    {{ $tipe->kode_tipe }} - {{ $tipe->nama_tipe }}
                                 </option>
                             @endforeach
                         </select>

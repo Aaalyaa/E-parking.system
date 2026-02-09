@@ -43,8 +43,8 @@
         <tr>
             <td>{{ $i + 1 }}</td>
             <td>{{ $item->waktu_keluar->format('d-m-Y H:i') }}</td>
-            <td>{{ $item->dataKendaraan->plat_nomor }}</td>
-            <td>{{ $item->dataKendaraan->tipe_kendaraan->nama_tipe }}</td>
+            <td>{{ $item->plat_nomor }}</td>
+            <td>{{ $item->tipe_kendaraan->nama_tipe }}</td>
             <td>{{ $item->metode_bayar }}</td>
             <td>Rp {{ number_format($item->total_biaya) }}</td>
         </tr>
