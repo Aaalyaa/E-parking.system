@@ -14,9 +14,7 @@ class Tarif extends Model
 
     protected $fillable = [
         'id_tipe_kendaraan',
-        'durasi_minimal',
-        'durasi_maksimal',
-        'harga',
+        'tarif_per_jam',
     ];
 
     protected $dates = ['deleted_at'];

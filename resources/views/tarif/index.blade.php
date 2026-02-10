@@ -7,9 +7,7 @@
         <x-table.thead>
             <tr>
                 <th>Tipe Kendaraan</th>
-                <th>Durasi Minimal</th>
-                <th>Durasi Maksimal</th>
-                <th>Harga</th>
+                <th>Tarif Per Jam</th>
                 @if (auth()->user()->role->peran === 'admin')
                     <th>Aksi</th>
                 @endif
@@ -19,9 +17,7 @@
             @foreach ($tarifs as $tarif)
                 <tr>
                     <td>{{ $tarif->tipe_kendaraan->nama_tipe }}</td>
-                    <td>{{ $tarif->durasi_minimal }}</td>
-                    <td>{{ $tarif->durasi_maksimal }}</td>
-                    <td>{{ number_format($tarif->harga, 0, ',', '.') }}</td>
+                    <td>{{ number_format($tarif->tarif_per_jam, 0, ',', '.') }}</td>
                     @if (auth()->user()->role->peran === 'admin')
                         <td>
                             <x-table.action>

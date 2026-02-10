@@ -28,9 +28,7 @@ class TarifController extends Controller
     {
         $request->validate([
             'id_tipe_kendaraan' => 'required|exists:tipe_kendaraan,id',
-            'durasi_minimal' => 'required|integer|min:0',
-            'durasi_maksimal' => 'required|integer|gte:durasi_minimal',
-            'harga' => 'required|numeric|min:0',
+            'tarif_per_jam' => 'required|numeric|min:0',
         ]);
 
         Tarif::create($request->all());
@@ -48,9 +46,7 @@ class TarifController extends Controller
     {
         $request->validate([
             'id_tipe_kendaraan' => 'required|exists:tipe_kendaraan,id',
-            'durasi_minimal' => 'required|integer|min:0',
-            'durasi_maksimal' => 'required|integer|gte:durasi_minimal',
-            'harga' => 'required|numeric|min:0',
+            'tarif_per_jam' => 'required|numeric|min:0',
         ]);
 
         $tarif->update($request->all());

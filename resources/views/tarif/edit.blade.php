@@ -9,11 +9,7 @@
             <x-form.select name="id_tipe_kendaraan" label="Tipe Kendaraan" :options="$tipeKendaraans->pluck('nama_tipe', 'id')" :value="$tarif->id_tipe_kendaraan"
                 placeholder="Pilih Tipe Kendaraan" required />
 
-            <x-form.input type="number" name="durasi_minimal" label="Durasi Minimal (jam)" :value="$tarif->durasi_minimal" required />
-
-            <x-form.input type="number" name="durasi_maksimal" label="Durasi Maksimal (jam)" :value="$tarif->durasi_maksimal" required />
-
-            <x-form.input type="number" name="harga" label="Harga" :value="$tarif->harga" required />
+            <x-form.input type="number" name="tarif_per_jam" label="Tarif Per Jam" :value="$tarif->tarif_per_jam" required />
 
             <x-form-action :cancel-route="route('tarif.index')" />
         </form>
