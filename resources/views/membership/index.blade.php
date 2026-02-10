@@ -74,7 +74,9 @@
                                     style="display:inline;">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
+                                    <button type="submit" class="btn btn-danger btn-sm"
+                                    onclick="return confirm('Yakin Ingin Menghapus Membership Ini?')">
+                                        Hapus
                                 </form>
                             </x-table.action>
                         </td>

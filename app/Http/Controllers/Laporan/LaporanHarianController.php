@@ -24,17 +24,11 @@ class LaporanHarianController extends Controller
         $totalPendapatan = (clone $baseQuery)->sum('total_biaya');
 
         $kendaraan = TransaksiParkir::join(
-            'data_kendaraan',
-            'transaksi_parkir.id_data_kendaraan',
+            'tipe_kendaraan',
+            'transaksi_parkir.id_tipe_kendaraan',
             '=',
-            'data_kendaraan.id'
+            'tipe_kendaraan.id'
         )
-            ->join(
-                'tipe_kendaraan',
-                'data_kendaraan.id_tipe_kendaraan',
-                '=',
-                'tipe_kendaraan.id'
-            )
             ->whereDate('transaksi_parkir.waktu_keluar', $tanggal)
             ->where('transaksi_parkir.status_parkir', TransaksiParkir::STATUS_OUT)
             ->select(

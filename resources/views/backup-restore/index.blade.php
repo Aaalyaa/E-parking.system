@@ -31,7 +31,7 @@
                     </p>
                     <form action="{{ route('backup.run') }}" method="POST">
                         @csrf
-                        <button class="btn btn-success w-100">
+                        <button class="btn btn-success w-100" onclick="return confirm('Yakin ingin backup database ini?')">
                             Backup Sekarang
                         </button>
                     </form>
@@ -51,7 +51,7 @@
                     <form action="{{ route('backup.restore') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <input type="file" name="backup_file" class="form-control mb-3" required>
-                        <button class="btn btn-danger w-100">
+                        <button class="btn btn-danger w-100" onclick="return confirm('Yakin ingin restore database ini?')">
                             Restore Database
                         </button>
                     </form>

@@ -12,14 +12,11 @@ class TrackingKendaraanController extends Controller
     public function index(Request $request)
     {
         $query = TransaksiParkir::with([
-            'dataKendaraan.tipe_kendaraan',
             'area.lokasiArea'
         ])->where('status_parkir', TransaksiParkir::STATUS_IN);
 
         if ($request->filled('plat')) {
-            $query->whereHas('dataKendaraan', function ($q) use ($request) {
-                $q->where('plat_nomor', 'like', '%' . $request->plat . '%');
-            });
+            $query->where('plat_nomor', 'like', '%' . $request->plat . '%');
         }
 
         $parkirAktif = $query->get();

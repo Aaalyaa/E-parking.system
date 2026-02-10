@@ -7,16 +7,8 @@
             </li>
 
             <li class="mt-3 fw-bold text-muted small">MASTER</li>
-            <li><a class="nav-link {{ request()->routeIs('lokasi-area.*') ? 'active' : '' }}"
-                    href="{{ route('lokasi-area.index') }}">Lokasi Area</a></li>
-            <li><a class="nav-link {{ request()->routeIs('area.*') ? 'active' : '' }}"
-                    href="{{ route('area.index') }}">Area</a></li>
             <li><a class="nav-link {{ request()->routeIs('area-kapasitas.*') ? 'active' : '' }}"
                     href="{{ route('area-kapasitas.index') }}">Kapasitas</a></li>
-            <li><a class="nav-link {{ request()->routeIs('tipe-kendaraan.*') ? 'active' : '' }}"
-                    href="{{ route('tipe-kendaraan.index') }}">Tipe Kendaraan</a></li>
-            <li><a class="nav-link {{ request()->routeIs('tipe-member.*') ? 'active' : '' }}"
-                    href="{{ route('tipe-member.index') }}">Tipe Member</a></li>
             <li><a class="nav-link {{ request()->routeIs('tarif.*') ? 'active' : '' }}"
                     href="{{ route('tarif.index') }}">Tipe Tarif</a></li>
 

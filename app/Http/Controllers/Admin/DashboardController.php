@@ -13,10 +13,10 @@ class DashboardController extends Controller
     {
         $hariIni = Carbon::today();
 
-        $totalTransaksiHariIni = TransaksiParkir::whereDate('waktu_masuk', $hariIni)
+        $totalTransaksiHariIni = TransaksiParkir::whereDate('waktu_keluar', $hariIni)
             ->count();
 
-        $totalPendapatanHariIni = TransaksiParkir::whereDate('waktu_masuk', $hariIni)
+        $totalPendapatanHariIni = TransaksiParkir::whereDate('waktu_keluar', $hariIni)
             ->sum('total_biaya');
 
         $kendaraanSedangParkir = TransaksiParkir::where('status_parkir', TransaksiParkir::STATUS_IN)

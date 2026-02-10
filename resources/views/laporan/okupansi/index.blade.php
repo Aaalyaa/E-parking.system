@@ -20,9 +20,7 @@
             @foreach ($areas as $area)
                 @foreach ($area->kapasitasArea as $kapasitas)
                     @php
-                        $terpakai = $area->transaksiAktif
-                            ->where('dataKendaraan.id_tipe_kendaraan', $kapasitas->id_tipe_kendaraan)
-                            ->count();
+                        $terpakai = $area->slotTerpakai($kapasitas->id_tipe_kendaraan);
 
                         $tersedia = max(0, $kapasitas->kapasitas - $terpakai);
 

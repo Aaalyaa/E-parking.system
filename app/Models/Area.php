@@ -46,9 +46,7 @@ class Area extends Model
     public function slotTerpakai($idTipeKendaraan)
     {
         return $this->transaksiAktif()
-            ->whereHas('dataKendaraan', function ($q) use ($idTipeKendaraan) {
-                $q->where('id_tipe_kendaraan', $idTipeKendaraan);
-            })
+            ->where('id_tipe_kendaraan', $idTipeKendaraan)
             ->count();
     }
 

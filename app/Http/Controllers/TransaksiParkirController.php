@@ -26,9 +26,7 @@ class TransaksiParkirController extends Controller
         }
 
         if ($request->filled('plat')) {
-            $query->whereHas('dataKendaraan', function ($q) use ($request) {
-                $q->where('plat_nomor', 'like', '%' . $request->plat . '%');
-            });
+            $query->where('plat_nomor', 'like', '%' . $request->plat . '%');
         }
 
         $transaksis = $query
