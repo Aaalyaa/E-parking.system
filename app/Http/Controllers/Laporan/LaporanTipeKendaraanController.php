@@ -12,14 +12,7 @@ class LaporanTipeKendaraanController extends Controller
 {
     public function index(Request $request)
     {
-        $tanggalAwal  = $request->tanggal_awal;
-        $tanggalAkhir = $request->tanggal_akhir;
-
         $query = TransaksiParkir::where('status_parkir', TransaksiParkir::STATUS_OUT);
-
-        if ($tanggalAwal && $tanggalAkhir) {
-            $query->whereBetween('waktu_keluar', [$tanggalAwal, $tanggalAkhir]);
-        }
 
         $laporan = $query
             ->join('tipe_kendaraan', 'transaksi_parkir.id_tipe_kendaraan', '=', 'tipe_kendaraan.id')
@@ -31,23 +24,12 @@ class LaporanTipeKendaraanController extends Controller
             ->groupBy('tipe_kendaraan.nama_tipe')
             ->get();
 
-        return view('laporan.tipe-kendaraan.index', compact(
-            'laporan',
-            'tanggalAwal',
-            'tanggalAkhir'
-        ));
+        return view('laporan.tipe-kendaraan.index', compact('laporan'));
     }
 
     public function pdf(Request $request)
     {
-        $tanggalAwal  = $request->tanggal_awal;
-        $tanggalAkhir = $request->tanggal_akhir;
-
         $query = TransaksiParkir::where('status_parkir', TransaksiParkir::STATUS_OUT);
-
-        if ($tanggalAwal && $tanggalAkhir) {
-            $query->whereBetween('waktu_keluar', [$tanggalAwal, $tanggalAkhir]);
-        }
 
         $laporan = $query
             ->join('tipe_kendaraan', 'transaksi_parkir.id_tipe_kendaraan', '=', 'tipe_kendaraan.id')
@@ -60,9 +42,7 @@ class LaporanTipeKendaraanController extends Controller
             ->get();
 
         $pdf = Pdf::loadView('laporan.tipe-kendaraan.tipe_kendaraan_pdf', compact(
-            'laporan',
-            'tanggalAwal',
-            'tanggalAkhir'
+            'laporan'
         ))->setPaper('A4', 'landscape');
 
         return $pdf->download(
