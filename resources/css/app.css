@@ -106,3 +106,16 @@
 .select2-container--bootstrap-5 .select2-selection__arrow {
     height: 36px;
 }
+
+.password-eye {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+    color: #000;
+    text-decoration: none;
+}
+
+.password-eye:hover {
+    color: #000;
+}
