@@ -15,10 +15,11 @@
 
 <body class="bg-light">
     @include('admin.partials.navbar')
-    <div class="d-flex" style="height: calc(100vh - 56px);">
+    <div class="app-wrapper d-flex">
         @include('admin.partials.sidebar')
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-        <main class="p-4 flex-fill overflow-auto">
+        <main class="p-4 flex-fill content-wrapper">
             @yield('content')
         </main>
     </div>
@@ -36,6 +37,24 @@
 
             sidebar.addEventListener("scroll", function() {
                 localStorage.setItem("sidebar-scroll", sidebar.scrollTop);
+            });
+        });
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const toggleBtn = document.getElementById("sidebarToggle");
+            const sidebar = document.getElementById("sidebar");
+            const overlay = document.getElementById("sidebarOverlay");
+
+            if (!toggleBtn || !sidebar || !overlay) return;
+
+            toggleBtn.addEventListener("click", function() {
+                sidebar.classList.toggle("show");
+                overlay.classList.toggle("show");
+            });
+
+            overlay.addEventListener("click", function() {
+                sidebar.classList.remove("show");
+                overlay.classList.remove("show");
             });
         });
     </script>
