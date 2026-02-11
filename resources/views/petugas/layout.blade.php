@@ -7,16 +7,19 @@
     @vite(['resources/js/app.js'])
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css"
+        rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 </head>
 
 <body class="bg-light">
     @include('petugas.partials.navbar')
-    <div class="d-flex" style="height: calc(100vh - 56px);">
+    <div class="app-wrapper d-flex">
         @include('petugas.partials.sidebar')
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-        <main class="p-4 flex-fill overflow-auto">
+        <main class="p-4 flex-fill content-wrapper">
             @yield('content')
         </main>
     </div>
@@ -34,6 +37,43 @@
 
             sidebar.addEventListener("scroll", function() {
                 localStorage.setItem("sidebar-scroll", sidebar.scrollTop);
+            });
+        });
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const toggleBtn = document.getElementById("sidebarToggle");
+            const sidebar = document.getElementById("sidebar");
+            const overlay = document.getElementById("sidebarOverlay");
+
+            if (!toggleBtn || !sidebar || !overlay) return;
+
+            toggleBtn.addEventListener("click", function() {
+                sidebar.classList.toggle("show");
+                overlay.classList.toggle("show");
+            });
+
+            overlay.addEventListener("click", function() {
+                sidebar.classList.remove("show");
+                overlay.classList.remove("show");
+            });
+        });
+
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelectorAll(".toggle-password").forEach(function(button) {
+                button.addEventListener("click", function() {
+                    const input = document.getElementById(this.dataset.target);
+                    const icon = this.querySelector("i");
+
+                    if (input.type === "password") {
+                        input.type = "text";
+                        icon.classList.remove("bi-eye");
+                        icon.classList.add("bi-eye-slash");
+                    } else {
+                        input.type = "password";
+                        icon.classList.remove("bi-eye-slash");
+                        icon.classList.add("bi-eye");
+                    }
+                });
             });
         });
     </script>

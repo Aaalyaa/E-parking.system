@@ -1,7 +1,13 @@
-<nav class="navbar navbar-dark bg-dark px-4">
-    <span class="navbar-brand fw-bold">
-        E-Parking | Petugas
-    </span>
+<nav class="navbar navbar-dark bg-dark px-3">
+    <div class="d-flex align-items-center gap-3">
+        <button class="btn btn-outline-light d-lg-none" id="sidebarToggle" aria-label="Toggle sidebar">
+            <i class="bi bi-list fs-4"></i>
+        </button>
+
+        <span class="navbar-brand fw-bold mb-0">
+            E-Parking | Petugas
+        </span>
+    </div>
 
     <div class="d-flex align-items-center gap-3 text-white">
         @auth
