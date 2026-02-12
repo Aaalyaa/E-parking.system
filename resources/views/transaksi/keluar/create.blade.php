@@ -89,6 +89,21 @@
                         <option value="E-WALLET">E-Wallet</option>
                     </select>
                 </div>
+
+                <div class="mb-3 mt-3" id="bayarField" style="display:none;">
+                    <label class="form-label">Jumlah Bayar (Tunai)</label>
+                    <input type="number" name="bayar" id="bayarInput" class="form-control"
+                        placeholder="Masukkan uang bayar">
+
+                    <small class="text-danger d-none" id="errorBayar">
+                        Uang yang dibayar kurang.
+                    </small>
+
+                    <div class="mt-3">
+                        <label class="form-label">Kembalian</label>
+                        <input type="text" id="kembalianInput" class="form-control" readonly value="0">
+                    </div>
+                </div>
             </div>
 
             <div class="d-flex gap-2">
@@ -116,6 +131,40 @@
                 placeholder: 'Pilih kode struk',
                 allowClear: true,
                 width: '100%'
+            });
+
+            const metodeSelect = document.querySelector('select[name="metode_bayar"]');
+            const bayarField = document.getElementById('bayarField');
+            const bayarInput = document.getElementById('bayarInput');
+            const errorBayar = document.getElementById('errorBayar');
+            const kembalianInput = document.getElementById('kembalianInput');
+
+            const totalBayar = {{ $detailTarif['total'] ?? 0 }};
+
+            metodeSelect.addEventListener('change', function() {
+                if (this.value === 'TUNAI') {
+                    bayarField.style.display = 'block';
+                } else {
+                    bayarField.style.display = 'none';
+                    bayarInput.value = '';
+                    errorBayar.classList.add('d-none');
+                    kembalianBox.classList.add('d-none');
+                }
+            });
+
+            bayarInput.addEventListener('input', function() {
+                let bayar = parseInt(this.value) || 0;
+
+                if (bayar < totalBayar) {
+                    errorBayar.classList.remove('d-none');
+                    kembalianInput.value = "0";
+                } else {
+                    errorBayar.classList.add('d-none');
+
+                    let kembali = bayar - totalBayar;
+
+                    kembalianInput.value = kembali.toLocaleString('id-ID');
+                }
             });
         });
     </script>

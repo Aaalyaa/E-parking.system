@@ -39,10 +39,13 @@ Jam Masuk   : {{ $transaksi->waktu_masuk->format('H:i') }}
 Jam Keluar  : {{ $transaksi->waktu_keluar->format('H:i') }}
 Durasi      : {{ $transaksi->durasi_format }}
 
-Tarif Dasar : Rp {{ number_format($transaksi->tarif->harga, 0, ',', '.') }}
+Tarif Dasar : Rp {{ number_format($transaksi->tarif->tarif_per_jam, 0, ',', '.') }}
 @if ($transaksi->diskon_nominal > 0)
 Diskon      : Rp {{ number_format($transaksi->diskon_nominal, 0, ',', '.') }}
 @endif
+
+Bayar       : Rp {{ number_format($transaksi->bayar, 0, ',', '.') }}
+Kembali     : Rp {{ number_format($transaksi->kembali, 0, ',', '.') }}
 
 ------------------------------
 TOTAL BAYAR : Rp {{ number_format($transaksi->total_biaya, 0, ',', '.') }}

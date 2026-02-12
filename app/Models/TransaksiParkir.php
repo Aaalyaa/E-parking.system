@@ -27,6 +27,8 @@ class TransaksiParkir extends Model
         'diskon_nominal',
         'total_biaya',
         'metode_bayar',
+        'kembali',
+        'bayar',
     ];
 
     protected $casts = [
