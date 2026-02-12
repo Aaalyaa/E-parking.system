@@ -6,35 +6,33 @@
         @endif
     </label>
 
-    @if(($type ?? 'text') === 'password' && ($showToggle ?? false))
+    @php
+        $inputType = $type ?? 'text';
+        $isNumber = $inputType === 'number';
+    @endphp
+
+    @if (($type ?? 'text') === 'password' && ($showToggle ?? false))
         <div class="input-group">
-            <input 
-                type="password"
-                name="{{ $name }}"
-                value="{{ old($name, $value ?? '') }}"
+            <input type="password" name="{{ $name }}" value="{{ old($name, $value ?? '') }}"
                 id="{{ $name }}"
                 {{ $attributes->merge([
                     'class' => 'form-control ' . ($errors->has($name) ? 'is-invalid' : ''),
                 ]) }}
-                {{ $required ?? false ? 'required' : '' }}
-            >
+                {{ $required ?? false ? 'required' : '' }}>
 
-            <button class="btn btn-outline-primary toggle-password" 
-                    type="button"
-                    data-target="{{ $name }}">
+            <button class="btn btn-outline-primary toggle-password" type="button" data-target="{{ $name }}">
                 <i class="bi bi-eye"></i>
             </button>
         </div>
     @else
-        <input 
-            type="{{ $type ?? 'text' }}"
-            name="{{ $name }}"
-            value="{{ old($name, $value ?? '') }}"
+        <input type="{{ $inputType }}" name="{{ $name }}" value="{{ old($name, $value ?? '') }}"
             {{ $attributes->merge([
                 'class' => 'form-control ' . ($errors->has($name) ? 'is-invalid' : ''),
+                'min' => $isNumber ? '0' : null,
+                'inputmode' => $isNumber ? 'numeric' : null,
+                'oninput' => $isNumber ? "this.value = this.value.replace(/[^0-9]/g, '')" : null,
             ]) }}
-            {{ $required ?? false ? 'required' : '' }}
-        >
+            {{ $required ?? false ? 'required' : '' }}>
     @endif
 
     @error($name)

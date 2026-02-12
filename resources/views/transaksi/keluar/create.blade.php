@@ -26,7 +26,7 @@
     </form>
 
     @if ($transaksi && $detailTarif)
-        <form method="POST" action="{{ route('transaksi.keluar', $transaksi->id) }}">
+        <form method="POST" id="formKeluar" action="{{ route('transaksi.keluar', $transaksi->id) }}">
             @csrf
             <div class="border rounded p-3 mb-3 mt-3">
                 <p>
@@ -92,8 +92,8 @@
 
                 <div class="mb-3 mt-3" id="bayarField" style="display:none;">
                     <label class="form-label">Jumlah Bayar (Tunai)</label>
-                    <input type="number" name="bayar" id="bayarInput" class="form-control"
-                        placeholder="Masukkan uang bayar">
+                    <input type="text" name="bayar" id="bayarInput" class="form-control"
+                        placeholder="Masukkan uang bayar" inputmode="numeric" required>
 
                     <small class="text-danger d-none" id="errorBayar">
                         Uang yang dibayar kurang.
@@ -153,18 +153,31 @@
             });
 
             bayarInput.addEventListener('input', function() {
-                let bayar = parseInt(this.value) || 0;
+                let raw = this.value.replace(/[^0-9]/g, '');
+
+                if (raw.startsWith('-')) {
+                    raw = raw.replace('-', '');
+                }
+
+                let formatted = new Intl.NumberFormat('id-ID').format(raw);
+
+                this.value = formatted;
+
+                let bayar = parseInt(raw) || 0;
 
                 if (bayar < totalBayar) {
                     errorBayar.classList.remove('d-none');
                     kembalianInput.value = "0";
                 } else {
                     errorBayar.classList.add('d-none');
-
                     let kembali = bayar - totalBayar;
-
-                    kembalianInput.value = kembali.toLocaleString('id-ID');
+                    kembalianInput.value = new Intl.NumberFormat('id-ID').format(kembali);
                 }
+            });
+
+            document.getElementById('formKeluar').addEventListener('submit', function() {
+                let raw = bayarInput.value.replace(/\./g, '');
+                bayarInput.value = raw;
             });
         });
     </script>
