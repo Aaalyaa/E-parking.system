@@ -21,10 +21,19 @@
                 @foreach ($area->kapasitasArea as $kapasitas)
                     @php
                         $terpakai = $area->slotTerpakai($kapasitas->id_tipe_kendaraan);
-
                         $tersedia = max(0, $kapasitas->kapasitas - $terpakai);
-
                         $persen = $kapasitas->kapasitas > 0 ? round(($terpakai / $kapasitas->kapasitas) * 100, 1) : 0;
+
+                        if ($persen >= 80) {
+                            $badgeClass = 'bg-danger';
+                            $status = 'Penuh';
+                        } elseif ($persen >= 50) {
+                            $badgeClass = 'bg-warning text-dark';
+                            $status = 'Hampir Penuh';
+                        } else {
+                            $badgeClass = 'bg-success';
+                            $status = 'Aman';
+                        }
                     @endphp
 
                     <tr>
@@ -34,7 +43,11 @@
                         <td>{{ $kapasitas->kapasitas }}</td>
                         <td>{{ $terpakai }}</td>
                         <td>{{ $tersedia }}</td>
-                        <td>{{ $persen }}%</td>
+                        <td>
+                            <span class="badge {{ $badgeClass }}">
+                                {{ $persen }}% - {{ $status }}
+                            </span>
+                        </td>
                     </tr>
                 @endforeach
             @endforeach
