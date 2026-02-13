@@ -38,8 +38,8 @@
                 <th>Waktu</th>
                 <th>User</th>
                 <th>Peran</th>
-                <th>Aksi</th>
-                <th>Deskripsi</th>
+                <th width="10%">Aksi</th>
+                <th width="20%">Deskripsi</th>
                 <th>Perubahan</th>
                 <th>IP</th>
             </tr>
