@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Helpers\LogAktivitas;
 
 class LaporanRentangController extends Controller
 {
@@ -91,6 +92,13 @@ class LaporanRentangController extends Controller
             'totalTransaksi',
             'totalPendapatan'
         ))->setPaper('A4', 'landscape');
+
+        LogAktivitas::add(
+            'EXPORT_LAPORAN_RENTANG',
+            'Mengekspor laporan rentang ke PDF untuk periode: ' . $mulai->format('Y-m-d') . ' s/d ' . $akhir->format('Y-m-d'),
+            'laporan_rentang',
+            null
+        );
 
         return $pdf->download('laporan-rentang-' . now()->format('d-m-Y_H-i') . '.pdf');
     }

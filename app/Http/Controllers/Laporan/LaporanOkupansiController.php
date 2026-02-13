@@ -4,8 +4,7 @@ namespace App\Http\Controllers\Laporan;
 
 use App\Http\Controllers\Controller;
 use App\Models\Area;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
+use App\Helpers\LogAktivitas;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 class LaporanOkupansiController extends Controller
@@ -67,6 +66,13 @@ class LaporanOkupansiController extends Controller
             'data'  => $data,
             'waktu' => now(),
         ])->setPaper('A4', 'landscape');
+
+        LogAktivitas::add(
+            'EXPORT_LAPORAN_OKUPANSI',
+            'Mengekspor laporan okupansi ke PDF',
+            'laporan_okupansi',
+            null
+        );
 
         return $pdf->download(
             'laporan-okupansi-' . now()->format('d-m-Y_H-i') . '.pdf'

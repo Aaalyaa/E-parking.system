@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Helpers\LogAktivitas;
 
 class LaporanHarianController extends Controller
 {
@@ -106,6 +107,13 @@ class LaporanHarianController extends Controller
             'kendaraan',
             'metodeBayar'
         ))->setPaper('A4', 'landscape');
+
+        LogAktivitas::add(
+            'EXPORT_LAPORAN_HARIAN',
+            'Mengekspor laporan harian ke PDF untuk tanggal: ' . $tanggal->format('Y-m-d'),
+            'laporan_harian',
+            null
+        );
 
         return $pdf->download(
             'laporan-harian-' . now()->format('d-m-Y H-i') . '.pdf'

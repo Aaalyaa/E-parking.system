@@ -40,6 +40,7 @@
                 <th>Peran</th>
                 <th>Aksi</th>
                 <th>Deskripsi</th>
+                <th>Perubahan</th>
                 <th>IP</th>
             </tr>
         </x-table.thead>
@@ -56,6 +57,16 @@
                         </span>
                     </td>
                     <td>{{ $log->deskripsi }}</td>
+                    <td>
+                        @if ($log->data_before || $log->data_after)
+                            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
+                                data-bs-target="#detail{{ $log->id }}">
+                                Lihat
+                            </button>
+                        @else
+                            -
+                        @endif
+                    </td>
                     <td>{{ $log->ip_address }}</td>
                 </tr>
             @empty
@@ -67,6 +78,47 @@
             @endforelse
         </tbody>
     </x-table.wrapper>
+
+    @foreach ($logs as $log)
+        @if ($log->data_before || $log->data_after)
+            <div class="modal fade" id="detail{{ $log->id }}" tabindex="-1">
+                <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <h5 class="modal-title">Detail Perubahan</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+
+                        <div class="modal-body">
+
+                            <h6>Data Sebelum</h6>
+                            @if ($log->data_before)
+                                <pre class="bg-light p-3 rounded small">
+{{ json_encode($log->data_before, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) }}
+                            </pre>
+                            @else
+                                <p class="text-muted">-</p>
+                            @endif
+
+                            <hr>
+
+                            <h6>Data Sesudah</h6>
+                            @if ($log->data_after)
+                                <pre class="bg-light p-3 rounded small">
+{{ json_encode($log->data_after, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) }}
+                            </pre>
+                            @else
+                                <p class="text-muted">-</p>
+                            @endif
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        @endif
+    @endforeach
 
     {{ $logs->links('pagination::bootstrap-5') }}
 @endsection

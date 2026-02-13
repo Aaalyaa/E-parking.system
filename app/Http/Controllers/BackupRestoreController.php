@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Helpers\LogAktivitas;
 
 class BackupRestoreController extends Controller
 {
@@ -27,6 +28,13 @@ class BackupRestoreController extends Controller
 
         $command = "\"$mysqldump\" -u{$db['username']} {$db['database']} > \"$path\\$filename\"";
         exec($command);
+
+        LogAktivitas::add(
+            'BACKUP_DATABASE',
+            'Membuat backup database: ' . $filename,
+            'backup_restore',
+            null
+        );
 
         return back()->with('success', 'Backup database berhasil dibuat');
     }
@@ -57,6 +65,13 @@ class BackupRestoreController extends Controller
 
         $command = "\"$mysql\" -u{$db['username']} {$db['database']} < \"$path\"";
         exec($command);
+
+        LogAktivitas::add(
+            'RESTORE_DATABASE',
+            'Merestore database dari file: ' . $file->getClientOriginalName(),
+            'backup_restore',
+            null
+        );
 
         return back()->with('success', 'Database berhasil direstore');
     }

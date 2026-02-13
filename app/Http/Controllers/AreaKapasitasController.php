@@ -9,6 +9,7 @@ use App\Models\Area;
 use App\Models\KapasitasArea;
 use Illuminate\Http\Request;
 use App\Helpers\RoleHelper;
+use App\Helpers\LogAktivitas;
 
 class AreaKapasitasController extends Controller
 {
@@ -40,6 +41,13 @@ class AreaKapasitasController extends Controller
 
         KapasitasArea::create($request->all());
 
+        LogAktivitas::add(
+            'CREATE_KAPASITAS_AREA',
+            'Menambahkan kapasitas area baru: Lokasi Area ID ' . $request->id_lokasi_area . ', Area ID ' . $request->id_area . ', Tipe Kendaraan ID ' . $request->id_tipe_kendaraan . ', Kapasitas ' . $request->kapasitas,
+            'kapasitas_area',
+            null
+        );
+
         return redirect()->route('area-kapasitas.index');
     }
 
@@ -62,12 +70,27 @@ class AreaKapasitasController extends Controller
 
         $kapasitasArea->update($request->all());
 
+        LogAktivitas::add(
+            'UPDATE_KAPASITAS_AREA',
+            'Memperbarui kapasitas area: ID ' . $kapasitasArea->id . ', Lokasi Area ID ' . $request->id_lokasi_area . ', Area ID ' . $request->id_area . ', Tipe Kendaraan ID ' . $request->id_tipe_kendaraan . ', Kapasitas ' . $request->kapasitas,
+            'kapasitas_area',
+            $kapasitasArea->id
+        );
+
         return redirect()->route('area-kapasitas.index');
     }
 
     public function destroy(KapasitasArea $kapasitasArea)
     {
         $kapasitasArea->delete();
+
+        LogAktivitas::add(
+            'DELETE_KAPASITAS_AREA',
+            'Menghapus kapasitas area: ID ' . $kapasitasArea->id . ', Lokasi Area ID ' . $kapasitasArea->id_lokasi_area . ', Area ID ' . $kapasitasArea->id_area . ', Tipe Kendaraan ID ' . $kapasitasArea->id_tipe_kendaraan . ', Kapasitas ' . $kapasitasArea->kapasitas,
+            'kapasitas_area',
+            $kapasitasArea->id
+        );
+
         return redirect()->route('area-kapasitas.index');
     }
 }

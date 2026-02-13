@@ -16,8 +16,14 @@ class LogAktivitas extends Model
         'deskripsi',
         'ref_table',
         'id_ref',
+        'data_before',
+        'data_after',
         'ip_address',
         'user_agent',
+    ];
+
+    protected $casts = [
+        'metadata' => 'array',
     ];
 
     public function user()

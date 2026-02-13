@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Helpers\LogAktivitas;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -35,6 +36,13 @@ class ProfileController extends Controller
         $user->update([
             'password' => Hash::make($request->new_password),
         ]);
+
+        LogAktivitas::add(
+            'UPDATE_PASSWORD',
+            'Memperbarui password untuk pengguna: ' . $user->username,
+            'users',
+            $user->id
+        );
 
         return redirect()->route('profile.index')->with('success', 'Password updated successfully');
     }

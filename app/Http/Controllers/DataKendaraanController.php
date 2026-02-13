@@ -7,6 +7,7 @@ use App\Models\Member;
 use App\Models\TipeKendaraan;
 use Illuminate\Http\Request;
 use App\Helpers\RoleHelper;
+use App\Helpers\LogAktivitas;
 
 class DataKendaraanController extends Controller
 {
@@ -58,11 +59,21 @@ class DataKendaraanController extends Controller
             'id_member' => 'nullable|exists:member,id'
         ]);
 
-        DataKendaraan::create([
+        $dataKendaraan = DataKendaraan::create([
             'plat_nomor' => $request->plat_nomor,
             'id_tipe_kendaraan' => $request->id_tipe_kendaraan,
             'id_member' => $request->id_member
         ]);
+
+        LogAktivitas::add(
+            'CREATE_DATA_KENDARAAN',
+            'Menambahkan data kendaraan baru: Plat Nomor ' . $request->plat_nomor,
+            'data_kendaraan',
+            $dataKendaraan->id,
+            null,
+            null,
+            $dataKendaraan->toArray()
+        );
 
         return redirect()->route('data-kendaraan.index');
     }
@@ -90,18 +101,45 @@ class DataKendaraanController extends Controller
             'id_member' => 'nullable|exists:member,id'
         ]);
 
+        $before = $dataKendaraan->getOriginal();
+
         $dataKendaraan->update([
             'plat_nomor' => $request->plat_nomor,
             'id_tipe_kendaraan' => $request->id_tipe_kendaraan,
             'id_member' => $request->id_member
         ]);
 
+        $after = $dataKendaraan->fresh()->toArray();
+
+        LogAktivitas::add(
+            'UPDATE_DATA_KENDARAAN',
+            'Memperbarui data kendaraan: ID ' . $dataKendaraan->id . ', Plat Nomor ' . $request->plat_nomor,
+            'data_kendaraan',
+            $dataKendaraan->id,
+            null,
+            $before,
+            $after
+        );
+
         return redirect()->route('data-kendaraan.index');
     }
 
     public function destroy(DataKendaraan $dataKendaraan)
     {
+        $before = $dataKendaraan->toArray();
+
         $dataKendaraan->delete();
+
+        LogAktivitas::add(
+            'DELETE_DATA_KENDARAAN',
+            'Menghapus data kendaraan: ID ' . $dataKendaraan->id . ', Plat Nomor ' . $dataKendaraan->plat_nomor,
+            'data_kendaraan',
+            $dataKendaraan->id,
+            null,
+            $before,
+            null
+        );
+
         return redirect()->route('data-kendaraan.index');
     }
 }

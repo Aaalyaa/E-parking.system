@@ -41,7 +41,7 @@ Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'log.menu'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])
         ->name('profile.index');
     Route::get('/profile/password', [ProfileController::class, 'editPassword'])
@@ -49,31 +49,25 @@ Route::middleware('auth')->group(function () {
     Route::post('/profile/password', [ProfileController::class, 'updatePassword'])
         ->name('profile.updatePassword');
 
-    Route::get('/lokasi-area', [LokasiAreaController::class, 'index'])
-        ->name('lokasi-area.index');
-    Route::get('/area', [AreaController::class, 'index'])
-        ->name('area.index');
-    Route::get('/tipe-kendaraan', [TipeKendaraanController::class, 'index'])
-        ->name('tipe-kendaraan.index');
-    Route::get('/tipe-member', [TipeMemberController::class, 'index'])
-        ->name('tipe-member.index');
     Route::get('/area-kapasitas', [AreaKapasitasController::class, 'index'])
         ->name('area-kapasitas.index');
     Route::get('/tarif', [TarifController::class, 'index'])
         ->name('tarif.index');
-
-    Route::get('/transaksi', [TransaksiParkirController::class, 'index'])
-        ->name('transaksi.index');
 
     Route::get('/data-kendaraan', [DataKendaraanController::class, 'index'])
         ->name('data-kendaraan.index');
     Route::get('/membership', [MemberController::class, 'index'])
         ->name('membership.index');
 
+    Route::get('/transaksi', [TransaksiParkirController::class, 'index'])
+        ->name('transaksi.index');
+
     Route::middleware('role:admin')->group(function () {
         Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])
             ->name('admin.dashboard');
 
+        Route::get('/lokasi-area', [LokasiAreaController::class, 'index'])
+            ->name('lokasi-area.index');
         Route::post('/lokasi-area', [LokasiAreaController::class, 'store'])
             ->name('lokasi-area.store');
         Route::put('/lokasi-area/{lokasiArea}', [LokasiAreaController::class, 'update'])
@@ -81,6 +75,8 @@ Route::middleware('auth')->group(function () {
         Route::delete('/lokasi-area/{lokasiArea}', [LokasiAreaController::class, 'destroy'])
             ->name('lokasi-area.destroy');
 
+        Route::get('/area', [AreaController::class, 'index'])
+            ->name('area.index');
         Route::get('/area/create', [AreaController::class, 'create'])
             ->name('area.create');
         Route::post('/area', [AreaController::class, 'store'])
@@ -103,6 +99,8 @@ Route::middleware('auth')->group(function () {
         Route::delete('/area-kapasitas/{kapasitasArea}', [AreaKapasitasController::class, 'destroy'])
             ->name('area-kapasitas.destroy');
 
+        Route::get('/tipe-kendaraan', [TipeKendaraanController::class, 'index'])
+            ->name('tipe-kendaraan.index');
         Route::get('/tipe-kendaraan/create', [TipeKendaraanController::class, 'create'])
             ->name('tipe-kendaraan.create');
         Route::post('/tipe-kendaraan', [TipeKendaraanController::class, 'store'])
@@ -114,6 +112,8 @@ Route::middleware('auth')->group(function () {
         Route::delete('/tipe-kendaraan/{tipeKendaraan}', [TipeKendaraanController::class, 'destroy'])
             ->name('tipe-kendaraan.destroy');
 
+        Route::get('/tipe-member', [TipeMemberController::class, 'index'])
+            ->name('tipe-member.index');
         Route::get('/tipe-member/create', [TipeMemberController::class, 'create'])
             ->name('tipe-member.create');
         Route::post('/tipe-member', [TipeMemberController::class, 'store'])
@@ -216,6 +216,7 @@ Route::middleware('auth')->group(function () {
         ->prefix('laporan')
         ->name('laporan.')
         ->group(function () {
+
             Route::get('/harian', [LaporanHarianController::class, 'index'])
                 ->name('harian');
             Route::get('/harian/pdf', [LaporanHarianController::class, 'harianPdf'])

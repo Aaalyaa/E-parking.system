@@ -7,6 +7,7 @@ use App\Models\TransaksiParkir;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Helpers\LogAktivitas;
 
 class LaporanTipeKendaraanController extends Controller
 {
@@ -44,6 +45,13 @@ class LaporanTipeKendaraanController extends Controller
         $pdf = Pdf::loadView('laporan.tipe-kendaraan.tipe_kendaraan_pdf', compact(
             'laporan'
         ))->setPaper('A4', 'landscape');
+
+            LogAktivitas::add(
+                'EXPORT_LAPORAN_TIPE_KENDARAAN',
+                'Mengekspor laporan tipe kendaraan ke PDF',
+                'laporan_tipe_kendaraan',
+                null
+            );
 
         return $pdf->download(
             'laporan-tipe-kendaraan-' . now()->format('d-m-Y') . '.pdf'

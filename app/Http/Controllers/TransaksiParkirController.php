@@ -116,7 +116,16 @@ class TransaksiParkirController extends Controller
             'TRANSAKSI_MASUK',
             'Kendaraan ' . $request->plat_nomor . ' masuk area ' . $area->nama_area,
             'transaksi_parkir',
-            $transaksi->id
+            $transaksi->id,
+            null,
+            null,
+            [
+                'kode' => $transaksi->kode,
+                'plat_nomor' => $transaksi->plat_nomor,
+                'area' => $area->nama_area,
+                'waktu_masuk' => $transaksi->waktu_masuk->toDateTimeString(),
+                'status' => $transaksi->status_parkir,
+            ]
         );
 
         return redirect()->route('transaksi.struk_masuk', $transaksi->id)
@@ -170,6 +179,11 @@ class TransaksiParkirController extends Controller
             $kembali = 0;
         }
 
+        $before = [
+            'status' => $transaksi->status_parkir,
+            'waktu_masuk' => $transaksi->waktu_masuk->toDateTimeString(),
+        ];
+
         $transaksi->update([
             'id_tarif' => $hasil['id_tarif'],
             'waktu_keluar' => now(),
@@ -182,12 +196,26 @@ class TransaksiParkirController extends Controller
             'kembali' => $kembali,
         ]);
 
+        $after = [
+            'status' => TransaksiParkir::STATUS_OUT,
+            'waktu_keluar' => now()->toDateTimeString(),
+            'durasi_jam' => $hasil['durasi_jam'],
+            'diskon' => $hasil['diskon'],
+            'total_biaya' => $hasil['total'],
+            'metode_bayar' => $request->metode_bayar,
+            'bayar' => $bayar,
+            'kembali' => $kembali,
+        ];
+
         LogAktivitas::add(
             'TRANSAKSI_KELUAR',
             'Kendaraan ' . $transaksi->plat_nomor .
                 ' keluar, total Rp ' . number_format($hasil['total'], 0, ',', '.'),
             'transaksi_parkir',
-            $transaksi->id
+            $transaksi->id,
+            null,
+            $before,
+            $after
         );
 
         return redirect()->route('transaksi.struk_keluar', $transaksi->id)

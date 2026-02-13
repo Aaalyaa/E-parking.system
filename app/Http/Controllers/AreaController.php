@@ -6,6 +6,7 @@ use App\Models\Area;
 use App\Models\LokasiArea;
 use Illuminate\Http\Request;
 use App\Helpers\RoleHelper;
+use App\Helpers\LogAktivitas;
 
 class AreaController extends Controller
 {
@@ -37,11 +38,21 @@ class AreaController extends Controller
             $fotoPath = $request->file('foto')->store('area_fotos', 'public');
         }
 
-        Area::create([
+        $area = Area::create([
             'nama_area' => $request->nama_area,
             'id_lokasi_area' => $request->id_lokasi_area,
             'foto' => $fotoPath
         ]);
+
+        LogAktivitas::add(
+            'CREATE_AREA',
+            'Menambahkan area baru: Nama Area ' . $request->nama_area . ', Lokasi Area ID ' . $request->id_lokasi_area,
+            'area',
+            $area->id,
+            null,
+            null,
+            $area->toArray()
+        );
 
         return redirect()->route('area.index');
     }
@@ -65,18 +76,45 @@ class AreaController extends Controller
             $fotoPath = $request->file('foto')->store('area_fotos', 'public');
         }
 
+        $before = $area->getOriginal();
+
         $area->update([
             'nama_area' => $request->nama_area,
             'id_lokasi_area' => $request->id_lokasi_area,
             'foto' => $fotoPath
         ]);
 
+        $after = $area->fresh()->toArray();
+
+        LogAktivitas::add(
+            'UPDATE_AREA',
+            'Memperbarui area: ID ' . $area->id . ', Nama Area ' . $request->nama_area . ', Lokasi Area ID ' . $request->id_lokasi_area,
+            'area',
+            $area->id,
+            null,
+            $before,
+            $after
+        );
+
         return redirect()->route('area.index');
     }
 
     public function destroy(Area $area)
     {
+        $before = $area->toArray();
+
         $area->delete();
+
+        LogAktivitas::add(
+            'DELETE_AREA',
+            'Menghapus area: ID ' . $area->id . ', Nama Area ' . $area->nama_area,
+            'area',
+            $area->id,
+            null,
+            $before,
+            null
+        );
+
         return redirect()->route('area.index');
     }
 

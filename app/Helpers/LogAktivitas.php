@@ -12,9 +12,12 @@ class LogAktivitas
         string $aksi,
         ?string $deskripsi = null,
         ?string $refTable = null,
-        ?int $idRef = null
+        ?int $idRef = null,
+        $userOverride = null,
+        ?array $before = null,
+        ?array $after = null
     ): void {
-        $user = Auth::user();
+        $user = $userOverride ?? Auth::user();
 
         DB::table('log_aktivitas')->insert([
             'id_user'    => $user?->id,
@@ -23,6 +26,8 @@ class LogAktivitas
             'deskripsi'  => $deskripsi,
             'ref_table'  => $refTable,
             'id_ref'     => $idRef,
+            'data_before' => $before ? json_encode($before) : null,
+            'data_after'  => $after ? json_encode($after) : null,
             'ip_address' => request()->ip(),
             'user_agent' => request()->userAgent(),
             'created_at' => now(),

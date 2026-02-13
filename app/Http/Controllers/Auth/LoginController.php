@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Helpers\LogAktivitas;
+use App\Models\User;
 
 class LoginController extends Controller
 {
@@ -22,6 +23,19 @@ class LoginController extends Controller
         ]);
 
         if (!Auth::attempt($credentials)) {
+
+            $user = User::where('username', $request->username)->first();
+
+            $peran = $user?->role?->peran ?? 'unknown';
+
+            LogAktivitas::add(
+                'LOGIN_GAGAL',
+                'Gagal login sebagai ' . $peran,
+                null,
+                null,
+                $user
+            );
+
             return back()->withErrors([
                 'username' => 'Username atau Password salah.',
             ]);
