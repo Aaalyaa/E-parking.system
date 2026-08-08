@@ -43,9 +43,9 @@
     <x-table.wrapper>
         <x-table.thead>
             <tr>
-                <th>Nama Pemilik</th>
                 <th>Plat Nomor</th>
                 <th>Tipe Kendaraan</th>
+                <th>Nama Pemilik</th>
                 @if (auth()->user()->role->peran === 'admin')
                     <th>Aksi</th>
                 @endif
@@ -54,9 +54,9 @@
         <tbody>
             @foreach ($dataKendaraan as $kendaraan)
                 <tr>
-                    <td>{{ $kendaraan->member->nama_pemilik }}</td>
                     <td>{{ $kendaraan->plat_nomor }}</td>
                     <td>{{ $kendaraan->tipe_kendaraan->nama_tipe }}</td>
+                    <td>{{ $kendaraan->member->nama_pemilik }}</td>
                     @if (auth()->user()->role->peran === 'admin')
                         <td>
                             <x-table.action>
