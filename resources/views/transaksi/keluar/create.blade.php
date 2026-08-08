@@ -93,7 +93,7 @@
                 <div class="mb-3 mt-3" id="bayarField" style="display:none;">
                     <label class="form-label">Jumlah Bayar (Tunai)</label>
                     <input type="text" name="bayar" id="bayarInput" class="form-control"
-                        placeholder="Masukkan uang bayar" inputmode="numeric" required>
+                        placeholder="Masukkan uang bayar" inputmode="numeric">
 
                     <small class="text-danger d-none" id="errorBayar">
                         Uang yang dibayar kurang.
@@ -138,17 +138,20 @@
             const bayarInput = document.getElementById('bayarInput');
             const errorBayar = document.getElementById('errorBayar');
             const kembalianInput = document.getElementById('kembalianInput');
+            const formKeluar = document.getElementById('formKeluar');
 
             const totalBayar = {{ $detailTarif['total'] ?? 0 }};
 
             metodeSelect.addEventListener('change', function() {
                 if (this.value === 'TUNAI') {
                     bayarField.style.display = 'block';
+                    bayarInput.required = true;
                 } else {
                     bayarField.style.display = 'none';
+                    bayarInput.required = false;
                     bayarInput.value = '';
                     errorBayar.classList.add('d-none');
-                    kembalianBox.classList.add('d-none');
+                    kembalianInput.value = '0';
                 }
             });
 

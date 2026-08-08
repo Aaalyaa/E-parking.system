@@ -159,11 +159,11 @@ class TransaksiParkirController extends Controller
 
         $hasil = HitungTarif::from($transaksi);
 
-        $total = $hasil['total'];
-
         if (!$hasil) {
             return back()->with('error', 'Tarif parkir tidak ditemukan untuk durasi ini');
         }
+
+        $total = $hasil['total'];
 
         if ($request->metode_bayar === 'TUNAI') {
 
