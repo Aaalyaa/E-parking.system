@@ -59,14 +59,23 @@ Pastikan perangkat sudah memiliki:
 ### Langkah Instalasi
 
 **1. Clone repository**
+
+```bash
 git clone https://github.com/Aaalyaa/E-parking.system.git
 cd E-parking.system
+```
 
 **2. Install dependency PHP**
+
+```bash
 composer install
+```
 
 **3. Siapkan file konfigurasi environment**
+
+```bash
 cp .env.example .env
+```
 
 Pada Windows, file `.env.example` juga dapat disalin secara manual menjadi `.env`.
 
@@ -74,29 +83,43 @@ Pada Windows, file `.env.example` juga dapat disalin secara manual menjadi `.env
 
 Buat database kosong, lalu sesuaikan konfigurasi pada file `.env`:
 
+```env
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
 DB_DATABASE=nama_database
 DB_USERNAME=username_database
 DB_PASSWORD=password_database
+```
 
 Ganti nilai contoh sesuai konfigurasi MySQL lokal.
 
 **5. Generate application key**
+
+```bash
 php artisan key:generate
+```
 
 **6. Jalankan migration dan seeder**
+
+```bash
 php artisan migrate --seed
+```
 
 Periksa file migration dan seeder terlebih dahulu. Seeder digunakan untuk menyiapkan data awal aplikasi, termasuk data yang mungkin dibutuhkan untuk autentikasi.
 
 **7. Install dependency frontend dan build asset**
+
+```bash
 npm install
 npm run build
+```
 
 **8. Jalankan aplikasi**
+
+```bash
 php artisan serve
+```
 
 Buka alamat lokal yang ditampilkan oleh Artisan di browser.
 
