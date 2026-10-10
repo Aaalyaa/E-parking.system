@@ -1,66 +1,145 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🚗 E-Parking System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Aplikasi web untuk membantu pengelolaan operasional parkir, mulai dari pencatatan kendaraan masuk dan keluar hingga pemantauan transaksi dan pembuatan laporan.
 
-## About Laravel
+Proyek ini dikembangkan menggunakan **Laravel 10** sebagai proyek Uji Kompetensi Keahlian (UKK) Rekayasa Perangkat Lunak.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 🎯 Tujuan
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Membangun sistem pengelolaan parkir berbasis web yang membantu petugas mencatat transaksi secara terstruktur serta memudahkan admin dan owner memantau data operasional.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 🧰 Teknologi yang Digunakan
 
-## Learning Laravel
+- **Backend:** PHP 8.1+ dan Laravel 10
+- **Database:** MySQL
+- **Frontend:** HTML, CSS, JavaScript, Bootstrap 5
+- **Build tools:** Vite dan npm
+- **Pembuatan laporan PDF:** Laravel DomPDF
+- **QR Code:** SimpleSoftwareIO Simple QR Code
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## ✨ Fitur Utama
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### 👥 Autentikasi dan Hak Akses
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- Login dan logout pengguna.
+- Pembagian hak akses berdasarkan peran: **Admin**, **Petugas**, dan **Owner**.
+- Dashboard yang disesuaikan dengan peran pengguna.
 
-## Laravel Sponsors
+### 🅿️ Pengelolaan Parkir
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+- Pencatatan kendaraan masuk dan keluar menggunakan kode struk.
+- Pencatatan dan pelacakan transaksi parkir.
+- Pengelolaan data pendukung operasional, seperti area, kapasitas, tarif, tipe kendaraan, dan data member.
 
-### Premium Partners
+### 📊 Laporan dan Pemantauan
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+- Laporan parkir harian.
+- Laporan transaksi berdasarkan rentang tanggal.
+- Laporan berdasarkan tipe kendaraan.
+- Laporan okupansi area parkir.
+- Ekspor laporan ke format PDF.
 
-## Contributing
+### 🛠️ Administrasi dan Pemeliharaan Data
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- Fitur backup dan restore data.
+- Pencatatan log aktivitas/perubahan untuk membantu pemantauan aktivitas pengguna.
+- Pengelolaan data pengguna sesuai hak akses.
 
-## Code of Conduct
+## 🧑‍💻 Cara Menjalankan Project
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Prasyarat
 
-## Security Vulnerabilities
+Pastikan perangkat sudah memiliki:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- PHP 8.1 atau lebih baru
+- Composer
+- MySQL
+- Node.js dan npm
 
-## License
+### Langkah Instalasi
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+**1. Clone repository**
+
+\```bash
+git clone https://github.com/Aaalyaa/E-parking.system.git
+cd E-parking.system
+\```
+
+**2. Install dependency PHP**
+
+\```bash
+composer install
+\```
+
+**3. Siapkan file konfigurasi environment**
+
+\```bash
+cp .env.example .env
+\```
+
+Pada Windows, file `.env.example` juga dapat disalin secara manual menjadi `.env`.
+
+**4. Buat database MySQL**
+
+Buat database kosong, lalu sesuaikan konfigurasi pada file `.env`:
+
+\```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=nama_database
+DB_USERNAME=username_database
+DB_PASSWORD=password_database
+\```
+
+Ganti nilai contoh sesuai konfigurasi MySQL lokal.
+
+**5. Generate application key**
+
+\```bash
+php artisan key:generate
+\```
+
+**6. Jalankan migration dan seeder**
+
+\```bash
+php artisan migrate --seed
+\```
+
+Periksa file migration dan seeder terlebih dahulu. Seeder digunakan untuk menyiapkan data awal aplikasi, termasuk data yang mungkin dibutuhkan untuk autentikasi.
+
+**7. Install dependency frontend dan build asset**
+
+\```bash
+npm install
+npm run build
+\```
+
+**8. Jalankan aplikasi**
+
+\```bash
+php artisan serve
+\```
+
+Buka alamat lokal yang ditampilkan oleh Artisan di browser.
+
+## 📁 Struktur Project
+
+Struktur utama mengikuti konvensi Laravel:
+
+- `app/` — model, controller, helper, dan logika aplikasi.
+- `database/` — migration, factory, dan seeder.
+- `resources/` — view Blade serta aset frontend.
+- `routes/` — definisi route aplikasi.
+- `public/` — file publik dan hasil build aset.
+- `config/` — konfigurasi aplikasi Laravel.
+
+## 📌 Catatan
+
+- Repository ini merupakan proyek pembelajaran/UKK dan dapat memerlukan penyesuaian konfigurasi sesuai lingkungan lokal.
+- Belum ada tautan demo online yang dicantumkan; jalankan aplikasi secara lokal mengikuti petunjuk instalasi di atas.
+
+## 👩‍💻 Pengembang
+
+**Aaalyaa**  
+GitHub: [@Aaalyaa](https://github.com/Aaalyaa)
